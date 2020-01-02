@@ -1,6 +1,8 @@
 // React
 import React, {Component} from 'react'
-import {Text, FlatList, View} from 'react-native'
+import {Text, FlatList, View, ScrollView} from 'react-native'
+import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel'
+import styles from './HomeScreenStyle'
 
 
 export default class HomeScreen extends React.Component {
@@ -9,9 +11,9 @@ export default class HomeScreen extends React.Component {
   render() {
   
     return (
-      <Text>
-          Hello World
-      </Text>
+      <ScrollView style={styles.homeScrollView}>
+        <HomeCarousel />
+      </ScrollView>
     )
   }
 }
