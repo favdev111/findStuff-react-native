@@ -1,8 +1,15 @@
-import {StyleSheet} from 'react-native'
-import { Text, View, Image, Dimensions } from 'react-native'
-const { width } = Dimensions.get('window')
+import {StyleSheet, DatePickerAndroid} from 'react-native'
 export default StyleSheet.create({
     homeScrollView: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#ddd',
+    },
+    HomeMainBtnGroup: {
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        padding: 10,
+        backgroundColor: '#fff',
+        marginTop:3   
     }
 })

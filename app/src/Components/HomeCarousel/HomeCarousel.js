@@ -16,14 +16,14 @@ export default class extends Component {
           paginationStyle={{
             bottom: 23, left: null, right: 10
           }} loop autoplay>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Aussie tourist dies at Bali hotel</Text>}>
+          <View style={styles.slide}>
             <Image resizeMode='stretch' style={styles.image} source={Images.HomeCarousel1} />
           </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Big lie behind Nine’s new show</Text>}>
-            <Image resizeMode='stretch' style={styles.image} source={require('src/Images/HomeCarousel/HomeCarousel2.jpg')} />
+          <View style={styles.slide}>
+            <Image resizeMode='stretch' style={styles.image} source={Images.HomeCarousel2} />
           </View>
-          <View style={styles.slide} title={<Text numberOfLines={1}>Why Stone split from Garfield</Text>}>
-            <Image resizeMode='stretch' style={styles.image} source={require('src/Images/HomeCarousel/HomeCarousel3.jpg')} />
+          <View style={styles.slide}>
+            <Image resizeMode='stretch' style={styles.image} source={Images.HomeCarousel3} />
           </View>
         </Swiper>
       </View>
