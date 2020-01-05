@@ -12,6 +12,12 @@ export default {
     // Home-Button (Find and Get button)
     HomeFindBtn: require('src/Images/HomeBtnGroup/HomeFindBtn.png'),
     HomeGetBtn: require('src/Images/HomeBtnGroup/HomeGetBtn.png'),
+    // Bottom Navigation Tab Icons
+    BottomNavHome: require('src/Images/BottomTabIcon/BottomNavHome.png'),
+    BottomNavCat: require('src/Images/BottomTabIcon/BottomNavCat.png'),
+    BottomNavAdd: require('src/Images/BottomTabIcon/BottomNavAdd.png'),
+    BottomNavNews: require('src/Images/BottomTabIcon/BottomNavNews.png'),
+    BottomNavProfile: require('src/Images/BottomTabIcon/BottomNavProfile.png'),
     
   }
   

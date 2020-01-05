@@ -44,7 +44,7 @@ export default class CustomTabs extends React.PureComponent {
   }
 
   getTitleWidth = (title) => {
-    console.log(title.title.length)
+    // console.log(title.title.length)
     // titleWidth
     return pixelWidth(title.title, {
       font: Fonts.fonts.PoppinsBold,

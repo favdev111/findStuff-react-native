@@ -7,8 +7,8 @@ exports.DefaultTabBar = undefined
 
 var _extends2 = require('babel-runtime/helpers/extends')
 var pixelWidth = require('string-pixel-width')
-import {Metrics} from 'App/Theme'
-import Fonts from 'App/Theme/Fonts'
+import {Metrics} from 'src/Theme'
+import Fonts from 'src/Theme/Fonts'
 import {Platform, Dimensions} from 'react-native'
 var _extends3 = _interopRequireDefault(_extends2)
 

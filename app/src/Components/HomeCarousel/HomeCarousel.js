@@ -10,7 +10,7 @@ export default class extends Component {
     return (
       <View style={styles.container}>
         <Swiper style={styles.wrapper} 
-          onMomentumScrollEnd={(e, state, context) => console.log('index:', state.index)}
+          // onMomentumScrollEnd={(e, state, context) => console.log('index:', state.index)}
           dot={<View style={styles.carouselDot} />}
           activeDot={<View style={styles.carouselActiveDot} />}
           paginationStyle={{

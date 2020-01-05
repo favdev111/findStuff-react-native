@@ -9,10 +9,10 @@ export default class GetCategory extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: true,
+      loading: false,
       book: null,
       spinner: false,
-      refreshing: false,
+      refreshing: true,
     }
     // this._fetchPromotions()
   }
@@ -38,9 +38,9 @@ export default class GetCategory extends Component {
     // this.setState({loading: true})
     // this.setState({loading: !refreshing, refreshing: refreshing}, () => this._fetchPromotions())
   }
-  componentWillReceiveProps(nextProps) {
-    this.reload(true)
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.reload(true)
+  // }
   _scrollOffset = 0
   _handleScroll = (event) => {
     this._scrollOffset = event.nativeEvent.contentOffset.y

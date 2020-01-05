@@ -12,9 +12,10 @@ import FindCategory from './FindCategory/FindCategory'
 export default class CategoryAll extends React.Component {
   constructor(props) {
     super(props)
-    const activeTab = this.props.navigation.dangerouslyGetParent().getParam('activeTab')
+    // const activeTab = this.props.navigation.dangerouslyGetParent().getParam('activeTab')
     this.state = {
-      initailPage: activeTab || 0,
+      initailPage: 0,
+      // initailPage: activeTab || 0,
       allRefresh: false,
     }
   }
