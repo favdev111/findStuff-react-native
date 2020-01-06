@@ -1,4 +1,4 @@
-import {StyleSheet, DatePickerAndroid} from 'react-native'
+import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     homeScrollView: {
         flex: 1,
@@ -10,6 +10,10 @@ export default StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         backgroundColor: '#fff',
-        marginTop:3   
+        marginTop:2,
+        marginBottom: 2
+    },
+    homeCategoryAll: {
+        flex: 1,
     }
 })

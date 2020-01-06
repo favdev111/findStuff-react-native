@@ -8,7 +8,6 @@ import ProfileView from 'src/Containers/Profile/Profile'
 import HomeView from 'src/Containers/Home'
 import Style from './BottomTabNavStyle'
 import {Colors, Images} from 'src/Theme'
-import ApplicationStyles from 'src/Theme/ApplicationStyles'
 
 const CategoryStackNavigator = createStackNavigator({
   CategoryView: {
