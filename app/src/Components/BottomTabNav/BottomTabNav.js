@@ -74,6 +74,7 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
+              <Text>首页</Text>
             </>
           )
         } else if (routeName === 'Profile') {
@@ -84,6 +85,7 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
+              <Text>我的</Text>
             </>
           )
         } else if (routeName === 'AddInfo') {
@@ -94,6 +96,7 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
+              <Text>新的</Text>
             </>
           )
         } else if (routeName === 'Category') {
@@ -104,6 +107,7 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
+              <Text>分类</Text>
             </>
           )
         }

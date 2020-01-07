@@ -18,6 +18,10 @@ export default {
     BottomNavAdd: require('src/Images/BottomTabIcon/BottomNavAdd.png'),
     BottomNavNews: require('src/Images/BottomTabIcon/BottomNavNews.png'),
     BottomNavProfile: require('src/Images/BottomTabIcon/BottomNavProfile.png'),
-    
+    // Card Avartars 
+    femaleProfile: require('src/Images/Avatars/femaleProfile.png'),
+    maleProfile: require('src/Images/Avatars/maleProfile.png'),
+    // The other Icons
+    MapPin: require('src/Images/Icons/mapPin.png'),
   }
   

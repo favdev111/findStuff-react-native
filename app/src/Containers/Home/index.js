@@ -9,7 +9,7 @@ import CategoryAll from 'src/Containers/Category/CategoryAll'
 export default class HomeView extends React.Component {
   render() {
     return (
-      <View style={{flex: 1}}>
+      <ScrollView style={{flex: 1 }}>
         <View style={styles.homeScrollView}>
           <HomeCarousel />
           <View style={styles.HomeMainBtnGroup}>
@@ -22,7 +22,7 @@ export default class HomeView extends React.Component {
           </View>
         </View>
         <CategoryAll style={styles.homeCategoryAll} />
-      </View>
+      </ScrollView>
     )
   }
 }
