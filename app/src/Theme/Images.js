@@ -21,7 +21,22 @@ export default {
     // Card Avartars 
     femaleProfile: require('src/Images/Avatars/femaleProfile.png'),
     maleProfile: require('src/Images/Avatars/maleProfile.png'),
+
     // The other Icons
     MapPin: require('src/Images/Icons/mapPin.png'),
+    // Category List Icons
+    CatJewelry: require('src/Images/Icons/CatJewelry.png'),
+    CatBook: require('src/Images/Icons/CatBook.png'),
+    CatCar: require('src/Images/Icons/CatCar.png'),
+    CatCard: require('src/Images/Icons/CatCard.png'),
+    CatClothes: require('src/Images/Icons/CatClothes.png'),
+    CatDigital: require('src/Images/Icons/CatDigital.png'),
+    CatHeart: require('src/Images/Icons/CatHeart.png'),
+    CatBag: require('src/Images/Icons/CatBag.png'),
+    CatKey: require('src/Images/Icons/CatKey.png'),
+    CatLife: require('src/Images/Icons/CatLife.png'),
+    CatMobile: require('src/Images/Icons/CatMobile.png'),
+    CatWallet: require('src/Images/Icons/CatWallet.png'),
+    CatPet: require('src/Images/Icons/CatPet.png')
   }
   
