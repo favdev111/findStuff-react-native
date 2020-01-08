@@ -25,6 +25,8 @@ export default {
     // The other Icons
     MapPin: require('src/Images/Icons/mapPin.png'),
     CloseIcon: require('src/Images/Icons/CloseIcon.png'),
+    HideIcon: require('src/Images/Icons/HideIcon.png'),
+    ShowIcon: require('src/Images/Icons/ShowIcon.png'),
     // Category List Icons
     CatJewelry: require('src/Images/Icons/CatJewelry.png'),
     CatBook: require('src/Images/Icons/CatBook.png'),
