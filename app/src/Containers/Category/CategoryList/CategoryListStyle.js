@@ -5,7 +5,7 @@ export default StyleSheet.create({
    },
    CategoryListHeader: {
       height: 50,
-      backgroundColor: '#fd6459',
+      backgroundColor: '#0084da',
       alignItems: 'center',
       justifyContent: 'center',
    },
