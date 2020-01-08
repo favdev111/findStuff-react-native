@@ -133,15 +133,15 @@ const BottomTabNavigator = createBottomTabNavigator(
    
   },
 )
-export default BottomTabNavigator;
-// class BottomTabNav extends React.Component {
+export default class MainScreenWithBottomNav extends React.Component {
+  static router = BottomTabNavigator.router
 
-//   render() {
-//     const {navigation} = this.props
-//     return (
-//         <BottomTabNavigator navigation={navigation} />
-//     )
-//   }
-// }
+  render() {
+    const {navigation} = this.props
+    return (
+        <BottomTabNavigator navigation={navigation} />
+    )
+  }
+}
 
 // export default BottomTabNav

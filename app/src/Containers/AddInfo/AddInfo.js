@@ -24,6 +24,10 @@ class AddInfo extends Component {
    toggleModal = () => {
       this.setState({ isModalVisible: !this.state.isModalVisible });
    };
+   gotoSignIn = ()=>{
+      this.setState({ isModalVisible: !this.state.isModalVisible });
+      this.props.navigation.navigate('Signin')
+   }
 
   render() {
    return (
@@ -43,7 +47,7 @@ class AddInfo extends Component {
                <View style={Styles.AddInfoBtnContainer}>
                   <View style={Styles.AddBtnWrap}>
                      <View>
-                        <TouchableOpacity onPress={()=>this.toggleModal()}>
+                        <TouchableOpacity onPress={()=>this.gotoSignIn()}>
                            <Image style={Styles.FindBtnImg} source={Images.HomeFindBtn} />
                            <Text>寻物启事</Text>
                         </TouchableOpacity>

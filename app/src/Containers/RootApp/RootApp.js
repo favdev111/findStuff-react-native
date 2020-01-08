@@ -2,11 +2,9 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createAppContainer, createStackNavigator} from 'react-navigation'
 import NavigationService from 'src/Services/NavigationService'
-import HomeView from 'src/Containers/Home'
-import AddInfoView from 'src/Containers/AddInfo/AddInfo'
-import CategoryView from 'src/Containers/Category/CategoryAll'
-import ProfileView from 'src/Containers/Profile/Profile'
-import BottomTabNavigator from 'src/Components/BottomTabNav/BottomTabNav'
+import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav'
+import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen'
+
 
 
 
@@ -15,24 +13,22 @@ import BottomTabNavigator from 'src/Components/BottomTabNav/BottomTabNav'
  *
  * @see https://reactnavigation.org/docs/en/hello-react-navigation.html#creating-a-stack-navigator
  */
-const AppContainer = createAppContainer( BottomTabNavigator
-  // createStackNavigator(
-  //   {
-  //     // Create the application routes here (the key is the route name, the value is the target screen)
-  //     // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
+const AppContainer = createAppContainer( 
+  createStackNavigator(
+    {
+      // Create the application routes here (the key is the route name, the value is the target screen)
+      // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
       
-  //     HomeView: HomeView,
-  //     AddInfoView: AddInfoView,
-  //     CategoryView: CategoryView,
-  //     ProfileView: ProfileView,
-  //   },
-  //   {
-  //     // By default the application will show the splash screen
-  //     initialRouteName: 'HomeView',
-  //     // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
-  //     headerMode: 'none',
-  //   },
-  // ),
+      MainScreenWithBottomNav: MainScreenWithBottomNav,
+      Signin: SigninScreen
+    },
+    {
+      // By default the application will show the splash screen
+      initialRouteName: 'MainScreenWithBottomNav',
+      // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
+      headerMode: 'none',
+    },
+  ),
 )
 
 export default class RootApp extends Component {
@@ -43,13 +39,7 @@ export default class RootApp extends Component {
 
   render() {
     return (
-      <AppContainer
-        // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
-        // <Button onPress={() => this.drawer && this.drawer.openDrawer()}>Open drawer</Button>
-        ref={(navigatorRef) => {
-          NavigationService.setTopLevelNavigator(navigatorRef)
-        }}
-      />
+      <AppContainer />
     )
   }
 }
