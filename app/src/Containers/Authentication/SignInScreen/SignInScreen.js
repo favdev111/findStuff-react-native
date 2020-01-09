@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Styles from './SignInScreenStyle'
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput'
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput'
@@ -23,7 +23,12 @@ export default class SignInScreen extends React.Component {
                      <CustomPwdInput CustomPwdLabel={'密码'} CustomPwdPlaceholder={'请输入密码'} />
                   </View>
                   <View style={Styles.SignOtherFunc}>
-                     <Text>新用户注册 &nbsp; | &nbsp; 找回密码</Text>
+                  <TouchableOpacity onPress={()=>this.props.navigation.navigate('SignUp')}>
+                     <Text>新用户注册 &nbsp;</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.props.navigation.navigate('SignUp')}>
+                     <Text> | &nbsp; 找回密码</Text>
+                  </TouchableOpacity>
                   </View>
                   <View style={Styles.SignBtn}>
                      <FormCommonBtn CustomBtnTitle={'登录'} />

@@ -20,6 +20,7 @@ export default StyleSheet.create({
       paddingBottom: 20
    },
    SignOtherFunc: {
+      flexDirection: 'row',
    },
    SignBtn: {
       alignItems: 'center',

@@ -4,6 +4,7 @@ import {createAppContainer, createStackNavigator} from 'react-navigation'
 import NavigationService from 'src/Services/NavigationService'
 import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav'
 import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen'
+import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen'
 
 
 
@@ -20,11 +21,12 @@ const AppContainer = createAppContainer(
       // See https://reactnavigation.org/docs/en/stack-navigator.html#routeconfigs
       
       MainScreenWithBottomNav: MainScreenWithBottomNav,
-      Signin: SigninScreen
+      Signin: SigninScreen,
+      SignUp: SignUpScreen,
     },
     {
       // By default the application will show the splash screen
-      initialRouteName: 'Signin',
+      initialRouteName: 'MainScreenWithBottomNav',
       // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
       headerMode: 'none',
     },
