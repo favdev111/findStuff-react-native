@@ -17,7 +17,7 @@ export default class SignInScreen extends React.Component {
                </View>
                <View style={Styles.SignFormContainer}>
                   <View style={Styles.SignPhoneInput}>
-                     <CustomTextInput CustomLabel={'手机'} CustomPlaceholder={'请输入密码'}/>
+                     <CustomTextInput CustomLabel={'手机'} CustomPlaceholder={'请输入手机号码'}/>
                   </View>
                   <View style={Styles.SignPwdInput}>
                      <CustomPwdInput CustomPwdLabel={'密码'} CustomPwdPlaceholder={'请输入密码'} />
@@ -26,7 +26,7 @@ export default class SignInScreen extends React.Component {
                   <TouchableOpacity onPress={()=>this.props.navigation.navigate('SignUp')}>
                      <Text>新用户注册 &nbsp;</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>this.props.navigation.navigate('SignUp')}>
+                  <TouchableOpacity onPress={()=>this.props.navigation.navigate('ForgotPwdScreen')}>
                      <Text> | &nbsp; 找回密码</Text>
                   </TouchableOpacity>
                   </View>
