@@ -1,13 +1,16 @@
 import {StyleSheet} from 'react-native'
+import {Colors} from 'src/Theme'
 
 export default StyleSheet.create({
-   PriceBtnWrap: {
+   RoundBtnWrap: {
+      marginLeft: 3,
       backgroundColor: '#fd6559',
-      borderRadius: 12,
+      borderRadius: 10,
       paddingLeft: 5,
       paddingRight: 5,
    },
-   PriceBtnText: {
-      fontSize: 11,
+   RoundBtnText: {
+      color: 'white',
+      fontSize: 11
    }
 })

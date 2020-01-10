@@ -6,6 +6,8 @@
  */
 
 export default {
+  MainRed: '#ff4e46',
+  MainYellow: '#f78000',
   transparent: 'rgba(0,0,0,0)',
   transparentBlack: 'rgba(0, 0, 0, 0.5)',
   shadowColor: 'rgba(137, 137, 137, 0.52)',
