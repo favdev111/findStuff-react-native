@@ -1,13 +1,16 @@
 // import {PropTypes} from 'prop-types'
 import React, {createRef} from 'react'
-import {Image, Linking, Text} from 'react-native'
-import {createBottomTabNavigator, createStackNavigator} from 'react-navigation'
+import {Image, Linking, Text, View} from 'react-native'
+import {createBottomTabNavigator, createStackNavigator, BottomTabBar} from 'react-navigation'
 import AddInfoView from 'src/Containers/AddInfo/AddInfo'
 import CategoryView from 'src/Containers/Category/CategoryList/CategoryList'
 import ProfileView from 'src/Containers/Profile/Profile'
 import HomeView from 'src/Containers/Home'
 import Style from './BottomTabNavStyle'
+import ChatView from 'src/Containers/Chat/Chat'
 import {Colors, Images} from 'src/Theme'
+
+const TabBarComponent = props => <BottomTabBar {...props} />;
 
 const CategoryStackNavigator = createStackNavigator({
   CategoryView: {
@@ -45,22 +48,37 @@ const HomeStackNavigator = createStackNavigator({
   },
 })
 
+const ChatStackNavigator = createStackNavigator({
+  ChatView: {
+    screen: ChatView,
+    navigationOptions: {
+      header: null,
+    },
+  },
+})
+
 const BottomTabNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeStackNavigator,
     },
-    Category: {
-      screen: CategoryStackNavigator,
+    Chat : {
+      screen: ChatStackNavigator,
     },
     AddInfo: {
       screen: AddInfoStackNavigator,
+    },
+    Category: {
+      screen: CategoryStackNavigator,
     },
     Profile: {
       screen: ProfileStackNavigator,
     },
   },
   {
+    tabBarComponent: props => (
+      <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
+    ),
     initialRouteName: 'Home',
     backBehavior: null,
     defaultNavigationOptions: ({navigation}) => ({
@@ -74,7 +92,6 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
-              <Text>首页</Text>
             </>
           )
         } else if (routeName === 'Profile') {
@@ -85,29 +102,36 @@ const BottomTabNavigator = createBottomTabNavigator(
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
-              <Text>我的</Text>
             </>
           )
         } else if (routeName === 'AddInfo') {
           return (
-            <>
+            <View style={Style.AddInfoContainer}>
               <Image
                 source={Images.BottomNavAdd}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
-              <Text>新的</Text>
+            </View>
+          )
+        } else if (routeName === 'Chat') {
+          return (
+            <>
+              <Image
+                source={Images.BottomNavChat}
+                style={Style.tabBarIcon}
+                resizeMode="contain"
+              />
             </>
           )
         } else if (routeName === 'Category') {
           return (
             <>
               <Image
-                source={Images.BottomNavCat}
+                source={Images.BottomNavNews}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
-              <Text>分类</Text>
             </>
           )
         }

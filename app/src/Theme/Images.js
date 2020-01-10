@@ -14,10 +14,10 @@ export default {
     HomeGetBtn: require('src/Images/HomeBtnGroup/HomeGetBtn.png'),
     // Bottom Navigation Tab Icons
     BottomNavHome: require('src/Images/BottomTabIcon/BottomNavHome.png'),
-    BottomNavCat: require('src/Images/BottomTabIcon/BottomNavCat.png'),
     BottomNavAdd: require('src/Images/BottomTabIcon/BottomNavAdd.png'),
-    BottomNavNews: require('src/Images/BottomTabIcon/BottomNavNews.png'),
-    BottomNavProfile: require('src/Images/BottomTabIcon/BottomNavProfile.png'),
+    BottomNavNews: require('src/Images/BottomTabIcon/Bell.png'),
+    BottomNavProfile: require('src/Images/BottomTabIcon/Profile.png'),
+    BottomNavChat: require('src/Images/BottomTabIcon/Chat.png'),
     // Card Avartars 
     femaleProfile: require('src/Images/Avatars/femaleProfile.png'),
     maleProfile: require('src/Images/Avatars/maleProfile.png'),
