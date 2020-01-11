@@ -26,6 +26,13 @@ export default {
     // Card Avartars 
     femaleProfile: require('src/Images/Avatars/femaleProfile.png'),
     maleProfile: require('src/Images/Avatars/maleProfile.png'),
+    //Profile page
+    ProfileBannerImg: require('src/Images/Profile/profileBannerImg.png'),
+    ProfileBtnPublished: require('src/Images/Profile/ProfileBtnPublished.png'),
+    ProfileBtnLike: require('src/Images/Profile/ProfileBtnLike.png'),
+    ProfileBtnAttention: require('src/Images/Profile/ProfileBtnAttention.png'),
+    ProfileUpdate: require('src/Images/Profile/ProfileUpdate.png'),
+    ProfileContactus: require('src/Images/Profile/ProfileContactus.png'),
 
     // The other Icons
     BlueMapIcon: require('src/Images/Icons/BlueMapIcon.png'),
@@ -38,6 +45,7 @@ export default {
     Message1: require('src/Images/Icons/message1.png'),
     Message2: require('src/Images/Icons/message2.png'),
     Search: require('src/Images/Icons/Search.png'),
+    RightArrow: require('src/Images/Icons/RightArrow.png'),
     // Category List Icons
     
   }

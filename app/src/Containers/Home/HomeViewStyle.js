@@ -10,7 +10,7 @@ export default StyleSheet.create({
     },
     HomeBannerImg: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width/2 
+        height: Dimensions.get('window').width/1.5 
     },
     HomeBannerMsg:{
         position: 'absolute',

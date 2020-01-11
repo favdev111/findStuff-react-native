@@ -6,10 +6,6 @@ import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav'
 import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen'
 import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen'
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen'
-
-
-
-
 /**
  * The root screen contains the application's navigation.
  *
