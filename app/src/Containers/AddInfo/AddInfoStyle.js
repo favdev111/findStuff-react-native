@@ -3,6 +3,14 @@ export default StyleSheet.create({
    AddInfoModalContainer: {
       margin: 0,
    },
+   AddInfoBannerImg: {
+      display: "none",
+   },
+   AddInfoBannerContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 10
+   },
    AddInfoBtnContainer: {
       flex: 1,
    },

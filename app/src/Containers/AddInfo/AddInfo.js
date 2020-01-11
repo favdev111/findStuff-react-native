@@ -43,6 +43,9 @@ class AddInfo extends Component {
                   <View style={Styles.AddInfoHeader}>
                      <Text style={{color: '#ffffff', fontSize: 20 }}>发布</Text>
                   </View>
+                  <View style={Styles.AddInfoBannerContainer}>
+                     <Image source={Images.AddInfoBanner} style={Styles.AddInfoBannerImg} />
+                  </View>
                </View>
                <View style={Styles.AddInfoBtnContainer}>
                   <View style={Styles.AddBtnWrap}>
