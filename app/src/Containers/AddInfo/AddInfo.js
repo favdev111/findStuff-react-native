@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Text, View , Image, TouchableOpacity} from "react-native";
+import { ImageBackground, Text, View , Image, TouchableOpacity} from "react-native";
 import Modal from "react-native-modal";
 import { withNavigation } from 'react-navigation';
 import {Images} from 'src/Theme'
@@ -27,7 +27,16 @@ class AddInfo extends Component {
    gotoSignIn = ()=>{
       this.setState({ isModalVisible: !this.state.isModalVisible });
       this.props.navigation.navigate('Signin')
+   };
+   gotoFindStuffScreen = () => {
+      this.setState({ isModalVisible: !this.state.isModalVisible });
+      this.props.navigation.navigate('FindStuffScreen')
    }
+   gotoGetStuffScreen = () => {
+      this.setState({ isModalVisible: !this.state.isModalVisible });
+      this.props.navigation.navigate('GetStuffScreen')
+   }
+   
 
   render() {
    return (
@@ -44,21 +53,21 @@ class AddInfo extends Component {
                      <Text style={{color: '#ffffff', fontSize: 20 }}>发布</Text>
                   </View>
                   <View style={Styles.AddInfoBannerContainer}>
-                     <Image source={Images.AddInfoBanner} style={Styles.AddInfoBannerImg} />
+                     <ImageBackground source={Images.AddInfoBanner} style={Styles.AddInfoBannerImg} />
                   </View>
                </View>
                <View style={Styles.AddInfoBtnContainer}>
                   <View style={Styles.AddBtnWrap}>
                      <View>
-                        <TouchableOpacity onPress={()=>this.gotoSignIn()}>
+                        <TouchableOpacity onPress={()=>this.gotoFindStuffScreen()}>
                            <Image style={Styles.FindBtnImg} source={Images.HomeFindBtn} />
                            <Text>寻物启事</Text>
                         </TouchableOpacity>
                      </View>
                      <View>
-                        <TouchableOpacity onPress={()=>this.toggleModal()}>
+                        <TouchableOpacity onPress={()=>this.gotoGetStuffScreen()}>
                            <Image style={Styles.GetBtnImg} source={Images.HomeGetBtn} />
-                           <Text>招领启事</Text>
+                           <Text>失物招领</Text>
                         </TouchableOpacity>
                      </View>
                   </View>

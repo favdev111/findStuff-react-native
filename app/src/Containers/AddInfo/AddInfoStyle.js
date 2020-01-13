@@ -4,22 +4,23 @@ export default StyleSheet.create({
       margin: 0,
    },
    AddInfoBannerImg: {
-      display: "none",
+      width: 300,
+      height: 130,
    },
    AddInfoBannerContainer: {
       alignItems: 'center',
       justifyContent: 'center',
-      padding: 10
-   },
-   AddInfoBtnContainer: {
-      flex: 1,
-   },
+      marginTop: 30,
+   }, 
    AddInfoHeader: {
       width: Dimensions.get('window').width,
       height: 50,
       backgroundColor: '#0084da',
       alignItems: 'center',
       justifyContent: 'center',
+   },
+   AddInfoBtnContainer: {
+      flex: 1,
    },
    AddBtnWrap: {
       flex: 1,
