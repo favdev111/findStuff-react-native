@@ -79,7 +79,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     tabBarComponent: props => (
       <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
     ),
-    initialRouteName: 'Home',
+    initialRouteName: 'Category',
     backBehavior: null,
     defaultNavigationOptions: ({navigation}) => ({
       tabBarIcon: ({focused}) => {

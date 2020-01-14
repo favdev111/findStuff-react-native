@@ -1,34 +1,40 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native'
-import {Images} from 'src/Theme'
+import { View, Text, TouchableOpacity, FlatList, ScrollView, Image} from 'react-native'
+import {Images, Colors} from 'src/Theme'
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn'
 import Styles from './CategoryListStyle'
+import Card from 'src/Components/Card/Card'
 
  
 const CategoryListJson = [
-         {'手机': 'CatMobile'},
          {'钱包': 'CatWallet'},
-         {'宠物': 'CatPet'},
-         {'书籍': 'CatBook'},
-         {'首饰': 'CatJewelry'},
-         {'生活用品': 'CatLife'},
          {'钥匙': 'CatKey'},
-         {'证件': 'CatCard'},
-         {'衣物': 'CatClothes'},
-         {'交通工具': 'CatCar'},
-         {'背包 / 手袋': 'CatBag'},
-         {'寻人启事': 'CatHeart'},
-         {'数码产品': 'CatDigital'}
+         {'数码': 'CatDigital'},
+         {'办公': 'CatOffice'},
+         {'寻人': 'CatMan'},
+         {'宠物': 'CatPet'},
+         {'背包': 'CatBag'},
+         {'其他': 'CatOther'},
 ]
 
 export default class CategoryList extends React.Component {
 
 	render() {
 		return (
-         <ScrollView>
+         <ScrollView style={{backgroundColor: '#f4f6f8'}}>
             <View style={Styles.CategoryListContainer}>
-               <View style={Styles.CategoryListHeader}>
-                  <Text style={{color: '#ffffff', fontSize: 20 }}>分类</Text>
+               <View style={Styles.FindStuffHeaderContainer}>
+                  <TouchableOpacity >
+                     <Image source={Images.whiteLeftChevron} style={Styles.FindStuffHeaderImg} />
+                  </TouchableOpacity>
+                  <View style={{ alignItems: 'center'}}>
+                     <Text style={{fontSize: 20, color: '#fff'}}>
+                        寻物户示
+                     </Text>
+                  </View>
+                  <View style={Styles.HeaderRightImgContainer}>
+                     <Image source={Images.TextEdit} style={Styles.HeaderRightImg} />
+                  </View>
                </View>
                <View style={Styles.CategoryListWrap}>
                   <FlatList
@@ -44,6 +50,12 @@ export default class CategoryList extends React.Component {
                      keyExtractor={(item, index) => index.toString()}
                   />
                </View>
+            </View>
+            <View style={Styles.CardsContainer}>
+               <Card></Card>
+               <Card></Card>
+               <Card></Card>
+               <Card></Card>
             </View>
          </ScrollView>
 		);

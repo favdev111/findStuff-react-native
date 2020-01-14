@@ -49,6 +49,15 @@ export default {
         RightArrow: require('src/Images/Icons/RightArrow.png'),
         Camera: require('src/Images/Icons/camera.png'),
         // Category List Icons
+        CatOther: require('src/Images/Icons/CatOther.png'),
+        CatWallet: require('src/Images/Icons/CatWallet.png'),
+        CatPet: require('src/Images/Icons/CatPet.png'),
+        CatKey: require('src/Images/Icons/CatKey.png'),
+        CatMan: require('src/Images/Icons/CatMan.png'),
+        CatBag: require('src/Images/Icons/CatBag.png'),
+        CatOffice: require('src/Images/Icons/CatOffice.png'),
+        CatDigital: require('src/Images/Icons/CatDigital.png'),
+        TextEdit: require('src/Images/Icons/edit.png'),
         
     }
     
