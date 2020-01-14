@@ -47,6 +47,7 @@ export default {
         Message2: require('src/Images/Icons/message2.png'),
         Search: require('src/Images/Icons/Search.png'),
         RightArrow: require('src/Images/Icons/RightArrow.png'),
+        Camera: require('src/Images/Icons/camera.png'),
         // Category List Icons
         
     }
