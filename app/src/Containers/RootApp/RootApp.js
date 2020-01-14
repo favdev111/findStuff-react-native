@@ -7,7 +7,7 @@ import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScree
 import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen'
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen'
 import FindStuffScreen from 'src/Containers/AddInfo/FindStuffScreen/FindStuffScreen'
-// import GetStuffScreen from 'src/Containers/AddInfo/GetStuffScreen/GetStuffScreen'
+import GetStuffScreen from 'src/Containers/AddInfo/GetStuffScreen/GetStuffScreen'
 
 /**
  * The root screen contains the application's navigation.
@@ -25,11 +25,11 @@ const AppContainer = createAppContainer(
       SignUp: SignUpScreen,
       ForgotPwdScreen: ForgotPwdScreen,
       FindStuffScreen: FindStuffScreen,
-      // GetStuffScreen: GetStuffScreen
+      GetStuffScreen: GetStuffScreen
     },
     {
       // By default the application will show the splash screen
-      initialRouteName: 'FindStuffScreen',
+      initialRouteName: 'GetStuffScreen',
       // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
       headerMode: 'none',
     },
