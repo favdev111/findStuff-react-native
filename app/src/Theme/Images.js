@@ -58,6 +58,7 @@ export default {
         CatOffice: require('src/Images/Icons/CatOffice.png'),
         CatDigital: require('src/Images/Icons/CatDigital.png'),
         TextEdit: require('src/Images/Icons/edit.png'),
+        WhiteLike: require('src/Images/Icons/like.png'),
         
     }
     
