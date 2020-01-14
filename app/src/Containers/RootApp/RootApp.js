@@ -10,6 +10,8 @@ import FindStuffScreen from 'src/Containers/AddInfo/FindStuffScreen/FindStuffScr
 import GetStuffScreen from 'src/Containers/AddInfo/GetStuffScreen/GetStuffScreen'
 import Published from 'src/Containers/Profile/Published/Published'
 import CategoryDetail from 'src/Containers/Category/CategoryDetail/CategoryDetail'
+import Attention from 'src/Containers/Profile/Attention/Attention'
+import Notification from 'src/Containers/Notification/NotificationList/NotificationList'
 
 /**
  * The root screen contains the application's navigation.
@@ -29,11 +31,13 @@ const AppContainer = createAppContainer(
       FindStuffScreen: FindStuffScreen,
       GetStuffScreen: GetStuffScreen,
       Published: Published,
-      CategoryDetail: CategoryDetail
+      CategoryDetail: CategoryDetail,
+      Attention: Attention,
+      Notification: Notification
     },
     {
       // By default the application will show the splash screen
-      initialRouteName: 'MainScreenWithBottomNav',
+      initialRouteName: 'Attention',
       // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
       headerMode: 'none',
     },
