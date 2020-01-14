@@ -110,19 +110,19 @@ export default class Published extends React.Component {
                </View>
             </ScrollView>
             <View style={Styles.CommentInputContainer}>
-            <View style={Styles.CommentInputWrap}>
-               <View style={Styles.InputImgContainer}>
-                  <Image source={Images.TextEdit} style={Styles.InputImg} />
+               <View style={Styles.CommentInputWrap}>
+                  <View style={Styles.InputImgContainer}>
+                     <Image source={Images.TextEdit} style={Styles.InputImg} />
+                  </View>
+                  <View style={Styles.InputContainer}>
+                     <TextInput placeholder={'说点什么...'} />
+                  </View>
                </View>
-               <View style={Styles.InputContainer}>
-                  <TextInput placeholder={'说点什么...'} />
-               </View>
+               <TouchableOpacity style={Styles.LikeCommentContainer}>
+                  <Image source={Images.RedLike} style={Styles.LikeCommentImg} />
+                  <Text>93</Text>
+               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={Styles.LikeCommentContainer}>
-               <Image source={Images.RedLike} style={Styles.LikeCommentImg} />
-               <Text>93</Text>
-            </TouchableOpacity>
-         </View>
          </>
 		);
 	}

@@ -19,13 +19,13 @@ export default class HomeView extends Component {
 					</View>
 					<View style={styles.HomeSearchContainer}>
 						<View style={styles.HomeSearchArea}>
-                            <View style={styles.HomeSearchImgContainer}>
-                                <Image source={Images.Search} style={styles.HomeSearchImg}/>
-                            </View>
-                            <View style={styles.HomeSearchInputContainer}>
-                                <TextInput placeholder={'请输入关键词进行搜索'} style={styles.HomeSearchInput} />
-                            </View>
-                        </View>
+							<View style={styles.HomeSearchImgContainer}>
+								<Image source={Images.Search} style={styles.HomeSearchImg}/>
+							</View>
+							<View style={styles.HomeSearchInputContainer}>
+								<TextInput placeholder={'请输入关键词进行搜索'} style={styles.HomeSearchInput} />
+							</View>
+						</View>
 					</View>
 					<View style={styles.HomeMainBtnGroup}>
 						<View style={{flexDirection: 'column', alignItems: 'center'}}>

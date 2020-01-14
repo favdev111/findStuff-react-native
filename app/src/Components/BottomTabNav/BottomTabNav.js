@@ -3,18 +3,19 @@ import React, {createRef} from 'react'
 import {Image, Linking, Text, View} from 'react-native'
 import {createBottomTabNavigator, createStackNavigator, BottomTabBar} from 'react-navigation'
 import AddInfoView from 'src/Containers/AddInfo/AddInfo'
-import CategoryView from 'src/Containers/Category/CategoryList/CategoryList'
+// import CategoryView from 'src/Containers/Category/CategoryList/CategoryList'
 import ProfileView from 'src/Containers/Profile/Profile'
 import HomeView from 'src/Containers/Home'
 import Style from './BottomTabNavStyle'
 import ChatView from 'src/Containers/Chat/Chat'
+import NotificationView from 'src/Containers/Notification/NotificationList/NotificationList'
 import {Colors, Images} from 'src/Theme'
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
-const CategoryStackNavigator = createStackNavigator({
-  CategoryView: {
-    screen: CategoryView,
+const NotificationStackNavigator = createStackNavigator({
+  NotificationView: {
+    screen: NotificationView,
     navigationOptions: {
       header: null,
     },
@@ -68,8 +69,8 @@ const BottomTabNavigator = createBottomTabNavigator(
     AddInfo: {
       screen: AddInfoStackNavigator,
     },
-    Category: {
-      screen: CategoryStackNavigator,
+    Notification: {
+      screen: NotificationStackNavigator,
     },
     Profile: {
       screen: ProfileStackNavigator,
@@ -79,7 +80,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     tabBarComponent: props => (
       <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
     ),
-    initialRouteName: 'Category',
+    initialRouteName: 'Notification',
     backBehavior: null,
     defaultNavigationOptions: ({navigation}) => ({
       tabBarIcon: ({focused}) => {
@@ -124,7 +125,7 @@ const BottomTabNavigator = createBottomTabNavigator(
               />
             </>
           )
-        } else if (routeName === 'Category') {
+        } else if (routeName === 'Notification') {
           return (
             <>
               <Image

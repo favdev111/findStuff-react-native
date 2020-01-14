@@ -60,6 +60,10 @@ export default {
         TextEdit: require('src/Images/Icons/edit.png'),
         WhiteLike: require('src/Images/Icons/like.png'),
         RedLike: require('src/Images/Icons/RedLike.png'),
-        
+        Raised: require('src/Images/Icons/Raised.png'),
+        PlusAttention: require('src/Images/Icons/PlusAttention.png'),
+        PublishedBtn: require('src/Images/Icons/PublishedBtn.png'),
+        EachAttention: require('src/Images/Icons/EachAttention.png'),
+        Admin: require('src/Images/Icons/Admin.png'),
     }
     

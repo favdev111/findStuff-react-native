@@ -33,7 +33,7 @@ const AppContainer = createAppContainer(
     },
     {
       // By default the application will show the splash screen
-      initialRouteName: 'CategoryDetail',
+      initialRouteName: 'MainScreenWithBottomNav',
       // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
       headerMode: 'none',
     },
