@@ -59,6 +59,7 @@ export default {
         CatDigital: require('src/Images/Icons/CatDigital.png'),
         TextEdit: require('src/Images/Icons/edit.png'),
         WhiteLike: require('src/Images/Icons/like.png'),
+        RedLike: require('src/Images/Icons/RedLike.png'),
         
     }
     
