@@ -14,11 +14,6 @@ import {Colors, Images} from 'src/Theme';
 
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 
-let data = [];
-for (var i = 0; i < 100; i++) {
-  data.push(i);
-}
-
 export default function FindStuffScreen(props) {
   const [region, setRegion] = useState('');
 

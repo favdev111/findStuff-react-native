@@ -67,9 +67,6 @@ export default StyleSheet.create({
     height: 40,
   },
   FindStuffPriceText: {},
-  FindStuffPriceInput: {
-    height: 40,
-  },
   FindStuffFooter: {
     padding: 5,
     paddingLeft: 10,
@@ -103,7 +100,8 @@ export default StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     marginBottom: 10,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
   },
   FindStuffSubBtnContainer: {
     marginTop: 10,

@@ -17,18 +17,12 @@ import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 const axios = require('axios');
 
-let data = [];
-for (var i = 0; i < 100; i++) {
-  data.push(i);
-}
-
 export default function FoundStuffScreen(props) {
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
-  const [photo, setPhoto] = useState('');
-  const [photoSrc, setPhotoSrc] = useState({});
+  const [photo, setPhoto] = useState([]);
 
   const handlePhoto = () => {
     ImagePicker.showImagePicker(response => {
@@ -41,52 +35,62 @@ export default function FoundStuffScreen(props) {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
+        const name = response.uri;
         const source = {uri: response.uri};
-        const sourceData = 'data:image/jpeg;base64,' + response.data;
+        const data = 'data:image/jpeg;base64,' + response.data;
 
-        setPhotoSrc(source);
-        setPhoto(sourceData);
+        setPhoto([...photo, {source, data, name}]);
       }
     });
   };
 
-  const handleUpload = () => {
-    RNFetchBlob.fetch(
-      'POST',
-      'http://10.0.2.2:8000/upload',
-      {
-        Authorization: 'Bearer access-token',
-        otherHeader: 'foo',
-        'Content-Type': 'multipart/form-data',
-      },
-      {name: 'avatar', filename: 'avatar.png', data: photo},
-    )
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
-  };
-
-  const handleSubmit = () => {
+  async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
       Toast.show('Input values correctly!');
       return;
     }
 
-    axios
-      .post('http://10.0.2.2:8000/api/foundpost', {
-        tag,
-        place,
-        address,
-        description,
-        photo,
-      })
-      .then(function(response) {
-        if (response.data) Toast.show('Success!');
-        else Toast.show('Failed!');
-      })
-      .catch(function(error) {
-        Toast.show(error);
+    if (photo && photo.length > 0) {
+      let formData = new FormData();
+      photo.forEach(ph => {
+        const file = {
+          uri: ph.name,
+          name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
+          type: ph.mime || 'image/jpeg',
+        };
+        formData.append('photo', file);
       });
-  };
+
+      await axios
+        .post('http://10.0.2.2:8000/upload/photo', formData)
+        .then(response => {
+          const photos = response.data.photo;
+          axios
+            .post('http://10.0.2.2:8000/api/foundpost', {
+              tag,
+              place,
+              address,
+              description,
+              photos,
+            })
+            .then(function(response2) {
+              if (response2.data) {
+                Toast.show('Success!');
+              } else {
+                Toast.show('Failed!');
+              }
+            })
+            .catch(function(error) {
+              Toast.show(error);
+            });
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error));
+        });
+    } else {
+      Toast.show('No photo selected');
+    }
+  }
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
@@ -166,15 +170,14 @@ export default function FoundStuffScreen(props) {
           </TouchableOpacity>
         </View>
         <View style={Styles.FindStuffImgGroupContainer}>
-          <Image source={photoSrc} style={{width: 70, height: 70}} />
-          <Image
-            source={require('src/Images/Sample/Sample2.jpg')}
-            style={{width: 70, height: 70}}
-          />
-          <Image
-            source={require('src/Images/Sample/Sample2.jpg')}
-            style={{width: 70, height: 70}}
-          />
+          {photo &&
+            photo.map((ph, i) => (
+              <Image
+                key={i}
+                source={ph.source}
+                style={{width: 70, height: 70}}
+              />
+            ))}
         </View>
       </View>
       <View style={Styles.FindStuffSubBtnContainer}>
