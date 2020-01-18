@@ -9,32 +9,35 @@ import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuff
 import Published from 'src/Containers/Profile/Published/Published';
 import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
+import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 
 const AppNavigator = createStackNavigator(
-  {
-    MainScreenWithBottomNav: MainScreenWithBottomNav,
-    Signin: SigninScreen,
-    SignUp: SignUpScreen,
-    ForgotPwdScreen: ForgotPwdScreen,
+	{
+		MainScreenWithBottomNav: MainScreenWithBottomNav,
+		Signin: SigninScreen,
+		SignUp: SignUpScreen,
+		ForgotPwdScreen: ForgotPwdScreen,
 
-    LostStuffScreen: LostStuffScreen,
-    FoundStuffScreen: FoundStuffScreen,
+		LostStuffScreen: LostStuffScreen,
+		FoundStuffScreen: FoundStuffScreen,
 
-    Published: Published,
-    Attention: Attention,
-    Notification: Notification,
-  },
-  {
-    // initialRouteName: 'MainScreenWithBottomNav',
-    initialRouteName: 'SignUp',
-    headerMode: 'none',
-  },
+		Published: Published,
+		Attention: Attention,
+		Notification: Notification,
+		ChatDetail: ChatDetail,
+
+	},
+	{
+		// initialRouteName: 'MainScreenWithBottomNav',
+		initialRouteName: 'MainScreenWithBottomNav',
+		headerMode: 'none',
+	},
 );
 
 const AppContainer = createAppContainer(AppNavigator);
 
 const RootApp: FC = (): ReactElement => {
-  return <AppContainer />;
+	return <AppContainer />;
 };
 
 export default RootApp;
