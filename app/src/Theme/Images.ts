@@ -33,6 +33,7 @@ export default {
         ProfileBtnAttention: require('src/Images/Profile/ProfileBtnAttention.png'),
         ProfileUpdate: require('src/Images/Profile/ProfileUpdate.png'),
         ProfileContactus: require('src/Images/Profile/ProfileContactus.png'),
+        ProfileWithFriend: require('src/Images/Profile/ProfileWithFriend.png'),
         // AddInfo page
         AddInfoBanner: require('src/Images/Icons/AddInfoBanner.png'),      
         // The other Icons

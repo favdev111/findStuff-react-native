@@ -24,7 +24,6 @@ export default StyleSheet.create({
    },
    ProfileHeaderAvatarWrap: {
       flexDirection: 'row',
-      flex: 1,
 
    },
    ProfileHeaderAvatarImg: {
@@ -117,7 +116,6 @@ export default StyleSheet.create({
       backgroundColor: 'white',
       paddingTop: 10,
       paddingBottom: 10,
-      marginBottom: 40,
       alignItems: 'center',
    },
    ProfileContactUsWrap: {
@@ -130,7 +128,7 @@ export default StyleSheet.create({
       alignItems: 'center',
    },
    ProfileContactUsImg: {
-      width: 24,
+      width: 20,
       height: 20,
       marginRight: 10,
    },
@@ -150,6 +148,24 @@ export default StyleSheet.create({
    BottomBtnText: {
       fontSize: 20,
       color: 'white',
+   }, 
+   ProfileIntroContainer: {
+      marginTop: 20,
+      backgroundColor: 'white',
+      paddingTop: 10,
+      paddingBottom: 10,
+      marginBottom: 40,
+      alignItems: 'center',
+   },
+   HeaderImgBadge: {
+      position: 'absolute',
+      width: 18,
+      height: 18,
+      left: 40,
+   },
+   HeaderTextBadge: {
+      width: 18,
+      height: 18,
    }
 
 })

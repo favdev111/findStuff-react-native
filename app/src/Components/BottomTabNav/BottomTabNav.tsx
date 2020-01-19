@@ -112,7 +112,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     tabBarComponent: (props: any): ReactElement => (
       <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
     ),
-    initialRouteName: 'Chat',
+    initialRouteName: 'Profile',
     backBehavior: null,
     defaultNavigationOptions: ({navigation}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
