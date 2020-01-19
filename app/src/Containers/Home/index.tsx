@@ -53,17 +53,21 @@ export default function HomeView({navigation}) {
               <Text>失物招领</Text>
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          <TouchableOpacity 
+          onPress={() => navigation.navigate('News')}
+          style={{flexDirection: 'column', alignItems: 'center'}}>
             <Image
               style={{width: 52, height: 52}}
               source={Images.HomeNewsBtn}
             />
             <Text>新闻</Text>
-          </View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          onPress={() => navigation.navigate('LocalPhone')}
+          style={{flexDirection: 'column', alignItems: 'center'}}>
             <Image style={{width: 52, height: 52}} source={Images.HomeMapBtn} />
             <Text>小区电话</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.HomeCategoryContainer}>
           <View style={styles.HomeNotificationArea}>

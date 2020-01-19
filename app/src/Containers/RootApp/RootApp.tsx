@@ -11,6 +11,9 @@ import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
+import News from 'src/Containers/News/News';
+import NewsDetail from 'src/Containers/News/NewsDetail/NewsDetail';
+import LocalPhone from 'src/Containers/LocalPhone/LocalPhone'
 
 const AppNavigator = createStackNavigator(
 	{
@@ -27,11 +30,12 @@ const AppNavigator = createStackNavigator(
 		Notification: Notification,
 		ChatDetail: ChatDetail,
 		UserInfo: UserInfo,
-
+		News: News,
+		NewsDetail: NewsDetail,
+		LocalPhone: LocalPhone,
 	},
 	{
-		// initialRouteName: 'MainScreenWithBottomNav',
-		initialRouteName: 'UserInfo',
+		initialRouteName: 'MainScreenWithBottomNav',
 		headerMode: 'none',
 	},
 );
