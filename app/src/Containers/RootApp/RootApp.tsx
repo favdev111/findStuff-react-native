@@ -10,6 +10,7 @@ import Published from 'src/Containers/Profile/Published/Published';
 import Attention from 'src/Containers/Profile/Attention/Attention';
 import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
+import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
 
 const AppNavigator = createStackNavigator(
 	{
@@ -25,11 +26,12 @@ const AppNavigator = createStackNavigator(
 		Attention: Attention,
 		Notification: Notification,
 		ChatDetail: ChatDetail,
+		UserInfo: UserInfo,
 
 	},
 	{
 		// initialRouteName: 'MainScreenWithBottomNav',
-		initialRouteName: 'MainScreenWithBottomNav',
+		initialRouteName: 'UserInfo',
 		headerMode: 'none',
 	},
 );
