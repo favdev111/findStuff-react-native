@@ -4,4 +4,4 @@ export const API_ROOT: string = IS_DEV
   ? "http://localhost:8000/api/"
   : "https://localhost:8000/api/";
 
-export const DOWNLOAD_ROOT: string = "http://localhost:8000/";
+export const ORIGINAL_ROOT: string = "http://localhost:8000/";

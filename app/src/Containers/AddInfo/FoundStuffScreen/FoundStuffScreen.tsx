@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   View,
@@ -12,12 +12,14 @@ import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomF
 import {Images, Colors} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 
+import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function FoundStuffScreen(props) {
+  const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
@@ -66,12 +68,15 @@ export default function FoundStuffScreen(props) {
         .then(response => {
           const photos = response.data.photo;
           axios
-            .post(baseUrl + 'api/foundpost', {
+            .post(baseUrl + 'api/stuffpost', {
+              kind: 'found',
               tag,
               place,
               address,
               description,
               photos,
+              fee: 0,
+              user: state.user._id,
             })
             .then(function(response2) {
               if (response2.data) {
@@ -92,6 +97,10 @@ export default function FoundStuffScreen(props) {
       Toast.show('No photo selected');
     }
   }
+
+  useEffect(() => {
+    if (!state.auth_token) props.navigation.navigate('Signin');
+  }, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>

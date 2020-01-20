@@ -11,13 +11,16 @@ function LoginForm(props: FormComponentProps & RouterProps) {
     form.validateFields(async (err, values) => {
       if (!err) {
         const { email, password } = values;
-        const { data } = await login({ email, password });
+        const { data, headers } = await login({ email, password });
 
-        alert(data);
-
-        if (data.code === 1) {
-          window.localStorage.setItem("TOKEN", JSON.stringify(data.result));
+        if (data.success) {
+          window.localStorage.setItem(
+            "auth_token",
+            JSON.stringify(headers.auth_token)
+          );
           history.push("/");
+        } else {
+          alert(data.msg);
         }
       }
     });

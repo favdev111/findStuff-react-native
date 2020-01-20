@@ -104,14 +104,14 @@ export const menuConfig: menuType[] = [
   //   ]
   // },
   {
-    title: "Lost posts",
-    key: "lost",
+    title: "Posts",
+    key: "post",
     icon: "play-circle",
     children: [
       {
-        title: "Lost posts",
-        key: "lostpost-list",
-        path: "/lostposts"
+        title: "posts",
+        key: "stuffpost-list",
+        path: "/stuffposts"
       }
       // {
       //   title: "add lost post",
@@ -121,20 +121,71 @@ export const menuConfig: menuType[] = [
     ]
   },
   {
-    title: "Found posts",
-    key: "found",
+    title: "news",
+    key: "news",
     icon: "play-circle",
     children: [
       {
-        title: "Found posts",
-        key: "foundpost-list",
-        path: "/foundposts"
+        title: "all news",
+        key: "news-all",
+        path: "/news"
+      },
+      {
+        title: "add news",
+        key: "news-add",
+        path: "/news-add"
       }
-      // {
-      //   title: "add found post",
-      //   key: "foundpost-add",
-      //   path: "/foundpost-add"
-      // }
+    ]
+  },
+  {
+    title: "notifications",
+    key: "notifications",
+    icon: "play-circle",
+    children: [
+      {
+        title: "all notifications",
+        key: "notifications-all",
+        path: "/notifications"
+      },
+      {
+        title: "add new notification",
+        key: "notification-add",
+        path: "/notification-add"
+      }
+    ]
+  },
+  {
+    title: "contacts",
+    key: "contacts",
+    icon: "play-circle",
+    children: [
+      {
+        title: "all contacts",
+        key: "contacts-all",
+        path: "/contacts"
+      },
+      {
+        title: "add new contact",
+        key: "contact-add",
+        path: "/contact-add"
+      }
+    ]
+  },
+  {
+    title: "profile",
+    key: "profile",
+    icon: "play-circle",
+    children: [
+      {
+        title: "all profiles",
+        key: "profile-all",
+        path: "/profiles"
+      },
+      {
+        title: "add new profile",
+        key: "profile-add",
+        path: "/profile-add"
+      }
     ]
   }
 ];

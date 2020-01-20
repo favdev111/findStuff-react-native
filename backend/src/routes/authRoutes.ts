@@ -1,22 +1,23 @@
-import { Router } from 'express';
-import authController from '../controllers/auth.controller';
+import { Router } from "express";
+import authController from "../controllers/auth.controller";
 
-class AuthRoutes{
+class AuthRoutes {
+  public router: Router;
 
-    public router : Router;
+  constructor() {
+    this.router = Router();
+    this.routes();
+  }
 
-    constructor(){
-        this.router = Router();
-        this.routes();
-    }
+  routes() {
+    // for admin
+    this.router.post("/register", authController.register);
+    this.router.post("/login", authController.login);
 
-    routes(){
-
-        this.router.post('/signup', authController.signup);
-        this.router.post('/signin', authController.signin);
-
-    }
-
+    // for app
+    this.router.post("/signup", authController.signup);
+    this.router.post("/signin", authController.signin);
+  }
 }
 
 const authRoutes = new AuthRoutes();

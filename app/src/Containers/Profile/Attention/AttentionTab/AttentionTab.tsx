@@ -13,7 +13,7 @@ import Styles from './AttentionTabStyle';
 import {Images, Colors} from 'src/Theme';
 
 const FirstRoute = () => (
-  <ScrollView style={Styles.scene}>
+  <ScrollView>
     <View style={Styles.AttentionContainer}>
       <SectionList
         sections={[
@@ -51,10 +51,10 @@ const FirstRoute = () => (
                 style={{width: 35, height: 35}}
               />
               <View style={Styles.AttentionListTextContainer}>
-                <Text style={Styles.AttentionListText}>{item}</Text>
+                <Text>{item}</Text>
               </View>
             </View>
-            <View style={Styles.AttentionListBtnContainer}>
+            <View>
               <Image
                 source={Images.EachAttention}
                 style={Styles.AttentionListBtn}
@@ -72,7 +72,7 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-  <ScrollView style={Styles.scene}>
+  <ScrollView>
     <View style={Styles.AttentionContainer}>
       <SectionList
         sections={[
@@ -110,10 +110,10 @@ const SecondRoute = () => (
                 style={{width: 35, height: 35}}
               />
               <View style={Styles.AttentionListTextContainer}>
-                <Text style={Styles.AttentionListText}>{item}</Text>
+                <Text>{item}</Text>
               </View>
             </View>
-            <View style={Styles.AttentionListBtnContainer}>
+            <View>
               <Image
                 source={Images.EachAttention}
                 style={Styles.AttentionListBtn}
@@ -131,7 +131,7 @@ const SecondRoute = () => (
 );
 
 export default class AttentionTab extends React.Component {
-	public setState: any;
+  public setState: any;
   state = {
     index: 0,
     routes: [

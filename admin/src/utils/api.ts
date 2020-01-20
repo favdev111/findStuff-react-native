@@ -1,7 +1,7 @@
-import { http, getAuthorization } from "./http";
+import { http, http2, getAuthorization } from "./http";
 import { API_ROOT } from "./config";
 
-export const login = (params = {}) => http.post("auth/signin", { ...params });
+export const login = (params = {}) => http2.post("auth/login", { ...params });
 
 export const getArts = (params = {}) => http.get("article/get", { params });
 export const addArticle = (params = {}) =>
@@ -40,20 +40,40 @@ export const delTag = (id: string) => http.delete(`tag/${id}`);
 export const editTag = (id: string, params = {}) =>
   http.put(`tag/${id}`, { ...params });
 
-export const fetchLostPost = (params = {}) => http.get("lostpost", { params });
-export const addLostPost = (params = {}) =>
-  http.post("lostpost", { ...params });
-export const delLostPost = (id: string) => http.delete(`lostpost/${id}`);
-export const editLostPost = (id: string, params = {}) =>
-  http.put(`lostpost/${id}`, { ...params });
+export const fetchNews = (params = {}) => http.get("news", { params });
+export const addNews = (params = {}) => http.post("news", { ...params });
+export const delNews = (id: string) => http.delete(`news/${id}`);
+export const editNews = (id: string, params = {}) =>
+  http.put(`news/${id}`, { ...params });
 
-export const fetchFoundPost = (params = {}) =>
-  http.get("foundpost", { params });
-export const addFoundPost = (params = {}) =>
-  http.post("foundpost", { ...params });
-export const delFoundPost = (id: string) => http.delete(`foundpost/${id}`);
-export const editFoundPost = (id: string, params = {}) =>
-  http.put(`foundpost/${id}`, { ...params });
+export const fetchProfiles = (params = {}) => http.get("profile", { params });
+export const addProfile = (params = {}) => http.post("profile", { ...params });
+export const delProfile = (id: string) => http.delete(`profile/${id}`);
+export const editProfile = (id: string, params = {}) =>
+  http.put(`profile/${id}`, { ...params });
+
+export const fetchContacts = (params = {}) => http.get("contact", { params });
+export const addContact = (params = {}) => http.post("contact", { ...params });
+export const delContact = (id: string) => http.delete(`contact/${id}`);
+export const editContact = (id: string, params = {}) =>
+  http.put(`contact/${id}`, { ...params });
+
+export const fetchNotifications = (params = {}) =>
+  http.get("notification", { params });
+export const addNotification = (params = {}) =>
+  http.post("notification", { ...params });
+export const delNotification = (id: string) =>
+  http.delete(`notification/${id}`);
+export const editNotification = (id: string, params = {}) =>
+  http.put(`notification/${id}`, { ...params });
+
+export const fetchStuffPost = (params = {}) =>
+  http.get("stuffpost", { params });
+export const addStuffPost = (params = {}) =>
+  http.post("stuffpost", { ...params });
+export const delStuffPost = (id: string) => http.delete(`stuffpost/${id}`);
+export const editStuffPost = (id: string, params = {}) =>
+  http.put(`stuffpost/${id}`, { ...params });
 
 export const uploadConfig = () => ({
   action: `${API_ROOT}/upload/photo`,

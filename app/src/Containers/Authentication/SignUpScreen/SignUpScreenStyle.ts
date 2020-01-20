@@ -23,7 +23,7 @@ export default StyleSheet.create({
   SignPhoneInput: {
     paddingTop: 20,
     paddingBottom: 20,
-    width: '60%',
+    // width: '60%',
   },
   SignVerifyInput: {
     paddingTop: 20,

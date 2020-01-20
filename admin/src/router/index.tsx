@@ -17,11 +17,20 @@ const Projects = loadable(() => import("../pages/projects"));
 const TagAdd = loadable(() => import("../pages/tag-add"));
 const Tags = loadable(() => import("../pages/tags"));
 
-const LostPostAdd = loadable(() => import("../pages/lostpost-add"));
-const LostPostList = loadable(() => import("../pages/lostposts"));
+const NewsAdd = loadable(() => import("../pages/news-add"));
+const News = loadable(() => import("../pages/news"));
 
-const FoundPostAdd = loadable(() => import("../pages/foundpost-add"));
-const FoundPostList = loadable(() => import("../pages/foundposts"));
+const ProfileAdd = loadable(() => import("../pages/profile-add"));
+const Profiles = loadable(() => import("../pages/profiles"));
+
+const ContactAdd = loadable(() => import("../pages/contact-add"));
+const Contacts = loadable(() => import("../pages/contacts"));
+
+const NotificationAdd = loadable(() => import("../pages/notification-add"));
+const Notifications = loadable(() => import("../pages/notifications"));
+
+const StuffPostAdd = loadable(() => import("../pages/stuffpost-add"));
+const StuffPostList = loadable(() => import("../pages/stuffposts"));
 
 const Home = loadable(() => import("../pages/home"));
 export interface routeType {
@@ -83,20 +92,44 @@ export const routes = [
         component: Tags
       },
       {
-        path: "/lostpost-add",
-        component: LostPostAdd
+        path: "/notification-add",
+        component: NotificationAdd
       },
       {
-        path: "/lostposts",
-        component: LostPostList
+        path: "/notifications",
+        component: Notifications
       },
       {
-        path: "/foundpost-add",
-        component: FoundPostAdd
+        path: "/news-add",
+        component: NewsAdd
       },
       {
-        path: "/foundposts",
-        component: FoundPostList
+        path: "/news",
+        component: News
+      },
+      {
+        path: "/profile-add",
+        component: ProfileAdd
+      },
+      {
+        path: "/profiles",
+        component: Profiles
+      },
+      {
+        path: "/contact-add",
+        component: ContactAdd
+      },
+      {
+        path: "/contacts",
+        component: Contacts
+      },
+      {
+        path: "/stuffpost-add",
+        component: StuffPostAdd
+      },
+      {
+        path: "/stuffposts",
+        component: StuffPostList
       },
       {
         path: "/",

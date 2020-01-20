@@ -1,3 +1,4 @@
+export const appVersion = '0.61';
 export const baseUrl = 'http://10.0.2.2:8000/';
 export const tagJson = [
   {钱包: 'CatWallet'},

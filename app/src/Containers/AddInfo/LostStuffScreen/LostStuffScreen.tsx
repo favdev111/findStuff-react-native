@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   View,
@@ -15,16 +15,20 @@ import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 
+import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
 const axios = require('axios');
 
 export default function FindStuffScreen(props) {
+  const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
   const [fee, setFee] = useState(0);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
+
+  console.log('loststuff state', state);
 
   const handlePhoto = () => {
     ImagePicker.showImagePicker(response => {
@@ -68,13 +72,15 @@ export default function FindStuffScreen(props) {
         .then(response => {
           const photos = response.data.photo;
           axios
-            .post(baseUrl + 'api/lostpost', {
+            .post(baseUrl + 'api/stuffpost', {
+              kind: 'lost',
               tag,
               place,
               address,
               fee,
               description,
               photos,
+              user: state.user._id,
             })
             .then(function(response2) {
               if (response2.data) {
@@ -95,6 +101,11 @@ export default function FindStuffScreen(props) {
       Toast.show('No photo selected');
     }
   }
+
+  useEffect(() => {
+    if (!state.auth_token) props.navigation.navigate('Signin');
+  }, []);
+
   return (
     <ScrollView style={Styles.FindStuffScreenContainer}>
       <View style={Styles.FindStuffHeaderContainer}>

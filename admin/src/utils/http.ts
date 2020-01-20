@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { message, Modal } from "antd";
-import { API_ROOT } from "./config";
+import { API_ROOT, ORIGINAL_ROOT } from "./config";
 import isLogin from "./login";
 
 const confirm = Modal.confirm;
@@ -8,13 +8,17 @@ export const http = axios.create({
   baseURL: API_ROOT
 });
 
+export const http2 = axios.create({
+  baseURL: ORIGINAL_ROOT
+});
+
 export const getAuthorization = () => {
   let str = "";
-  if (window.localStorage.getItem("TOKEN")) {
-    str = `Naice ${
-      JSON.parse(window.localStorage.getItem("TOKEN") || "").token
-    }`;
-  }
+  // if (window.localStorage.getItem("auth_token")) {
+  //   str = `Naice ${
+  //     JSON.parse(window.localStorage.getItem("auth_token") || "").token
+  //   }`;
+  // }
   return str;
 };
 // 拦截器
@@ -38,20 +42,20 @@ http.interceptors.response.use(
     return response;
   },
   (error: any) => {
-    // if (!isLogin()) {
-    //   confirm({
-    //     title: "提示!",
-    //     content: "用户信息已过期，请点击确定后重新登录。",
-    //     okText: "确定",
-    //     cancelText: "取消",
-    //     onOk() {
-    //       window.location.href = "/login";
-    //     },
-    //     onCancel() {
-    //       console.log("Cancel");
-    //     }
-    //   });
-    // }
+    if (!isLogin()) {
+      confirm({
+        title: "提示!",
+        content: "用户信息已过期，请点击确定后重新登录。",
+        okText: "确定",
+        cancelText: "取消",
+        onOk() {
+          window.location.href = "/login";
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    }
     return Promise.reject(error);
   }
 );

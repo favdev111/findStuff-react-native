@@ -5,14 +5,16 @@
  * @returns { boolean }
  */
 export default () => {
-  if (!window.localStorage.getItem("TOKEN")) {
-    return false;
-  }
-  const lifeTime =
-    JSON.parse(window.localStorage.getItem("TOKEN") || "").lifeTime * 1000;
-  const nowTime = new Date().getTime();
-  if (nowTime > lifeTime) {
-    return false;
-  }
+  // if (!window.localStorage.getItem("auth_token")) {
+  //   return false;
+  // }
+  // const expiresIn =
+  //   JSON.parse(window.localStorage.getItem("auth_token") || "").expiresIn *
+  //   1000;
+  // const nowTime = new Date().getTime();
+  // if (nowTime > expiresIn) {
+  //   return false;
+  // }
+
   return true;
 };

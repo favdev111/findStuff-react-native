@@ -13,11 +13,16 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
+import newsRoutes from "./routes/newsRoutes";
+import profileRoute from "./routes/profileRoutes";
+import contactRoutes from "./routes/contactRoutes";
 import tagRoutes from "./routes/tagRoutes";
-import lostpostRoutes from "./routes/lostpostRoutes";
-import lostcommentRoutes from "./routes/lostcommentRoutes";
-import foundpostRoutes from "./routes/foundpostRoutes";
-import foundcommentRoutes from "./routes/foundcommentRoutes";
+import stuffpostRoutes from "./routes/stuffpostRoutes";
+import stuffpostRoutes2 from "./routes/stuffpostRoutes2";
+
+import messageRoute from "./routes/messageRoutes";
+
+import userRoutes2 from "./routes/userRoutes2";
 
 class Server {
   public app: express.Application;
@@ -61,41 +66,26 @@ class Server {
   routes() {
     this.app.use(indexRoutes);
 
+    this.app.use("/auth", authRoutes);
+
     this.app.use("/upload", uploadRoutes);
     this.app.use("/download", downloadRoutes);
 
-    this.app.use("/api/auth", authRoutes);
     this.app.use("/api/user", userRoutes);
     this.app.use("/api/post", postRoutes);
     this.app.use("/api/notification", notificationRoutes);
+    this.app.use("/api/news", newsRoutes);
     this.app.use("/api/tag", tagRoutes);
-    this.app.use("/api/lostpost", lostpostRoutes);
-    this.app.use("/api/lostcomment", lostcommentRoutes);
-    this.app.use("/api/foundpost", foundpostRoutes);
-    this.app.use("/api/foundcomment", foundcommentRoutes);
+    this.app.use("/api/contact", contactRoutes);
+    this.app.use("/api/stuffpost", stuffpostRoutes);
+    this.app.use("/api/message", messageRoute);
+    this.app.use("/api/profile", profileRoute);
+
+    ////////////////////////////////////////////////////////////////////////
+
+    this.app.use("/api2/user", userRoutes2);
+    this.app.use("/api2/stuffpost", stuffpostRoutes2);
   }
-
-  // io_routes() {
-  //   this.io.on("connect", socket => {
-  //     // Say Hi to all connected clients
-  //     this.io.emit("broadcast", "[Server]: Welcome stranger!");
-
-  //     console.log("Hi everybody");
-
-  //     socket.on("message", msg => {
-  //       // console.log(`message received from user: ${msg.from}`);
-  //       // console.log(`message received content: ${msg.content}`);
-  //       this.io.emit("broadcast", "[Server]: asdasdfasdfasdf!");
-  //       this.io.emit("message", msg);
-  //     });
-
-  //     // Say Bye to all connected clients
-  //     let self = this;
-  //     socket.on("disconnect", function() {
-  //       self.io.emit("broadcast", "[Server]: Bye, bye, stranger!");
-  //     });
-  //   });
-  // }
 
   start() {
     this.app.listen(this.app.get("port"), () => {

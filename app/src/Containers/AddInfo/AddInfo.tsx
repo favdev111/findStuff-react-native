@@ -12,10 +12,10 @@ import {Images} from 'src/Theme';
 import Styles from './AddInfoStyle';
 
 class AddInfo extends Component {
-	public props: any;
-	public focusListener: any;
-	public setState: any;
-	public navigation: any;
+  public props: any;
+  public focusListener: any;
+  public setState: any;
+  public navigation: any;
   state = {
     isModalVisible: false,
   };
