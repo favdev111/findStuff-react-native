@@ -107,6 +107,16 @@ export default StyleSheet.create({
     height: 20,
     marginRight: 10,
   },
+  ProfileContactImg: {
+    width: 22,
+    height: 22,
+    marginRight: 10,
+  },
+  ProfileShareImg: {
+    width: 18,
+    height: 18,
+    marginRight: 10,
+  },
   ProfileRightArrow: {
     width: 20,
     height: 20,
@@ -126,11 +136,6 @@ export default StyleSheet.create({
   ProfileContactUsLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ProfileContactUsImg: {
-    width: 24,
-    height: 20,
-    marginRight: 10,
   },
   BottomContainer: {
     alignItems: 'center',

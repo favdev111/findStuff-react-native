@@ -37,7 +37,7 @@ export default function SignInScreen(props) {
               user: response.data.user,
             },
           });
-          Toast.show('Success!');
+          Toast.show('成功!');
           props.navigation.navigate('MainScreenWithBottomNav');
         } else {
           Toast.show(response.data.msg);
@@ -51,7 +51,7 @@ export default function SignInScreen(props) {
   return (
     <View style={{flex: 1}}>
       <View style={Styles.SignInHeader}>
-        <Text style={{fontSize: 25}}>欢迎使用</Text>
+        <Text style={{fontSize: 20}}>欢迎使用</Text>
       </View>
       <View style={Styles.SignFormContainer}>
         <View style={Styles.SignPhoneInput}>

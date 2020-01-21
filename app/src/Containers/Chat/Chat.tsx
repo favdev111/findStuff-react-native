@@ -40,7 +40,7 @@ export default function Chat(props) {
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
       <View style={Styles.FindStuffHeaderContainer}>
-        <Text style={{fontSize: 25, color: '#fff'}}>私信</Text>
+        <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
       </View>
       <View style={Styles.MessageListContainer}>
         <FlatList

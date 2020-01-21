@@ -5889,11 +5889,6 @@ react-native-modals@^0.19.9:
     prop-types "^15.6.0"
     react-native-root-siblings "^3.2.2"
 
-react-native-phone-call@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/react-native-phone-call/-/react-native-phone-call-1.0.9.tgz#4468ec6f95856557fbff9bd69a0db04b54c35e1d"
-  integrity sha512-OPWYg8qeWNG/U4bWGMAKcQTH/ifqJnsvUPCH4lOkvWFHbQS3fbH5M8rFhXCzcfS0GVNzHhZX9ZByMM368TFAUQ==
-
 react-native-picker-select@^6.2.0:
   version "6.3.3"
   resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-6.3.3.tgz#ea4d20a385041a2f4ead3eb3398b08511d7d6c2a"

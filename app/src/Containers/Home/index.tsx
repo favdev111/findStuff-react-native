@@ -13,13 +13,7 @@ import {
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
 
-// import {
-//   MapView,
-//   MapTypes,
-//   Geolocation,
-//   Overlay,
-//   MapApp,
-// } from 'react-native-baidu-map';
+import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
 
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
@@ -35,7 +29,7 @@ export default function HomeView(props) {
     routes: [
       {key: 'createAt', title: '最新'},
       {key: 'browse', title: '热门'},
-      {key: 'ads', title: '热'},
+      {key: 'ads', title: '精华'},
     ],
   });
 
@@ -112,7 +106,10 @@ export default function HomeView(props) {
     <ScrollView style={{flex: 1}}>
       <View style={styles.homeScrollView}>
         <View style={styles.HomeBannerContainer}>
-          <Image source={Images.HomeBannerImg} style={styles.HomeBannerImg} />
+          {
+            // <Image source={Images.HomeBannerImg} style={styles.HomeBannerImg} />
+          }
+          <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>
           <View style={styles.HomeSearchArea}>
@@ -155,18 +152,18 @@ export default function HomeView(props) {
               <Text>失物招领</Text>
             </TouchableOpacity>
           </View>
-          <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <TouchableOpacity
-              onPress={() =>
-                props.navigation.navigate('NewsView', {kind: 'found'})
-              }>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('NewsView', {kind: 'found'})
+            }>
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
               <Image
                 style={{width: 52, height: 52}}
                 source={Images.HomeNewsBtn}
               />
               <Text>新闻</Text>
-            </TouchableOpacity>
-          </View>
+            </View>
+          </TouchableOpacity>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <TouchableOpacity
               onPress={() =>
@@ -181,15 +178,14 @@ export default function HomeView(props) {
           </View>
         </View>
         <View style={styles.HomeCategoryContainer}>
-          <View style={styles.HomeNotificationArea}>
-            <Image source={Images.RedSound} style={{width: 40, height: 40}} />
-            {note.length > 0 && (
+          {note.length > 0 && (
+            <View style={styles.HomeNotificationArea}>
+              <Image source={Images.RedSound} style={{width: 40, height: 40}} />
               <Text style={styles.HomeNotificationText} numberOfLines={2}>
                 {note}
               </Text>
-            )}
-          </View>
-
+            </View>
+          )}
           <View>
             <TabView
               navigationState={state}

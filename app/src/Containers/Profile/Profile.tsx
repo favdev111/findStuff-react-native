@@ -21,7 +21,6 @@ import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 
 import QRCode from 'react-native-qrcode-svg';
-import call from 'react-native-phone-call';
 
 import {baseUrl, appVersion} from 'src/constants';
 const axios = require('axios');
@@ -50,6 +49,7 @@ export default function Profile(props) {
     else if (idx === 'about') setService(profile.about);
     else if (idx === 'share') setService(profile.share);
     else if (idx === 'upgrade') setService(profile.version);
+    else if (idx === 'phone') setService(profile.phone);
 
     setIsServiceModalVisible(true);
   };
@@ -110,9 +110,9 @@ export default function Profile(props) {
               console.log('response2', response2.data);
               if (response2.data.success) {
                 dispatch({type: 'setUser', payload: response2.data.user});
-                Toast.show('Success!');
+                Toast.show('成功!');
               } else {
-                Toast.show('Failed!');
+                Toast.show('失败了!');
               }
             })
             .catch(function(error) {
@@ -224,12 +224,18 @@ export default function Profile(props) {
           {isEdit && (
             <View style={{flexDirection: 'row', width: '100%'}}>
               <TextInput
-                style={{backgroundColor: 'white', width: '60%'}}
+                style={{
+                  backgroundColor: 'white',
+                  width: '50%',
+                  padding: 0,
+                  marginLeft: 50,
+                  marginTop: -8,
+                }}
                 onChangeText={value => setName(value)}
                 ref={nameRef}
               />
-              <TouchableOpacity onPress={handleSubmit} style={{width: '40%'}}>
-                <Text>Save</Text>
+              <TouchableOpacity onPress={handleSubmit}>
+                <Text style={{color: 'white'}}>Save</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -251,10 +257,7 @@ export default function Profile(props) {
           <TouchableOpacity
             style={Style.ProfileLikeContainer}
             onPress={() => {
-              call({
-                number: profile.phone,
-                prompt: false,
-              }).catch(console.error);
+              handleModal('phone');
             }}>
             <Image
               source={Images.ProfileBtnLike}
@@ -295,7 +298,7 @@ export default function Profile(props) {
             <View style={Style.ProfileContactUsLeft}>
               <Image
                 source={Images.ProfileContactus}
-                style={Style.ProfileContactUsImg}
+                style={Style.ProfileContactImg}
               />
               <Text>关于寻N</Text>
             </View>
@@ -316,7 +319,7 @@ export default function Profile(props) {
             <View style={Style.ProfileContactUsLeft}>
               <Image
                 source={Images.ProfileWithFriend}
-                style={Style.ProfileContactUsImg}
+                style={Style.ProfileShareImg}
               />
               <Text>分享给朋友</Text>
             </View>
@@ -343,20 +346,17 @@ export default function Profile(props) {
         <ModalContent>
           <View
             style={{
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '80%',
-              width: '90%',
+              paddingTop: 20,
+              paddingBottom: 0,
+              width: '85%',
+              height: '70%',
             }}>
-            <ScrollView>
-              {current === 'share' && <QRCode value={profile.share} />}
-              <Text>{service}</Text>
-            </ScrollView>
+            {current === 'share' && <QRCode value={profile.share} />}
+            <Text>{service}</Text>
           </View>
         </ModalContent>
         <Button
-          title="Close"
+          title="关闭"
           onPress={() => {
             setIsServiceModalVisible(false);
           }}

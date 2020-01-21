@@ -35,10 +35,10 @@ export default function ChatDetail(props) {
       })
       .then(function(response2) {
         if (response2.data) {
-          Toast.show('Success!');
+          Toast.show('成功!');
           props.navigation.navigate('ChatView');
         } else {
-          Toast.show('Failed!');
+          Toast.show('失败了!');
         }
       })
       .catch(function(error) {
@@ -59,7 +59,7 @@ export default function ChatDetail(props) {
             style={Styles.FindStuffHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 25, color: '#fff'}}>{item.name}</Text>
+        <Text style={{fontSize: 20, color: '#fff'}}>{item.name}</Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.MessageDetailContainer}>

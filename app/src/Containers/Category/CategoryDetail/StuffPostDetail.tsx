@@ -117,7 +117,7 @@ export default function StuffPostDetail({navigation}) {
                     <Text style={{color: '#fff'}}>拾</Text>
                   )}
                   {item.kind === 'lost' && (
-                    <Text style={{color: '#fff'}}>get</Text>
+                    <Text style={{color: '#fff'}}>嘚</Text>
                   )}
                 </View>
               </View>

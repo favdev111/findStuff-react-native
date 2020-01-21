@@ -19,7 +19,7 @@ export default function ForgotPwdScreen(props) {
             style={Styles.SignUpHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 25, color: '#fff', flex: 1}}>找回密码</Text>
+        <Text style={{fontSize: 20, color: '#fff', flex: 1}}>找回密码</Text>
         <Text style={{flex: 1}}></Text>
       </View>
       <View style={Styles.SignFormContainer}>

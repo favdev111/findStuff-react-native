@@ -137,7 +137,7 @@ const BottomTabNavigator = createBottomTabNavigator(
           return (
             <>
               <Image
-                source={Images.BottomNavHome}
+                source={focused ? Images.BottomNavHome2 : Images.BottomNavHome}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
@@ -147,7 +147,9 @@ const BottomTabNavigator = createBottomTabNavigator(
           return (
             <>
               <Image
-                source={Images.BottomNavProfile}
+                source={
+                  focused ? Images.BottomNavProfile2 : Images.BottomNavProfile
+                }
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
@@ -167,7 +169,7 @@ const BottomTabNavigator = createBottomTabNavigator(
           return (
             <>
               <Image
-                source={Images.BottomNavChat}
+                source={focused ? Images.BottomNavChat2 : Images.BottomNavChat}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
@@ -177,7 +179,7 @@ const BottomTabNavigator = createBottomTabNavigator(
           return (
             <>
               <Image
-                source={Images.BottomNavNews}
+                source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />

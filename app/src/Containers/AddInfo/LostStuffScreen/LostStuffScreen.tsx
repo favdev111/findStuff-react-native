@@ -84,10 +84,10 @@ export default function FindStuffScreen(props) {
             })
             .then(function(response2) {
               if (response2.data) {
-                Toast.show('Success!');
-                props.navigation.navigate('MainScreenWithBottomNav');
+                Toast.show('成功!');
+                props.navigation.navigate('Home');
               } else {
-                Toast.show('Failed!');
+                Toast.show('失败了!');
               }
             })
             .catch(function(error) {
@@ -110,14 +110,14 @@ export default function FindStuffScreen(props) {
     <ScrollView style={Styles.FindStuffScreenContainer}>
       <View style={Styles.FindStuffHeaderContainer}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('MainScreenWithBottomNav')}
+          onPress={() => props.navigation.navigate('Home')}
           style={{flex: 1}}>
           <Image
             source={Images.whiteLeftChevron}
             style={Styles.FindStuffHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 25, color: '#fff', flex: 1}}>详细情况</Text>
+        <Text style={{fontSize: 20, color: '#fff', flex: 1}}>详细情况</Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.StuffInfoContainer}>

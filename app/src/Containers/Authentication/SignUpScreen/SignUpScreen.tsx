@@ -30,10 +30,10 @@ export default function SignUpScreen(props) {
 
       .then(function(response2) {
         if (response2.data) {
-          Toast.show('Success!');
+          Toast.show('成功!');
           props.navigation.navigate('Signin');
         } else {
-          Toast.show('Failed!');
+          Toast.show('失败了!');
         }
       })
       .catch(function(error) {
@@ -53,7 +53,7 @@ export default function SignUpScreen(props) {
               style={Styles.SignUpHeaderImg}
             />
           </TouchableOpacity>
-          <Text style={{fontSize: 25, color: '#fff', flex: 1}}>用户注册</Text>
+          <Text style={{fontSize: 20, color: '#fff', flex: 1}}>用户注册</Text>
           <Text style={{flex: 1}}></Text>
         </View>
         <View style={Styles.SignFormContainer}>
