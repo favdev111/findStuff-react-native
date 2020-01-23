@@ -9,19 +9,25 @@ class AuthController {
   public async signup(req: Request, res: Response) {
     // body request validation
     const { error } = signupValidation(req.body);
+
     if (error) return res.status(400).json(error.message);
 
     // username validation
-    const usernameExist = await User.findOne({ username: req.body.username });
-    console.log(usernameExist);
-    if (usernameExist)
-      return res.status(400).json({ msg: "Username already exist." });
+    // const usernameExist = await User.findOne({ username: req.body.username });
+    // if (usernameExist)
+    //   return res.status(400).json({ msg: "Username already exist." });
 
     try {
       // const { name, email, username, password } = req.body;
       const { phone, password } = req.body;
 
-      const newUser = new User({ email: "", phone, password });
+      const newUser = new User({
+        email: "test@test.com",
+        photo: "",
+        name: "",
+        phone,
+        password
+      });
       await newUser.save();
 
       const token: string = jwt.sign(
@@ -64,7 +70,7 @@ class AuthController {
     });
 
     if (!user)
-      return res.status(200).json({ success: false, msg: "User not found." });
+      return res.status(200).json({ success: false, msg: "找不到用户." });
 
     // create token
     const token: string = jwt.sign(
@@ -146,7 +152,7 @@ class AuthController {
     });
 
     if (!user)
-      return res.status(200).json({ success: false, msg: "User not found." });
+      return res.status(200).json({ success: false, msg: "找不到用户." });
 
     // create token
     const token: string = jwt.sign(

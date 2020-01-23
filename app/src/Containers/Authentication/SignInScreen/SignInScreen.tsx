@@ -4,6 +4,7 @@ import Styles from './SignInScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {store} from 'src/Store';
 
@@ -17,13 +18,33 @@ export default function SignInScreen(props) {
 
   const [state, dispatch] = useContext(store);
 
+  const saveToken = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getAllData = () => {
+    AsyncStorage.getAllKeys().then(keys => {
+      return AsyncStorage.multiGet(keys)
+        .then(result => {
+          console.log(result);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    });
+  };
+
   const handleSubmit = async () => {
     if (phone === '' || password === '') {
       Toast.show('正确输入值！');
       return;
     }
 
-    axios
+    await axios
       .post(baseUrl + 'auth/signin', {
         phone,
         password,
@@ -37,8 +58,11 @@ export default function SignInScreen(props) {
               user: response.data.user,
             },
           });
+
+          saveToken('token', response.headers.auth_token);
+
           Toast.show('成功!');
-          props.navigation.navigate('MainScreenWithBottomNav');
+          props.navigation.navigate('Home');
         } else {
           Toast.show(response.data.msg);
         }
@@ -47,6 +71,8 @@ export default function SignInScreen(props) {
         console.log(error);
       });
   };
+
+  useEffect(() => {}, []);
 
   return (
     <View style={{flex: 1}}>

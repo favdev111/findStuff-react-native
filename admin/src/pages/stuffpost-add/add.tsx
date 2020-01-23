@@ -5,34 +5,43 @@ import { uploadConfig, addStuffPost, editStuffPost } from "../../utils/api";
 import { useQuery } from "../../utils/index";
 
 import "./index.scss";
+import { userInfo } from "os";
 const { TextArea } = Input;
 const formItemLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 19 }
 };
+
+export interface photo {
+  path: string;
+}
+export interface stuffPost {
+  user: string;
+  address: string;
+  place: string;
+  description: string;
+  fee?: number;
+  photos: Array<photo>;
+}
+
 function AddStuffPost(props: any) {
   const form = props.form;
   const query = useQuery();
-  const posterUploadConfig = {
-    name: "file",
+
+  // let photoTmp: Array<photo> = [];
+
+  const photoUploadConfig = {
+    name: "photo",
     ...uploadConfig(),
     onChange(info: UploadChangeParam) {
-      if (info.file.response && info.file.response.code) {
-        message.success(info.file.response.message);
+      if (info.file.response && info.file.response.photo) {
+        message.success("successsssssssssss!");
+        console.log(info.file.response.photo);
         form.setFieldsValue({
-          poster: info.file.response.result
-        });
-      }
-    }
-  };
-  const musicUploadConfig = {
-    name: "file",
-    ...uploadConfig(),
-    onChange(info: UploadChangeParam) {
-      if (info.file.response && info.file.response.code) {
-        message.success(info.file.response.message);
-        form.setFieldsValue({
-          url: info.file.response.result
+          photos: [
+            ...props.item.photos,
+            { path: info.file.response.photo[0].path }
+          ]
         });
       }
     }
@@ -41,6 +50,8 @@ function AddStuffPost(props: any) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     form.validateFields((err: any, values: any) => {
+      console.log(values, "from handlesubmit");
+
       if (!err) {
         let id = query.get("id");
         id ? edit(values, id) : add(values);
@@ -49,10 +60,12 @@ function AddStuffPost(props: any) {
   }
 
   async function add(values: any) {
+    console.log("add values...", values);
+
     const { data } = await addStuffPost(values);
     if (data.code) {
       message.success(data.message);
-      props.history.push("/lostposts");
+      props.history.push("/stuffposts");
     }
   }
 
@@ -60,7 +73,7 @@ function AddStuffPost(props: any) {
     const { data } = await editStuffPost(id, values);
     if (data.code) {
       message.success(data.message);
-      props.history.push("/lostposts");
+      props.history.push("/stuffposts");
     }
   }
 
@@ -69,55 +82,54 @@ function AddStuffPost(props: any) {
       onSubmit={handleSubmit}
       layout="horizontal"
       {...formItemLayout}
-      className="addProject"
+      className="addStuffPost"
     >
-      <Form.Item label="歌名">
-        {form.getFieldDecorator("title", {
-          initialValue: props.item.title || "",
-          rules: [{ required: true, message: "请输入歌名!" }]
-        })(<Input placeholder="请输入歌名" />)}
+      <Form.Item label="tag">
+        {form.getFieldDecorator("tag", {
+          initialValue: props.item.tag || "",
+          rules: [{ required: true, message: "Input the tag!" }]
+        })(<Input placeholder="tag" />)}
       </Form.Item>
-      <Form.Item label="歌手">
-        {form.getFieldDecorator("name", {
-          initialValue: props.item.name || "",
-          rules: [{ required: true, message: "请填写歌手!" }]
-        })(<Input placeholder="请填写歌手" />)}
+
+      <Form.Item label="address">
+        {form.getFieldDecorator("address", {
+          initialValue: props.item.address || "",
+          rules: [{ required: true, message: "Input address!" }]
+        })(<Input placeholder="address" />)}
       </Form.Item>
-      <Form.Item label="歌词">
-        {form.getFieldDecorator("lyrics", {
-          initialValue: props.item.lyrics || "",
-          rules: [{ required: true, message: "请填写歌词!" }]
-        })(<TextArea rows={4} placeholder="请填写歌词" />)}
+
+      <Form.Item label="place">
+        {form.getFieldDecorator("place", {
+          initialValue: props.item.place || "",
+          rules: [{ required: true, message: "Input place!" }]
+        })(<TextArea rows={4} placeholder="place" />)}
       </Form.Item>
-      <Form.Item label="海报链接">
-        {form.getFieldDecorator("poster", {
-          initialValue: props.item.poster || "",
-          rules: [{ required: true, message: "请填写海报链接!" }]
-        })(<Input placeholder="请填写海报链接" />)}
-        <Upload {...posterUploadConfig}>
+      <Form.Item label="description">
+        {form.getFieldDecorator("description", {
+          initialValue: props.item.description || "",
+          rules: [{ required: true, message: "Input description!" }]
+        })(<Input placeholder="description" />)}
+
+        <Upload {...photoUploadConfig}>
           <Button type="link">
-            <Icon type="upload" /> 点击上传海报
+            <Icon type="upload" />
+            click to upload photo
           </Button>
         </Upload>
       </Form.Item>
-      <Form.Item label="歌曲链接">
-        {form.getFieldDecorator("url", {
-          initialValue: props.item.url || "",
-          rules: [{ required: true, message: "请填写歌曲链接!" }]
-        })(<Input placeholder="请填写歌曲链接" />)}
-        <Upload {...musicUploadConfig}>
-          <Button type="link">
-            <Icon type="upload" /> 点击上传歌曲
-          </Button>
-        </Upload>
+      <Form.Item label="photos">
+        {form.getFieldDecorator("photos", {
+          initialValue: props.item.photos || [],
+          rules: [{ required: true, message: "select photos!" }]
+        })(<TextArea rows={4} placeholder="photo array" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit">
-          提交
+          Save
         </Button>
       </div>
     </Form>
   );
 }
 
-export default Form.create({ name: "addProject" })(AddStuffPost);
+export default Form.create({ name: "addStuffPost" })(AddStuffPost);

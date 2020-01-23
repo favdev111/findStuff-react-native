@@ -16,7 +16,7 @@ class UserController {
       if (!user)
         return res.status(400).json({
           success: false,
-          msg: "User not found"
+          msg: "找不到用户"
         });
 
       res.status(200).json({
@@ -28,7 +28,7 @@ class UserController {
       console.log("error => ", err);
       res.status(404).json({
         success: false,
-        msg: "User not found."
+        msg: "找不到用户."
       });
     }
   }

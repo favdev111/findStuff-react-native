@@ -47,6 +47,8 @@ class NewsController {
         msg: "Item saved.",
         item: newItem
       });
+
+      req.io.emit("news", content);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

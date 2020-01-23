@@ -22,6 +22,8 @@ export default function SignUpScreen(props) {
       return;
     }
 
+    console.log(phone, password);
+
     axios
       .post(baseUrl + 'auth/signup', {
         phone,
@@ -37,7 +39,8 @@ export default function SignUpScreen(props) {
         }
       })
       .catch(function(error) {
-        Toast.show(error);
+        console.log(error);
+        // Toast.show(error);
       });
   }
 
@@ -53,7 +56,7 @@ export default function SignUpScreen(props) {
               style={Styles.SignUpHeaderImg}
             />
           </TouchableOpacity>
-          <Text style={{fontSize: 20, color: '#fff', flex: 1}}>用户注册</Text>
+          <Text style={{fontSize: 20, color: '#fff'}}>用户注册</Text>
           <Text style={{flex: 1}}></Text>
         </View>
         <View style={Styles.SignFormContainer}>

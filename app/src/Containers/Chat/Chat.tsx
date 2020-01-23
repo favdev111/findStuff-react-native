@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   View,
@@ -9,14 +9,18 @@ import {
   FlatList,
   ToastAndroid,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Styles from './ChatStyle';
 import {Images, Colors} from 'src/Theme';
+import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
-const axios = require('axios');
+import axios from 'axios';
+import withAuth from 'src/withAuth';
 
-export default function Chat(props) {
+const Chat = props => {
+  const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
 
   useEffect(() => {
@@ -25,8 +29,6 @@ export default function Chat(props) {
         params: {},
       })
       .then(function(response) {
-        console.log(response.data);
-
         setList(response.data);
       })
       .catch(function(error) {
@@ -95,4 +97,6 @@ export default function Chat(props) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(Chat);

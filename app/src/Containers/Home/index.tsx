@@ -1,5 +1,5 @@
 // React
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   Text,
   TextInput,
@@ -9,19 +9,30 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Picker,
 } from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
-
+import {BaiduMapManager, Geolocation} from 'react-native-baidu-map';
 import HomeCarousel from 'src/Components/HomeCarousel/HomeCarousel';
-
+import Toast from 'react-native-simple-toast';
 import styles from './HomeViewStyle';
 import {Images} from 'src/Theme';
 
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
 
-export default function HomeView(props) {
+import axios from 'axios';
+import {Map} from 'immutable';
+import {store} from 'src/Store';
+import NotificationPopup from 'react-native-push-notification-popup';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import regionJson from 'src/Lib/rn-wheel-picker-china-region/regionJson';
+
+BaiduMapManager.initSDK('sIMQlfmOXhQmPLF1QMh4aBp8zZO9Lb2A');
+
+function HomeView(props) {
+  const [location, setLocation] = useState({});
   const [note, setNote] = useState('');
 
   const [state, setState] = useState({
@@ -32,6 +43,16 @@ export default function HomeView(props) {
       {key: 'ads', title: '精华'},
     ],
   });
+  // const [state, dispatch] = useContext(store);
+
+  const _filterCitys = province => {
+    const provinceData = regionJson.find(item => item.name === province);
+
+    return provinceData.city.map(item => item.name);
+  };
+
+  const [citys, setCitys] = useState(_filterCitys('新疆'));
+  const [region, setRegion] = useState('新疆');
 
   const [list, setList] = useState([]);
   const [key, setKey] = useState('');
@@ -52,6 +73,7 @@ export default function HomeView(props) {
         params: {
           sort: state.index,
           key,
+          region,
         },
       })
       .then(function(response) {
@@ -81,9 +103,20 @@ export default function HomeView(props) {
       });
   };
 
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition().then(data => {
+      setLocation(data);
+    });
+  };
+
   useEffect(() => {
+    AsyncStorage.clear();
+
+    getCurrentLocation();
     getNote();
     getList();
+
+    return () => {};
   }, []);
 
   const ListArea = () => (
@@ -107,8 +140,28 @@ export default function HomeView(props) {
       <View style={styles.homeScrollView}>
         <View style={styles.HomeBannerContainer}>
           {
-            // <Image source={Images.HomeBannerImg} style={styles.HomeBannerImg} />
+            //   location.city && (
+            //   <Text style={{position: 'absolute', top: 0, zIndex: 100}}>
+            //     {location.city}
+            //   </Text>
+            // )
           }
+          <Picker
+            selectedValue={region}
+            mode="dropdown"
+            style={{
+              height: 35,
+              width: 120,
+              position: 'absolute',
+              top: 0,
+              zIndex: 100,
+            }}
+            onValueChange={(itemValue, itemIndex) => setRegion(itemValue)}>
+            <Picker.Item label={'新疆'} value={'新疆'} />
+            {citys.map(item => (
+              <Picker.Item label={item} value={item} />
+            ))}
+          </Picker>
           <HomeCarousel />
         </View>
         <View style={styles.HomeSearchContainer}>
@@ -211,3 +264,5 @@ export default function HomeView(props) {
     </ScrollView>
   );
 }
+
+export default HomeView;

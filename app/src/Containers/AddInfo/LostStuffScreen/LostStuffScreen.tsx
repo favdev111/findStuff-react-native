@@ -10,16 +10,17 @@ import {
 import Styles from './LostStuffScreenStyle';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Colors, Images} from 'src/Theme';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 
 import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+import withAuth from 'src/withAuth';
 
-export default function FindStuffScreen(props) {
+const LostStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
@@ -31,28 +32,36 @@ export default function FindStuffScreen(props) {
   console.log('loststuff state', state);
 
   const handlePhoto = () => {
-    ImagePicker.showImagePicker(response => {
-      console.log('Response = ', response);
+    ImagePicker.showImagePicker(
+      {
+        title: '选择一张照片',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '拍照',
+        chooseFromLibraryButtonTitle: '从照片中选择',
+      },
+      response => {
+        console.log('Response = ', response);
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const name = response.uri;
-        const source = {uri: response.uri};
-        const data = 'data:image/jpeg;base64,' + response.data;
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const name = response.uri;
+          const source = {uri: response.uri};
+          const data = 'data:image/jpeg;base64,' + response.data;
 
-        setPhoto([...photo, {source, data, name}]);
-      }
-    });
+          setPhoto([...photo, {source, data, name}]);
+        }
+      },
+    );
   };
 
   async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值!');
       return;
     }
 
@@ -98,13 +107,11 @@ export default function FindStuffScreen(props) {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片');
     }
   }
 
-  useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.FindStuffScreenContainer}>
@@ -117,7 +124,7 @@ export default function FindStuffScreen(props) {
             style={Styles.FindStuffHeaderImg}
           />
         </TouchableOpacity>
-        <Text style={{fontSize: 20, color: '#fff', flex: 1}}>详细情况</Text>
+        <Text style={{fontSize: 20, color: '#fff'}}>详细情况</Text>
         <Text style={{flex: 1}} />
       </View>
       <View style={Styles.StuffInfoContainer}>
@@ -169,6 +176,7 @@ export default function FindStuffScreen(props) {
         <TextInput
           style={Styles.FindStuffPriceInput}
           onChangeText={value => setFee(value)}
+          keyboardType={'numeric'}
         />
         <Text style={Styles.FindStuffPriceText}>元</Text>
       </View>
@@ -208,4 +216,6 @@ export default function FindStuffScreen(props) {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(LostStuffScreen);

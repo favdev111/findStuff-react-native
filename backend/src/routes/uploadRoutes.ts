@@ -12,6 +12,7 @@ class UploadRoutes {
   }
 
   routes() {
+    //single
     this.router.post("/file", upload.single("file"), async (req, res) => {
       try {
         res.send({ file: req.file });
@@ -20,6 +21,7 @@ class UploadRoutes {
       }
     });
 
+    // multiple
     this.router.post("/photo", upload.array("photo", 6), async (req, res) => {
       try {
         res.send({ photo: req.files });

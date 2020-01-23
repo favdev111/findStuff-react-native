@@ -1,5 +1,5 @@
 import { http, http2, getAuthorization } from "./http";
-import { API_ROOT } from "./config";
+import { API_ROOT, ORIGINAL_ROOT } from "./config";
 
 export const login = (params = {}) => http2.post("auth/login", { ...params });
 
@@ -76,7 +76,7 @@ export const editStuffPost = (id: string, params = {}) =>
   http.put(`stuffpost/${id}`, { ...params });
 
 export const uploadConfig = () => ({
-  action: `${API_ROOT}/upload/photo`,
+  action: `${ORIGINAL_ROOT}upload/photo`,
   headers: {
     Authorization: getAuthorization()
   }

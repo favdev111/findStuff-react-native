@@ -7,7 +7,10 @@ import {
   ScrollView,
   TextInput,
   Button,
+  Dimensions,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Modal, {ModalContent} from 'react-native-modals';
 
@@ -23,13 +26,14 @@ import ImagePicker from 'react-native-image-picker';
 import QRCode from 'react-native-qrcode-svg';
 
 import {baseUrl, appVersion} from 'src/constants';
-const axios = require('axios');
-export default function Profile(props) {
+import axios from 'axios';
+import withAuth from 'src/withAuth';
+
+const Profile = props => {
   const [state, dispatch] = useContext(store);
 
   const [photo, setPhoto] = useState({name: '', source: '', data: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
-  const nameRef = useRef(null);
 
   const [isServiceModalVisible, setIsServiceModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
@@ -56,30 +60,40 @@ export default function Profile(props) {
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    props.navigation.navigate('Signin');
+    dispatch({type: 'setState', payload: {user: {}, token: ''}});
+    AsyncStorage.clear();
+    props.navigation.navigate('Home');
   };
 
   const handlePhoto = () => {
-    ImagePicker.showImagePicker(response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const name = response.uri;
-        const source = {uri: response.uri};
-        const data = 'data:image/jpeg;base64,' + response.data;
+    ImagePicker.showImagePicker(
+      {
+        title: '选择一张照片',
+        cancelButtonTitle: '取消',
+        takePhotoButtonTitle: '拍照',
+        chooseFromLibraryButtonTitle: '从照片中选择',
+      },
+      response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          const name = response.uri;
+          const source = {uri: response.uri};
+          const data = 'data:image/jpeg;base64,' + response.data;
 
-        setPhoto({source, data, name});
-      }
-    });
+          setPhoto({source, data, name});
+        }
+      },
+    );
   };
 
   async function handleSubmit() {
     if (name === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值！');
       return;
     }
     if (photo) {
@@ -124,14 +138,11 @@ export default function Profile(props) {
           console.log(error);
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片!');
     }
   }
 
   useEffect(() => {
-    if (!state.auth_token) props.navigation.navigate('Signin');
-    if (nameRef?.current) nameRef.current.value = state.user.name;
-
     (async () => {
       await axios
         .post(baseUrl + 'api/profile/last')
@@ -143,13 +154,12 @@ export default function Profile(props) {
 
             let versionDescription = '';
             if (appVersion === version) {
-              versionDescription =
-                'Your app is the latest version(' + version + ').';
+              versionDescription = '您的应用是最新版本(' + version + ').';
             } else {
               versionDescription =
-                'Your app is the old version(' +
+                '您的应用是旧版本(' +
                 appVersion +
-                ').Lastest version is ' +
+                ').最新版本是' +
                 version +
                 '.';
             }
@@ -181,64 +191,66 @@ export default function Profile(props) {
           <Text style={Style.ProfileHeaderTitleText}>我的</Text>
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
-          <View style={Style.ProfileHeaderAvatarWrap}>
-            <TouchableOpacity
-              style={Style.HeaderImgContainer}
-              onPress={handlePhoto}>
-              {state.user && state.user.photo && (
-                <Image
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                  }}
-                  style={Style.ProfileHeaderAvatarImg}
-                />
-              )}
-              {state.user && (!state.user.photo || state.user.photo === '') && (
-                <Image
-                  source={photo.source ? photo.source : Images.femaleProfile}
-                  style={Style.ProfileHeaderAvatarImg}
-                />
-              )}
-
-              <Image source={Images.Camera} style={Style.HeaderImgBadge} />
-            </TouchableOpacity>
-            <View>
-              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
-              <Text style={{color: Colors.white, fontSize: 12}}>
-                {state.user.name}
-              </Text>
-              <Text style={{color: Colors.white, fontSize: 12}}>
-                {state.user.phone}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                if (nameRef?.current) nameRef.current.focus();
-                setIsEdit(!isEdit);
-              }}>
-              <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View>
-          {isEdit && (
-            <View style={{flexDirection: 'row', width: '100%'}}>
-              <TextInput
-                style={{
-                  backgroundColor: 'white',
-                  width: '50%',
-                  padding: 0,
-                  marginLeft: 50,
-                  marginTop: -8,
+          <TouchableOpacity onPress={handlePhoto} style={{marginRight: 15}}>
+            {state.user.photo !== '' && (
+              <Image
+                source={{
+                  uri: baseUrl + 'download/photo?path=' + state.user.photo,
                 }}
-                onChangeText={value => setName(value)}
-                ref={nameRef}
+                style={Style.ProfileHeaderAvatarImg}
+                resizeMode="cover"
+                borderRadius={30}
               />
-              <TouchableOpacity onPress={handleSubmit}>
-                <Text style={{color: 'white'}}>Save</Text>
+            )}
+            {state.user.photo === '' && (
+              <Image
+                source={photo.source ? photo.source : Images.femaleProfile}
+                style={Style.ProfileHeaderAvatarImg}
+                resizeMode="cover"
+                borderRadius={30}
+              />
+            )}
+            <Image source={Images.Camera} style={Style.HeaderImgBadge} />
+          </TouchableOpacity>
+          <View>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsEdit(!isEdit);
+                }}>
+                <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
               </TouchableOpacity>
             </View>
-          )}
+            <Text style={{color: Colors.white, fontSize: 12}}>
+              {state.user.name}
+            </Text>
+            <Text style={{color: Colors.white, fontSize: 12}}>
+              {state.user.phone}
+            </Text>
+
+            {isEdit && (
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  style={{
+                    backgroundColor: 'white',
+                    width: '50%',
+                    padding: 0,
+                  }}
+                  onChangeText={value => setName(value)}
+                />
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      marginTop: 3,
+                    }}>
+                    保存
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </View>
       </ImageBackground>
       <View style={Style.ProfileBtnGroupContainer}>
@@ -342,26 +354,69 @@ export default function Profile(props) {
         visible={isServiceModalVisible}
         onTouchOutside={() => {
           setIsServiceModalVisible(false);
+        }}
+        style={{
+          width: Dimensions.get('window').width,
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-        <ModalContent>
+        <ModalContent
+          style={{
+            width: Dimensions.get('window').width * 0.8,
+            height: '80%',
+          }}>
           <View
             style={{
-              paddingTop: 20,
-              paddingBottom: 0,
-              width: '85%',
-              height: '70%',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            {current === 'share' && <QRCode value={profile.share} />}
-            <Text>{service}</Text>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                width: '100%',
+                height: '100%',
+              }}>
+              {current === 'share' && (
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}>
+                  <QRCode value={profile.share} size={200} />
+                </View>
+              )}
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '80%',
+                }}>
+                <Text>{service}</Text>
+              </View>
+            </View>
           </View>
         </ModalContent>
-        <Button
-          title="关闭"
-          onPress={() => {
-            setIsServiceModalVisible(false);
-          }}
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          <View style={{flex: 1}}></View>
+          <Button
+            title="      关闭      "
+            onPress={() => {
+              setIsServiceModalVisible(false);
+            }}
+          />
+          <View style={{flex: 1}}></View>
+        </View>
       </Modal>
     </ScrollView>
   );
-}
+};
+
+export default withAuth(Profile);

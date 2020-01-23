@@ -1,15 +1,13 @@
-import React, {createRef, ReactElement} from 'react';
+import React, {createRef, ReactElement, useContext} from 'react';
 import {Image, Linking, Text, View} from 'react-native';
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-  BottomTabBar,
-} from 'react-navigation';
+import {BottomTabBar, createBottomTabNavigator} from 'react-navigation-tabs';
+import {createStackNavigator} from 'react-navigation-stack';
 import AddInfoView from 'src/Containers/AddInfo/AddInfo';
 import ProfileView from 'src/Containers/Profile/Profile';
 import HomeView from 'src/Containers/Home';
 import Style from './BottomTabNavStyle';
 import ChatView from 'src/Containers/Chat/Chat';
+import {store} from 'src/Store';
 import {Colors, Images} from 'src/Theme';
 
 import StuffPostView from 'src/Containers/Category/CategoryList/StuffPostView';
@@ -22,89 +20,93 @@ import NewsView from 'src/Containers/Category/CategoryList/NewsView';
 import NewsDetail from 'src/Containers/Category/CategoryDetail/NewsDetail';
 
 import ContactView from 'src/Containers/Category/CategoryList/ContactView';
+import SignInScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
-const NotificationStackNavigator = createStackNavigator({
-  NotificationView: {
-    screen: NotificationView,
-    navigationOptions: {
+const NotificationStackNavigator = createStackNavigator(
+  {
+    NotificationView: {
+      screen: NotificationView,
+    },
+    NotificationDetail: {
+      screen: NotificationDetail,
+    },
+  },
+  {
+    defaultNavigationOptions: {
       header: null,
     },
   },
-  NotificationDetail: {
-    screen: NotificationDetail,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
+);
 
-const AddInfoStackNavigator = createStackNavigator({
-  AddInfoView: {
-    screen: AddInfoView,
-    navigationOptions: {
+const AddInfoStackNavigator = createStackNavigator(
+  {
+    AddInfoView: {
+      screen: AddInfoView,
+    },
+  },
+  {
+    defaultNavigationOptions: {
       header: null,
     },
   },
-});
+);
 
-const ProfileStackNavigator = createStackNavigator({
-  ProfileView: {
-    screen: ProfileView,
-    navigationOptions: {
+const ProfileStackNavigator = createStackNavigator(
+  {
+    ProfileView: {
+      screen: ProfileView,
+    },
+  },
+  {
+    defaultNavigationOptions: {
       header: null,
     },
   },
-});
+);
 
-const HomeStackNavigator = createStackNavigator({
-  HomeView: {
-    screen: HomeView,
-    navigationOptions: {
+const HomeStackNavigator = createStackNavigator(
+  {
+    HomeView: {
+      screen: HomeView,
+    },
+    StuffPostView: {
+      screen: StuffPostView,
+    },
+    StuffPostDetail: {
+      screen: StuffPostDetail,
+    },
+    NewsView: {
+      screen: NewsView,
+    },
+    NewsDetail: {
+      screen: NewsDetail,
+    },
+    ContactView: {
+      screen: ContactView,
+    },
+  },
+  {
+    defaultNavigationOptions: {
       header: null,
     },
   },
-  StuffPostView: {
-    screen: StuffPostView,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  StuffPostDetail: {
-    screen: StuffPostDetail,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  NewsView: {
-    screen: NewsView,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  NewsDetail: {
-    screen: NewsDetail,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  ContactView: {
-    screen: ContactView,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
+);
 
-const ChatStackNavigator = createStackNavigator({
-  ChatView: {
-    screen: ChatView,
-    navigationOptions: {
+const ChatStackNavigator = createStackNavigator(
+  {
+    ChatView: {
+      screen: ChatView,
+    },
+  },
+  {
+    defaultNavigationOptions: {
       header: null,
     },
   },
-});
+);
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -133,6 +135,7 @@ const BottomTabNavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({navigation}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
+
         if (routeName === 'Home') {
           return (
             <>
@@ -207,11 +210,12 @@ const BottomTabNavigator = createBottomTabNavigator(
     },
   },
 );
-export default class MainScreenWithBottomNav extends React.Component {
-  public props: any;
-  static router = BottomTabNavigator.router;
 
-  render() {
-    return <BottomTabNavigator navigation={this.props.navigation} />;
-  }
-}
+const MainScreenWithBottomNav = props => {
+  // const [state, dispatch] = useContext(store);
+
+  return <BottomTabNavigator navigation={props.navigation} />;
+};
+MainScreenWithBottomNav.router = BottomTabNavigator.router;
+
+export default MainScreenWithBottomNav;

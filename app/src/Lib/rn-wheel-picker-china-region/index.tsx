@@ -11,7 +11,9 @@ import {
   Platform,
 } from 'react-native';
 import BaseComponent from './BaseComponent';
-import webRegionAPI from './webRegionAPI';
+// import webRegionAPI from './webRegionAPI';
+
+import regionJson from './regionJson';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -19,11 +21,11 @@ const windowHeight = Dimensions.get('window').height;
 const isIos = Platform.OS === 'ios';
 
 export default class ChinaRegionWheelPicker extends BaseComponent {
-	public state: any;
-	public props: any;
-	public _regionAllData: any;
-	public setState: any;
-	public navBtnColor: any;
+  public state: any;
+  public props: any;
+  public _regionAllData: any;
+  public setState: any;
+  public navBtnColor: any;
 
   constructor(props) {
     super(props);
@@ -56,6 +58,8 @@ export default class ChinaRegionWheelPicker extends BaseComponent {
     const provinceData = this._regionAllData.find(
       item => item.name === province,
     );
+
+    console.log(province.name, 'gggggrrrrrrrrrrrrrrr');
     return provinceData.city.map(item => item.name);
   }
   _filterAreas(province, city) {
@@ -67,26 +71,30 @@ export default class ChinaRegionWheelPicker extends BaseComponent {
   }
 
   componentDidMount() {
-    webRegionAPI().then(area => {
-      // console.log('area', area);
-      this._regionAllData = area;
+    // webRegionAPI().then(area => {
 
-      const provinces = this._filterAllProvinces();
-      // console.log('provinces', provinces);
+    this._regionAllData = regionJson;
 
-      const citys = this._filterCitys(this.state.selectedProvince);
+    console.log('area', this._regionAllData);
 
-      const areas = this._filterAreas(
-        this.state.selectedProvince,
-        this.state.selectedCity,
-      );
+    const provinces = this._filterAllProvinces();
+    console.log('provinces', provinces);
 
-      this.setState({
-        provinces,
-        citys,
-        areas,
-      });
+    const citys = this._filterCitys(this.state.selectedProvince);
+    console.log('citys', citys);
+
+    const areas = this._filterAreas(
+      this.state.selectedProvince,
+      this.state.selectedCity,
+    );
+    console.log('provinces', areas);
+
+    this.setState({
+      provinces,
+      citys,
+      areas,
     });
+    // });
   }
   componentWillReceiveProps(props) {
     if (props.isVisible !== this.props.isVisible) {
@@ -247,9 +255,9 @@ ChinaRegionWheelPicker.propTypes = {
 
 ChinaRegionWheelPicker.defaultProps = {
   isVisible: false,
-  selectedProvince: '北京',
-  selectedCity: '北京',
-  selectedArea: '东城区',
+  selectedProvince: '新疆',
+  selectedCity: '乌鲁木齐',
+  selectedArea: '天山区',
   navBtnColor: 'blue',
   animationType: 'slide',
   transparent: true,

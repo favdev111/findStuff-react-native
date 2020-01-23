@@ -61,6 +61,8 @@ class MessageController {
         msg: "Item saved.",
         item: newItem
       });
+
+      req.io.emit("message", content);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

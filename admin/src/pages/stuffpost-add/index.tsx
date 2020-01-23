@@ -4,8 +4,18 @@ import PageLayout from "../../common/components/page-layout";
 import Add from "./add";
 import { fetchStuffPost } from "../../utils/api";
 import { useQuery } from "../../utils/index";
-const LostPostAdd = (props: any) => {
-  const [lostPost, setLostPost] = useState({});
+const StuffPostAdd = (props: any) => {
+  const [stuffPost, setStuffPost] = useState({
+    user: "",
+    tag: "",
+    place: "",
+    address: "",
+    kind: "lost",
+    fee: 0,
+    description: "",
+    photos: []
+  });
+
   let location = useLocation();
   const query = useQuery();
   // 获取编辑数据
@@ -15,18 +25,18 @@ const LostPostAdd = (props: any) => {
       if (_id) {
         const { data } = await fetchStuffPost({ _id });
         if (data.code) {
-          setLostPost(data.result[0]);
+          setStuffPost(data.result[0]);
         }
       } else {
-        setLostPost({});
+        // setStuffPost();
       }
     })();
   }, [location]);
   return (
-    <PageLayout title="新增音乐">
-      <Add {...props} item={lostPost} />
+    <PageLayout title="Add stuff post">
+      <Add {...props} item={stuffPost} />
     </PageLayout>
   );
 };
 
-export default LostPostAdd;
+export default StuffPostAdd;

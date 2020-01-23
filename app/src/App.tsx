@@ -5,7 +5,8 @@ import React, {
   useContext,
   useReducer,
 } from 'react';
-import {createAppContainer, createStackNavigator} from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav';
 import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
 import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen';
@@ -21,6 +22,10 @@ import {store, StateProvider} from 'src/Store';
 import News from 'src/Containers/News/News';
 import NewsDetail from 'src/Containers/News/NewsDetail/NewsDetail';
 import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
+import {InAppNotificationProvider} from 'react-native-in-app-notification';
+import FlashMessage from 'react-native-flash-message';
+
+require('src/socket');
 
 const AppNavigator = createStackNavigator(
   {
@@ -54,6 +59,7 @@ const App: FC = (): ReactElement => {
   return (
     <StateProvider>
       <AppContainer />
+      <FlashMessage position="top" animated={true} />
     </StateProvider>
   );
 };

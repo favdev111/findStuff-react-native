@@ -6,13 +6,35 @@ class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
     const tag = req.query.tag;
     const key = req.query.key;
+    const region = req.query.region;
     const sort = req.query.sort;
 
     let filter = {};
 
     if (tag !== undefined && tag !== "") filter = { ...filter, tag };
-    if (key !== undefined && key !== "")
+
+    if (
+      key !== undefined &&
+      key !== "" &&
+      (region === undefined || region === "")
+    )
       filter = { ...filter, $text: { $search: key } };
+    if (
+      region !== undefined &&
+      region !== "" &&
+      (key === undefined || key === "")
+    )
+      filter = { ...filter, $text: { $search: region } };
+    if (
+      key !== undefined &&
+      key !== "" &&
+      region !== undefined &&
+      region !== ""
+    )
+      filter = {
+        ...filter,
+        $text: { $search: "'" + key + " " + region + "'" }
+      };
 
     console.log(sort, "sort");
 

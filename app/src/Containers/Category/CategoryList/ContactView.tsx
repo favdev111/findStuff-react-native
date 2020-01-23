@@ -53,6 +53,7 @@ export default function CategoryList(props) {
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity
+            style={{flex: 1}}
             onPress={() => props.navigation.navigate('HomeView')}>
             <Image
               source={Images.whiteLeftChevron}
@@ -60,9 +61,9 @@ export default function CategoryList(props) {
             />
           </TouchableOpacity>
           <View style={{alignItems: 'center'}}>
-            <Text style={{fontSize: 20, color: '#fff'}}>寻物户示</Text>
+            <Text style={{fontSize: 20, color: '#fff'}}>小区电话</Text>
           </View>
-          <View style={Styles.HeaderRightImgContainer}></View>
+          <View style={{flex: 1}}></View>
         </View>
         <View style={Styles.HomeSearchContainer}>
           <View style={Styles.HomeSearchArea}>

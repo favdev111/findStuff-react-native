@@ -1,65 +1,57 @@
-import * as express from "express";
-import * as socketIo from "socket.io";
-import { createServer, Server } from "http";
+import { Server, Socket } from "socket.io";
+import uuid from "uuid/v4";
 
-enum ChatEvent {
-  CONNECT = "connect",
-  DISCONNECT = "disconnect",
-  MESSAGE = "message"
+const messageExpirationTimeMS = 10 * 1000;
+
+export interface User {
+  id: string;
+  name: string;
 }
 
-interface ChatMessage {
-  author: string;
-  message: string;
+const defaultUser: User = {
+  id: "anon",
+  name: "Anonymous"
+};
+
+export interface Message {
+  user: User;
+  id: string;
+  time: Date;
+  value: string;
 }
 
-var cors = require("cors");
+export const sendMessage = (socket: Socket | Server) => (message: Message) =>
+  socket.emit("message", message);
 
-class ChatServer {
-  public static readonly PORT: number = 8080;
-  private _app: express.Application;
-  private server: Server;
-  private io: SocketIO.Server;
-  private port: string | number;
+export default (io: Server, connectedUsers: any) => {
+  const messages: Set<Message> = new Set();
 
-  constructor() {
-    this._app = express();
-    this.port = process.env.PORT || ChatServer.PORT;
-    this._app.use(cors());
-    this._app.options("*", cors());
-    this.server = createServer(this._app);
-    this.initSocket();
-    this.listen();
-  }
+  io.on("connection", socket => {
+    const { user_id } = socket.handshake.query;
+    connectedUsers[user_id] = socket.id;
 
-  private initSocket(): void {
-    this.io = socketIo(this.server);
-  }
+    io.emit("notify", "欢迎来到我们的服务");
 
-  private listen(): void {
-    this.server.listen(this.port, () => {
-      console.log("Running server on port %s", this.port);
+    socket.on("getMessages", () => {
+      messages.forEach(sendMessage(socket));
     });
 
-    this.io.on(ChatEvent.CONNECT, (socket: any) => {
-      console.log("Connected client on port %s.", this.port);
+    socket.on("message", (value: string) => {
+      const message: Message = {
+        id: uuid(),
+        time: new Date(),
+        user: defaultUser,
+        value
+      };
 
-      socket.on(ChatEvent.MESSAGE, (m: ChatMessage) => {
-        console.log("[server](message): %s", JSON.stringify(m));
-        this.io.emit("message", m);
-      });
+      messages.add(message);
 
-      socket.on(ChatEvent.DISCONNECT, () => {
-        console.log("Client disconnected");
-      });
+      sendMessage(io)(message);
+
+      setTimeout(() => {
+        messages.delete(message);
+        io.emit("deleteMessage", message.id);
+      }, messageExpirationTimeMS);
     });
-  }
-
-  get app(): express.Application {
-    return this._app;
-  }
-}
-
-let app = new ChatServer().app;
-
-export { app };
+  });
+};

@@ -114,9 +114,9 @@ export const menuConfig: menuType[] = [
         path: "/stuffposts"
       }
       // {
-      //   title: "add lost post",
-      //   key: "lostpost-add",
-      //   path: "/lostpost-add"
+      //   title: "add post",
+      //   key: "stuffpost-add",
+      //   path: "/stuffpost-add"
       // }
     ]
   },

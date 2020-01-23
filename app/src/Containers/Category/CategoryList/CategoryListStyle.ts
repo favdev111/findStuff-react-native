@@ -6,21 +6,20 @@ export default StyleSheet.create({
     backgroundColor: '#0084da',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingLeft: 5,
     paddingRight: 5,
+    justifyContent: 'space-between',
   },
   FindStuffHeaderImg: {
     height: 35,
     width: 35,
     transform: [{rotate: '90deg'}],
   },
-  HeaderRightImgContainer: {},
   HeaderRightImg: {
     width: 30,
     height: 30,
   },
-  CategoryListContainer: {},
+  CategoryListContainer: {flex: 1},
   CategoryListHeader: {
     height: 50,
     backgroundColor: '#0084da',

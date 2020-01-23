@@ -12,10 +12,15 @@ export default function StuffCard({item, proc, navigation}) {
     <TouchableOpacity style={Style.CardWrap} onPress={proc}>
       <View style={Style.CardInfoWrap}>
         <View style={Style.ImageSection}>
-          {item.user.photo.length === 0 && (
-            <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+          {item.user && item.user.photo && item.user.photo.length === 0 && (
+            <Image
+              style={Style.AvatarStyle}
+              source={Images.maleProfile}
+              resizeMode="cover"
+              borderRadius={30}
+            />
           )}
-          {item.user.photo.length > 0 && (
+          {item.user && item.user.photo && item.user.photo.length > 0 && (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('UserInfo', {item: item.user});
@@ -25,12 +30,14 @@ export default function StuffCard({item, proc, navigation}) {
                 source={{
                   uri: baseUrl + 'download/photo?path=' + item.user.photo,
                 }}
+                resizeMode="cover"
+                borderRadius={30}
               />
             </TouchableOpacity>
           )}
         </View>
         <View style={Style.UserName}>
-          <Text>{item.user.name}</Text>
+          {item.user?.name && <Text>{item.user.name}</Text>}
           <Text style={Style.Userdate}>
             {moment(item.createAt).format('M月D日 ')}
           </Text>

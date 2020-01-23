@@ -4,7 +4,7 @@ import mongodb from "mongodb";
 
 class NotificationController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await Notification.find();
+    const items = await Notification.find().sort({ _id: -1 });
     res.json(items);
   }
 
@@ -47,6 +47,8 @@ class NotificationController {
         msg: "Item saved.",
         item: newItem
       });
+
+      req.io.emit("notify", content);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

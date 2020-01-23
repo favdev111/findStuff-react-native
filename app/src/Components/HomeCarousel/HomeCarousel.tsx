@@ -14,8 +14,8 @@ export default function HomeCarousel() {
         activeDot={<View style={styles.carouselActiveDot} />}
         paginationStyle={{
           bottom: 23,
-          left: null,
-          right: 10,
+          left: 0,
+          right: 0,
         }}
         loop
         autoplay>

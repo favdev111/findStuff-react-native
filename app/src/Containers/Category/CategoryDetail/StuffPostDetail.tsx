@@ -83,25 +83,31 @@ export default function StuffPostDetail({navigation}) {
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                {item.user.photo.length === 0 && (
-                  <Image
-                    style={Styles.AvatarPhoto}
-                    source={Images.maleProfile}
-                  />
-                )}
-                {item.user.photo.length > 0 && (
+                {item.user &&
+                  item.user.photo &&
+                  item.user.photo.length === 0 && (
+                    <Image
+                      style={Styles.AvatarPhoto}
+                      source={Images.maleProfile}
+                      resizeMode="cover"
+                      borderRadius={30}
+                    />
+                  )}
+                {item.user && item.user.photo && item.user.photo.length > 0 && (
                   <Image
                     style={Styles.AvatarPhoto}
                     source={{
                       uri: baseUrl + 'download/photo?path=' + item.user.photo,
                     }}
+                    resizeMode="cover"
+                    borderRadius={30}
                   />
                 )}
 
                 <View style={Styles.UserNameContainer}>
                   <View style={Styles.UserNameWrap}>
                     <View>
-                      <Text>{item.user.name}</Text>
+                      {item.user?.name && <Text>{item.user.name}</Text>}
                     </View>
                   </View>
                   <View>

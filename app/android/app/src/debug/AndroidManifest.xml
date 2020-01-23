@@ -10,5 +10,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <application android:usesCleartextTraffic="true" tools:targetApi="28" tools:ignore="GoogleAppIndexingWarning" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application android:usesCleartextTraffic="true" tools:targetApi="28" tools:ignore="GoogleAppIndexingWarning" >
+        <meta-data
+            android:name="com.baidu.lbsapi.0E9a1d87c1b0c5025565a115e62c8b90"
+            android:value="uDRdqQMGQeoPGn5CwMmIYicdUIVv1YST" />
+    </application>
 </manifest>
