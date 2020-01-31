@@ -35,14 +35,14 @@ function AddNews(props: TagsProps) {
       {...formItemLayout}
       className="addnews"
     >
-      <Form.Item label="content">
+      <Form.Item label="内容">
         {form.getFieldDecorator("content", {
           rules: [{ message: "Type news content!" }]
-        })(<TextArea rows={4} placeholder="news content" />)}
+        })(<TextArea rows={4} placeholder="内容" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit" className="btn">
-          add
+          添加
         </Button>
       </div>
     </Form>

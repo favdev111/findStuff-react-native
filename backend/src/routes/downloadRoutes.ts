@@ -15,13 +15,15 @@ class DownloadRoutes {
           if (err) {
             // Handle error, but keep in mind the response may be partially-sent
             // so check res.headersSent
-            res.sendStatus(400);
+            //res.sendStatus(400);
+            console.log(err, "download error");
           } else {
             // decrement a download credit, etc.
           }
         });
       } catch (err) {
-        res.sendStatus(400);
+        // res.sendStatus(400);
+        console.log(err, "download exeption");
       }
     });
   }

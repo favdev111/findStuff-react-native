@@ -51,6 +51,7 @@ export default {
   Message1: require('src/Images/Icons/message1.png'),
   Message2: require('src/Images/Icons/message2.png'),
   Search: require('src/Images/Icons/Search.png'),
+  DownArrow: require('src/Images/Icons/downarrow.png'),
   RightArrow: require('src/Images/Icons/RightArrow.png'),
   Camera: require('src/Images/Icons/camera.png'),
   // Category List Icons

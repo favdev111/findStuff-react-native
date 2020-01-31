@@ -5,7 +5,7 @@ import Notification from "./add";
 const AddNotification = (props: any) => {
   return (
     <>
-      <PageLayout title="Add Notification">
+      <PageLayout title="添加通知">
         <Notification {...props} />
       </PageLayout>
     </>

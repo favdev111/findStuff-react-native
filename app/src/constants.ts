@@ -1,6 +1,7 @@
 export const appVersion = '0.61';
 // export const baseUrl = 'http://10.0.2.2:8000/';
 export const baseUrl = 'http://106.53.75.202:8000/';
+// export const baseUrl = 'http://192.168.0.103:8000/';
 export const tagJson = [
   {钱包: 'CatWallet'},
   {钥匙: 'CatKey'},

@@ -3,23 +3,26 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList,
   ScrollView,
   Image,
   TextInput,
-  Alert,
 } from 'react-native';
 import {Images, Colors} from 'src/Theme';
-import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
-import ContactCard from 'src/Components/Card/ContactCard';
-import {tagJson} from 'src/constants';
-
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+
+import {Table, Row} from 'react-native-table-component';
+import {reduceDataForScreenSize} from 'src/Components/Table/responsive/reduceDataForScreenSize';
+import {useBreakpoint} from 'src/Components/Table/hooks/useBreakpoint';
+
+const smallScreenIndices = [0, 1, 2];
+const mediumScreenIndices = [0, 1, 2];
+const head = ['城市', '小区名', '电话号'];
 
 export default function CategoryList(props) {
-  const [list, setList] = useState([]);
+  const breakpoint = useBreakpoint();
+  const [data, setData] = useState<string[][]>();
 
   const [tmp, setTmp] = useState('');
   const [key, setKey] = useState('');
@@ -36,9 +39,25 @@ export default function CategoryList(props) {
         },
       })
       .then(function(response) {
-        console.log(response.data);
+        const items = response.data;
+        let i = 0,
+          result = [];
 
-        setList(response.data);
+        while (i < items.length) {
+          result.push([]);
+          for (let key in items[i]) {
+            if (key === 'city' || key == 'district' || key === 'number') {
+              result[result.length - 1].push(items[i][key]);
+            }
+          }
+          i++;
+        }
+
+        console.log(result);
+
+        console.log(23113);
+
+        setData(result);
       })
       .catch(function(error) {
         console.log(error);
@@ -83,9 +102,38 @@ export default function CategoryList(props) {
         </View>
       </View>
       <View style={Styles.CardsContainer}>
-        {list.map((item, i) => (
-          <ContactCard key={i} idx={i} item={item}></ContactCard>
-        ))}
+        {data && (
+          <Table borderStyle={Styles.border} style={Styles.table}>
+            <Row
+              flexArr={[1, 1, 1]}
+              data={reduceDataForScreenSize(
+                head,
+                breakpoint,
+                smallScreenIndices,
+                mediumScreenIndices,
+              )}
+              style={Styles.head}
+              textStyle={Styles.text}
+            />
+            {data.map((entry, index) => (
+              <Row
+                key={index}
+                flexArr={[1, 1, 1]}
+                data={reduceDataForScreenSize(
+                  entry,
+                  breakpoint,
+                  smallScreenIndices,
+                  mediumScreenIndices,
+                )}
+                style={[
+                  Styles.dataRow,
+                  index % 2 && {backgroundColor: '#effeee'},
+                ]}
+                textStyle={Styles.text}
+              />
+            ))}
+          </Table>
+        )}
       </View>
     </ScrollView>
   );

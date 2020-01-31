@@ -1,26 +1,14 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  Image,
-  TextInput,
-  Alert,
-} from 'react-native';
-import {Images, Colors} from 'src/Theme';
-import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
+import React, {useState, useEffect, useContext} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {Images} from 'src/Theme';
 import Styles from './CategoryListStyle';
 import NewsCard from 'src/Components/Card/NewsCard/NewsCard';
-import {tagJson} from 'src/constants';
-
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
+import {store} from 'src/Store';
 
 export default function CategoryList(props) {
-  const kind = props.navigation.getParam('kind');
-  const [list, setList] = useState([]);
+  const [state, dispatch] = useContext(store);
 
   useEffect(() => {
     axios
@@ -28,9 +16,7 @@ export default function CategoryList(props) {
         params: {},
       })
       .then(function(response) {
-        console.log(response.data);
-
-        setList(response.data);
+        dispatch({type: 'setNews', payload: response.data});
       })
       .catch(function(error) {
         console.log(error);
@@ -59,16 +45,17 @@ export default function CategoryList(props) {
         </View>
       </View>
       <View style={Styles.CardsContainer}>
-        {list.map((item, i) => (
-          <NewsCard
-            key={i}
-            item={item}
-            proc={() => {
-              {
-                props.navigation.navigate('NewsDetail', {item});
-              }
-            }}></NewsCard>
-        ))}
+        {state.news &&
+          state.news.map((item, i) => (
+            <NewsCard
+              key={i}
+              item={item}
+              proc={() => {
+                {
+                  props.navigation.navigate('NewsDetail', {item});
+                }
+              }}></NewsCard>
+          ))}
       </View>
     </ScrollView>
   );

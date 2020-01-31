@@ -14,12 +14,14 @@ import NotificationCard from 'src/Components/Card/NotificationCard/NotificationC
 import {store} from 'src/Store';
 import {baseUrl} from 'src/constants';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
+
+import {NavigationEvents} from 'react-navigation';
 
 const NotificationList = props => {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
-  useEffect(() => {
+
+  const getList = () => {
     axios
       .get(baseUrl + 'api/notification', {})
       .then(function(response) {
@@ -31,9 +33,20 @@ const NotificationList = props => {
       .finally(function() {
         // always executed
       });
+  };
+  useEffect(() => {
+    getList();
   }, []);
   return (
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+          else {
+            getList();
+          }
+        }}
+      />
       <View style={Styles.CategoryListContainer}>
         <View style={Styles.FindStuffHeaderContainer}>
           <TouchableOpacity style={{flex: 1}}>
@@ -64,4 +77,4 @@ const NotificationList = props => {
   );
 };
 
-export default withAuth(NotificationList);
+export default NotificationList;

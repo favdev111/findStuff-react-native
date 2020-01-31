@@ -18,8 +18,7 @@ import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
 import {baseUrl} from 'src/constants';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
-
+import {NavigationEvents} from 'react-navigation';
 const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
@@ -91,7 +90,7 @@ const FoundStuffScreen = props => {
             .then(function(response2) {
               if (response2.data) {
                 Toast.show('成功!');
-                props.navigation.navigate('Home');
+                props.navigation.navigate('AppHome');
               } else {
                 Toast.show('失败了!');
               }
@@ -104,7 +103,7 @@ const FoundStuffScreen = props => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('No photo selected');
+      Toast.show('未选择照片!');
     }
   }
 
@@ -112,9 +111,14 @@ const FoundStuffScreen = props => {
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <View style={Styles.FindStuffHeaderContainer}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => props.navigation.navigate('AppHome')}
           style={{flex: 1}}>
           <Image
             source={Images.whiteLeftChevron}
@@ -141,29 +145,28 @@ const FoundStuffScreen = props => {
           <View>
             <Text>选择地点</Text>
           </View>
-
-          <ChinaRegionWheelPicker
-            onSubmit={params =>
-              setPlace(`${params.province},${params.city},${params.area}`)
-            }
-            onCancel={() => console.log('cancel')}>
-            <Text
-              style={{
-                backgroundColor: '#FFF',
-                width: 200,
-                paddingVertical: 20,
-                textAlign: 'center',
-                color: 'black',
-              }}>
-              {place || '点击去选择地区'}
-            </Text>
-          </ChinaRegionWheelPicker>
+          <View style={{flex: 1}}>
+            <ChinaRegionWheelPicker
+              onSubmit={params =>
+                setPlace(`${params.province},${params.city},${params.area}`)
+              }
+              onCancel={() => console.log('cancel')}>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                  textAlign: 'center',
+                  color: 'black',
+                }}>
+                {place || '点击去选择地区'}
+              </Text>
+            </ChinaRegionWheelPicker>
+          </View>
         </View>
         <View style={Styles.FindStuffDetailAreaContainer}>
           <View>
             <Text>详细地址</Text>
           </View>
-          <View>
+          <View style={{flex: 1}}>
             <TextInput
               style={Styles.FindStuffDetailAreaInput}
               onChangeText={value => setAddress(value)}
@@ -213,4 +216,4 @@ const FoundStuffScreen = props => {
   );
 };
 
-export default withAuth(FoundStuffScreen);
+export default FoundStuffScreen;

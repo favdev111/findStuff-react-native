@@ -59,7 +59,6 @@ export default class ChinaRegionWheelPicker extends BaseComponent {
       item => item.name === province,
     );
 
-    console.log(province.name, 'gggggrrrrrrrrrrrrrrr');
     return provinceData.city.map(item => item.name);
   }
   _filterAreas(province, city) {

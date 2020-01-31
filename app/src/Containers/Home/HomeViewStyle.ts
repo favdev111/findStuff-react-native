@@ -75,4 +75,16 @@ export default StyleSheet.create({
     flex: 1,
     color: Colors.grey,
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: 8,
+  },
+  wrapDropDownHeader: {
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });

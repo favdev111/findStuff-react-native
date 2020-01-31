@@ -92,7 +92,7 @@ class AddInfo extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     this.toggleModal();
-                    this.props.navigation.navigate('Home');
+                    this.props.navigation.navigate('AppHome');
                   }}>
                   <Image style={Styles.CloseImg} source={Images.CloseIcon} />
                 </TouchableOpacity>

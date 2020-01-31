@@ -13,25 +13,25 @@ export const columns: Array<ColumnPropsEditable<any>> = [
     render: (text, record, dataIndex) => <span>{dataIndex + 1}</span>
   },
   {
-    title: "city",
+    title: "市",
     key: "city",
     dataIndex: "city",
     editable: true
   },
   {
-    title: "district",
+    title: "区",
     key: "district",
     dataIndex: "district",
     editable: true
   },
   {
-    title: "number",
+    title: "电话号码",
     key: "number",
     dataIndex: "number",
     editable: true
   },
   {
-    title: "operation",
+    title: "运作",
     dataIndex: "operation",
     width: 150
   }

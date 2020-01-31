@@ -17,13 +17,14 @@ import {baseUrl} from 'src/constants';
 import Toast from 'react-native-simple-toast';
 import moment from 'moment';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
+
+import {NavigationEvents} from 'react-navigation';
 
 const Chat = props => {
   const [state, dispatch] = useContext(store);
   const [list, setList] = useState([]);
 
-  useEffect(() => {
+  const getList = () => {
     axios
       .get(baseUrl + 'api/message', {
         params: {},
@@ -37,10 +38,22 @@ const Chat = props => {
       .finally(function() {
         // always executed
       });
+  };
+
+  useEffect(() => {
+    getList();
   }, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+          else {
+            getList();
+          }
+        }}
+      />
       <View style={Styles.FindStuffHeaderContainer}>
         <Text style={{fontSize: 20, color: '#fff'}}>私信</Text>
       </View>
@@ -62,34 +75,53 @@ const Chat = props => {
                 });
               }}>
               <View style={Styles.MessageListAvatarWrap}>
-                <View style={Styles.MessageListImgWrap}>
-                  {!item.sender && (
-                    <Image
-                      source={Images.maleProfile}
-                      style={Styles.MessageListAvatar}
-                    />
-                  )}
-                  {item.sender && (
-                    <Image
-                      source={{
-                        uri:
-                          baseUrl + 'download/photo?path=' + item.sender.photo,
-                      }}
-                      style={Styles.MessageListAvatar}
-                    />
-                  )}
-                  <View style={Styles.AvatarBadgeContainer}>
-                    <Text style={{color: '#fff'}}>2</Text>
+                <View style={{flexDirection: 'column'}}>
+                  <View style={{flex: 1, marginRight: 5}}>
+                    {!item.sender && (
+                      <Image
+                        source={Images.maleProfile}
+                        style={Styles.MessageListAvatar}
+                        resizeMode="cover"
+                        borderRadius={30}
+                      />
+                    )}
+                    {item.sender && (
+                      <Image
+                        // source={{
+                        //   uri:
+                        //     baseUrl + 'download/photo?path=' + item.sender.photo,
+                        // }}
+                        source={Images.maleProfile}
+                        style={Styles.MessageListAvatar}
+                        resizeMode="cover"
+                        borderRadius={30}
+                      />
+                    )}
+                    {
+                      // <View style={Styles.AvatarBadgeContainer}>
+                      //   <Text style={{color: '#fff'}}>2</Text>
+                      // </View>
+                    }
                   </View>
                 </View>
-                <View>
-                  <Text>{item.sender ? item.sender.name : ''}</Text>
-                  <Text style={{color: Colors.grey}}>{item.content}</Text>
+                <View style={{flex: 1}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text>{item.sender ? item.sender.name : ''}</Text>
+                    <Text style={{color: Colors.grey}}>
+                      {moment(item.createAt).format('M月D日 hh时mm分')}
+                    </Text>
+                  </View>
+                  <Text style={{color: Colors.grey}}>
+                    {item.content.length > 84
+                      ? item.content.substring(0, 84) + '...'
+                      : item.content}
+                  </Text>
                 </View>
               </View>
-              <Text style={{color: Colors.grey}}>
-                {moment(item.createAt).format('M月D日 ')}
-              </Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item, index) => index.toString()}
@@ -99,4 +131,4 @@ const Chat = props => {
   );
 };
 
-export default withAuth(Chat);
+export default Chat;

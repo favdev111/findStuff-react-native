@@ -66,4 +66,11 @@ export default StyleSheet.create({
   HomeSearchInput: {
     height: 40,
   },
+
+  ////////////////////////////////
+  text: {textAlign: 'center'},
+  head: {height: 40, backgroundColor: '#f1f8ff'},
+  dataRow: {height: 30},
+  border: {borderWidth: 0.3, borderColor: '#c8e1ff'},
+  table: {margin: 12},
 });

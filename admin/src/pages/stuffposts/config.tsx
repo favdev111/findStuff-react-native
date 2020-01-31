@@ -10,7 +10,7 @@ export const columns: ColumnProps<any>[] = [
     render: (text, record, dataIndex) => <span>{dataIndex + 1}</span>
   },
   {
-    title: "user",
+    title: "用户",
     dataIndex: "user.name",
     width: 160,
     key: "user._id",
@@ -21,37 +21,37 @@ export const columns: ColumnProps<any>[] = [
     )
   },
   {
-    title: "tag",
+    title: "标签",
     key: "tag",
     width: 100,
     dataIndex: "tag"
   },
   {
-    title: "place",
+    title: "地点",
     key: "place",
     width: 100,
     dataIndex: "place"
   },
   {
-    title: "address",
+    title: "地址",
     key: "address",
     width: 100,
     dataIndex: "address"
   },
   {
-    title: "description",
+    title: "说明",
     key: "description",
     width: 100,
     dataIndex: "description"
   },
   {
-    title: "fee",
+    title: "费用",
     key: "fee",
     width: 50,
     dataIndex: "fee"
   },
   {
-    title: "photos",
+    title: "照片",
     key: "photos",
     width: 320,
     dataIndex: "photos",
@@ -71,7 +71,7 @@ export const columns: ColumnProps<any>[] = [
       ))
   },
   {
-    title: "operation",
+    title: "运作",
     key: "operation",
     width: 150,
     dataIndex: "operation"

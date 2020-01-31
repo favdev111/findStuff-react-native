@@ -8,21 +8,21 @@ export function Operate(props: any) {
       {editing ? (
         <>
           <Button type="link" onClick={() => props.cancel()}>
-            Cancel
+            取消
           </Button>
           <Divider type="vertical" />
           <Button type="link" onClick={() => props.save(record)}>
-            Save
+            保存
           </Button>
         </>
       ) : (
         <>
           <Button type="link" onClick={() => props.edit(rowIndex)}>
-            Edit
+            修改
           </Button>
           <Divider type="vertical" />
           <Button type="link" onClick={() => props.del(record)}>
-            Delete
+            删除
           </Button>
         </>
       )}

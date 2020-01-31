@@ -33,7 +33,7 @@ export const columns: Array<ColumnPropsEditable<any>> = [
     editable: true
   },
   {
-    title: "operation",
+    title: "运作",
     dataIndex: "operation",
     width: 150
   }

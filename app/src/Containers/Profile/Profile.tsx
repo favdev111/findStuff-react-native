@@ -8,17 +8,13 @@ import {
   TextInput,
   Button,
   Dimensions,
+  // TouchableOpacity,
 } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
-
-import Modal, {ModalContent} from 'react-native-modals';
-
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
@@ -27,15 +23,17 @@ import QRCode from 'react-native-qrcode-svg';
 
 import {baseUrl, appVersion} from 'src/constants';
 import axios from 'axios';
-import withAuth from 'src/withAuth';
+
+import {NavigationEvents} from 'react-navigation';
+
+import Modal from 'react-native-modal';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
 
   const [photo, setPhoto] = useState({name: '', source: '', data: ''});
   const [name, setName] = useState(state.user.name ? state.user.name : '');
-
-  const [isServiceModalVisible, setIsServiceModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [service, setService] = useState('aaaaaaaa');
   const [current, setCurrent] = useState('');
 
@@ -46,7 +44,6 @@ const Profile = props => {
     about: 'We are the whole...',
     phone: '11111',
   });
-
   const handleModal = idx => {
     setCurrent(idx);
     if (idx === 'service') setService(profile.service);
@@ -54,15 +51,14 @@ const Profile = props => {
     else if (idx === 'share') setService(profile.share);
     else if (idx === 'upgrade') setService(profile.version);
     else if (idx === 'phone') setService(profile.phone);
-
-    setIsServiceModalVisible(true);
+    setIsModalVisible(!isModalVisible);
   };
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    dispatch({type: 'setState', payload: {user: {}, token: ''}});
+    dispatch({type: 'setTokenUser', payload: {user: {}, token: ''}});
     AsyncStorage.clear();
-    props.navigation.navigate('Home');
+    props.navigation.navigate('AppHome');
   };
 
   const handlePhoto = () => {
@@ -90,13 +86,12 @@ const Profile = props => {
       },
     );
   };
-
   async function handleSubmit() {
     if (name === '') {
-      Toast.show('正确输入值！');
+      Toast.show('正确输入值!');
       return;
     }
-    if (photo) {
+    if (photo && photo.uri) {
       let formData = new FormData();
 
       const file = {
@@ -105,6 +100,9 @@ const Profile = props => {
         type: photo.mime || 'image/jpeg',
       };
       formData.append('file', file);
+
+      console.log('selected file...', file);
+      console.log('selected photo...', photo);
 
       await axios
         .post(baseUrl + 'upload/file', formData)
@@ -125,6 +123,7 @@ const Profile = props => {
               if (response2.data.success) {
                 dispatch({type: 'setUser', payload: response2.data.user});
                 Toast.show('成功!');
+                setIsEdit(false);
               } else {
                 Toast.show('失败了!');
               }
@@ -136,12 +135,35 @@ const Profile = props => {
         })
         .catch(error => {
           console.log(error);
+          Toast.show('失败了!');
         });
     } else {
-      Toast.show('未选择照片!');
+      axios
+        .put(
+          baseUrl + 'api2/user/' + state.user._id,
+          {
+            name,
+          },
+          {
+            headers: {auth_token: state.auth_token},
+          },
+        )
+        .then(function(response2) {
+          console.log('response2', response2.data);
+          if (response2.data.success) {
+            dispatch({type: 'setUser', payload: response2.data.user});
+            Toast.show('成功!');
+            setIsEdit(false);
+          } else {
+            Toast.show('失败了!');
+          }
+        })
+        .catch(function(error) {
+          console.log('eeeeeerrrrrrrrr', error);
+          // Toast.show(error);
+        });
     }
   }
-
   useEffect(() => {
     (async () => {
       await axios
@@ -179,11 +201,17 @@ const Profile = props => {
         .finally(function() {
           // always executed
         });
-    })();
-  }, []);
 
+      console.log('refreshing...........................');
+    })();
+  }, [isModalVisible, photo]);
   return (
     <ScrollView style={Style.ProfileContainer}>
+      <NavigationEvents
+        onDidFocus={() => {
+          if (!state.user._id) props.navigation.navigate('Signin');
+        }}
+      />
       <ImageBackground
         source={Images.ProfileBannerImg}
         style={Style.ProfileHeaderContainer}>
@@ -191,18 +219,32 @@ const Profile = props => {
           <Text style={Style.ProfileHeaderTitleText}>我的</Text>
         </View>
         <View style={Style.ProfileHeaderAvatarContainer}>
-          <TouchableOpacity onPress={handlePhoto} style={{marginRight: 15}}>
-            {state.user.photo !== '' && (
-              <Image
-                source={{
-                  uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                }}
-                style={Style.ProfileHeaderAvatarImg}
-                resizeMode="cover"
-                borderRadius={30}
-              />
-            )}
-            {state.user.photo === '' && (
+          <TouchableOpacity
+            onPress={handlePhoto}
+            style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
+            {state.user.photo !== undefined &&
+              state.user.photo !== '' &&
+              photo.source === '' && (
+                <Image
+                  source={{
+                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                  }}
+                  style={Style.ProfileHeaderAvatarImg}
+                  resizeMode="cover"
+                  borderRadius={30}
+                />
+              )}
+            {state.user.photo !== undefined &&
+              state.user.photo !== '' &&
+              photo.source !== '' && (
+                <Image
+                  source={photo.source}
+                  style={Style.ProfileHeaderAvatarImg}
+                  resizeMode="cover"
+                  borderRadius={30}
+                />
+              )}
+            {(state.user.photo === '' || state.user.photo === undefined) && (
               <Image
                 source={photo.source ? photo.source : Images.femaleProfile}
                 style={Style.ProfileHeaderAvatarImg}
@@ -349,74 +391,70 @@ const Profile = props => {
           <Text style={Style.BottomBtnText}>安全退出</Text>
         </View>
       </TouchableOpacity>
-
       <Modal
-        visible={isServiceModalVisible}
-        onTouchOutside={() => {
-          setIsServiceModalVisible(false);
-        }}
+        isVisible={isModalVisible}
+        coverScreen={false}
         style={{
-          width: Dimensions.get('window').width,
-          alignItems: 'center',
-          justifyContent: 'center',
+          backgroundColor: '#fff',
+          marginTop: 100,
+          marginBottom: 100,
+          marginLeft: 30,
+          marginRight: 30,
+          borderRadius: 10,
         }}>
-        <ModalContent
+        <View
           style={{
-            width: Dimensions.get('window').width * 0.8,
-            height: '80%',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
           }}>
           <View
             style={{
+              flex: 5,
               flexDirection: 'column',
-              justifyContent: 'center',
+              justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-              }}>
-              {current === 'share' && (
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '100%',
-                  }}>
-                  <QRCode value={profile.share} size={200} />
-                </View>
-              )}
+            {current === 'share' && (
               <View
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  width: '80%',
+                  marginTop: 30,
                 }}>
-                <Text>{service}</Text>
+                <QRCode value={profile.share} size={200} />
               </View>
+            )}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 25,
+              }}>
+              <Text>{service}</Text>
             </View>
           </View>
-        </ModalContent>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
-          <View style={{flex: 1}}></View>
-          <Button
-            title="      关闭      "
-            onPress={() => {
-              setIsServiceModalVisible(false);
-            }}
-          />
-          <View style={{flex: 1}}></View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <View style={{flex: 1}}></View>
+            <View style={{width: '50%'}}>
+              <Button
+                title="关闭"
+                onPress={() => {
+                  setIsModalVisible(!isModalVisible);
+                }}
+              />
+            </View>
+            <View style={{flex: 1}}></View>
+          </View>
         </View>
       </Modal>
     </ScrollView>
   );
 };
-
-export default withAuth(Profile);
+export default Profile;

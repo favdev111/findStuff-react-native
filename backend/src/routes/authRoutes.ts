@@ -17,6 +17,8 @@ class AuthRoutes {
     // for app
     this.router.post("/signup", authController.signup);
     this.router.post("/signin", authController.signin);
+
+    this.router.post("/otp", authController.otp);
   }
 }
 

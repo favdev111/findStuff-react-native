@@ -79,8 +79,8 @@ project.ext.react = [
     entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
 
-    bundleInDebug: true,    
-    devDisabledInDebug: true
+    // bundleInDebug: true,    
+    // devDisabledInDebug: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -200,6 +200,7 @@ android {
 }
 
 dependencies {
+	implementation project(':react-native-background-job')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

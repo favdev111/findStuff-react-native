@@ -33,24 +33,24 @@ function AddTag(props: TagsProps) {
       {...formItemLayout}
       className="addtag"
     >
-      <Form.Item label="name">
+      <Form.Item label="名称">
         {form.getFieldDecorator("name", {
           rules: [{ required: true, message: "Type tag name!" }]
-        })(<Input placeholder="tag name" />)}
+        })(<Input placeholder="名称" />)}
       </Form.Item>
-      <Form.Item label="icon">
+      <Form.Item label="图标">
         {form.getFieldDecorator("icon", {
           rules: [{ required: true, message: "Type tag icon name!" }]
-        })(<Input placeholder="tag icon name" />)}
+        })(<Input placeholder="图标" />)}
       </Form.Item>
-      <Form.Item label="description">
+      <Form.Item label="描述">
         {form.getFieldDecorator("description", {
           rules: [{ message: "Type tag description!" }]
-        })(<Input placeholder="tag description" />)}
+        })(<Input placeholder="描述" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit" className="btn">
-          add
+          添加
         </Button>
       </div>
     </Form>

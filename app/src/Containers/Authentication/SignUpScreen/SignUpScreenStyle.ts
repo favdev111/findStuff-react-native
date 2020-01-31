@@ -15,23 +15,8 @@ export default StyleSheet.create({
   SignFormContainer: {
     padding: 30,
   },
-  SignName: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    width: '40%',
-  },
-  SignPhoneInput: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    // width: '60%',
-  },
-  SignVerifyInput: {
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  SignPwdInput: {
-    paddingTop: 10,
-    paddingBottom: 20,
+  FormInput: {
+    paddingTop: 15,
   },
 
   SignBtn: {

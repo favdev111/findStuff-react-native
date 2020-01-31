@@ -103,7 +103,7 @@ const Contact = () => {
   const components = { body: { cell: EditCell } };
   return (
     <>
-      <PageLayout title="Contact table">
+      <PageLayout title="电话号码">
         <Table
           components={components}
           columns={tableColumns}

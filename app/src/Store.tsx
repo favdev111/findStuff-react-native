@@ -1,6 +1,12 @@
 import React, {createContext, useReducer} from 'react';
 
-const initialState = {token: '', user: {}};
+const initialState = {
+  token: '',
+  user: {},
+  news: [],
+  notifications: [],
+  messages: [],
+};
 const store = createContext(initialState);
 const {Provider} = store;
 
@@ -13,8 +19,32 @@ const StateProvider = ({children}) => {
       case 'setToken': {
         return {...state, auth_token: action.payload};
       }
-      case 'setState': {
-        return action.payload;
+      case 'setTokenUser': {
+        return {
+          ...state,
+          ...action.payload,
+        };
+      }
+      case 'setNews': {
+        return {...state, news: action.payload};
+      }
+      case 'addNews': {
+        return {...state, news: [...state.news, action.payload]};
+      }
+      case 'setNotifications': {
+        return {...state, notifications: action.payload};
+      }
+      case 'addNotification': {
+        return {
+          ...state,
+          notifications: [...state.notifications, action.payload],
+        };
+      }
+      case 'setMessages': {
+        return {...state, messages: action.payload};
+      }
+      case 'addMessage': {
+        return {...state, messages: [...state.messages, action.payload]};
       }
       default:
         throw new Error();

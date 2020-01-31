@@ -36,6 +36,8 @@ export default function Profile(props) {
                 uri: baseUrl + 'download/photo?path=' + item.photo,
               }}
               style={Style.ProfileHeaderAvatarImg}
+              resizeMode="cover"
+              borderRadius={30}
             />
             <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
           </View>
@@ -48,6 +50,8 @@ export default function Profile(props) {
               <Image
                 source={Images.BlueMapIcon}
                 style={Style.ProfileUpdateImg}
+                resizeMode="cover"
+                borderRadius={30}
               />
               <Text>上安医大</Text>
             </View>

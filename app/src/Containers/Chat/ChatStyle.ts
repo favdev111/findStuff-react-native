@@ -14,14 +14,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   MessageListContainer: {
-    padding: 5,
+    margin: 10,
   },
   MessageListAvatar: {
     width: 35,
     height: 35,
-  },
-  MessageListImgWrap: {
-    marginRight: 10,
   },
   AvatarBadgeContainer: {
     width: 15,

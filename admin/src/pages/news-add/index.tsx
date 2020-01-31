@@ -5,7 +5,7 @@ import Tag from "./add";
 const AddTag = (props: any) => {
   return (
     <>
-      <PageLayout title="Add News">
+      <PageLayout title="添加新闻">
         <Tag {...props} />
       </PageLayout>
     </>

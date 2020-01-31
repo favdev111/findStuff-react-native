@@ -84,31 +84,31 @@ function AddStuffPost(props: any) {
       {...formItemLayout}
       className="addStuffPost"
     >
-      <Form.Item label="tag">
+      <Form.Item label="标签">
         {form.getFieldDecorator("tag", {
           initialValue: props.item.tag || "",
           rules: [{ required: true, message: "Input the tag!" }]
-        })(<Input placeholder="tag" />)}
+        })(<Input placeholder="标签" />)}
       </Form.Item>
 
-      <Form.Item label="address">
+      <Form.Item label="地址">
         {form.getFieldDecorator("address", {
           initialValue: props.item.address || "",
           rules: [{ required: true, message: "Input address!" }]
-        })(<Input placeholder="address" />)}
+        })(<Input placeholder="地址" />)}
       </Form.Item>
 
-      <Form.Item label="place">
+      <Form.Item label="地点">
         {form.getFieldDecorator("place", {
           initialValue: props.item.place || "",
           rules: [{ required: true, message: "Input place!" }]
-        })(<TextArea rows={4} placeholder="place" />)}
+        })(<TextArea rows={4} placeholder="地点" />)}
       </Form.Item>
-      <Form.Item label="description">
+      <Form.Item label="描述">
         {form.getFieldDecorator("description", {
           initialValue: props.item.description || "",
           rules: [{ required: true, message: "Input description!" }]
-        })(<Input placeholder="description" />)}
+        })(<Input placeholder="描述" />)}
 
         <Upload {...photoUploadConfig}>
           <Button type="link">
@@ -117,15 +117,15 @@ function AddStuffPost(props: any) {
           </Button>
         </Upload>
       </Form.Item>
-      <Form.Item label="photos">
+      <Form.Item label="相片">
         {form.getFieldDecorator("photos", {
           initialValue: props.item.photos || [],
           rules: [{ required: true, message: "select photos!" }]
-        })(<TextArea rows={4} placeholder="photo array" />)}
+        })(<TextArea rows={4} placeholder="相片" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit">
-          Save
+          添加
         </Button>
       </div>
     </Form>

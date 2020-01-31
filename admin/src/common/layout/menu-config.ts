@@ -7,12 +7,12 @@ export interface menuType {
 }
 
 export const menuConfig: menuType[] = [
-  {
-    title: "HOME",
-    key: "home",
-    icon: "home",
-    path: "/"
-  },
+  // {
+  //   title: "HOME",
+  //   key: "home",
+  //   icon: "home",
+  //   path: "/"
+  // },
   // {
   //   title: "文章管理",
   //   key: "article",
@@ -104,12 +104,12 @@ export const menuConfig: menuType[] = [
   //   ]
   // },
   {
-    title: "Posts",
+    title: "帖子",
     key: "post",
     icon: "play-circle",
     children: [
       {
-        title: "posts",
+        title: "清单",
         key: "stuffpost-list",
         path: "/stuffposts"
       }
@@ -121,68 +121,68 @@ export const menuConfig: menuType[] = [
     ]
   },
   {
-    title: "news",
+    title: "新闻",
     key: "news",
     icon: "play-circle",
     children: [
       {
-        title: "all news",
+        title: "清单",
         key: "news-all",
         path: "/news"
       },
       {
-        title: "add news",
+        title: "添加新闻",
         key: "news-add",
         path: "/news-add"
       }
     ]
   },
   {
-    title: "notifications",
+    title: "通知",
     key: "notifications",
     icon: "play-circle",
     children: [
       {
-        title: "all notifications",
+        title: "清单",
         key: "notifications-all",
         path: "/notifications"
       },
       {
-        title: "add new notification",
+        title: "添加通知",
         key: "notification-add",
         path: "/notification-add"
       }
     ]
   },
   {
-    title: "contacts",
+    title: "电话号码",
     key: "contacts",
     icon: "play-circle",
     children: [
       {
-        title: "all contacts",
+        title: "清单",
         key: "contacts-all",
         path: "/contacts"
       },
       {
-        title: "add new contact",
+        title: "添加电话号码",
         key: "contact-add",
         path: "/contact-add"
       }
     ]
   },
   {
-    title: "profile",
+    title: "轮廓",
     key: "profile",
     icon: "play-circle",
     children: [
       {
-        title: "all profiles",
+        title: "清单",
         key: "profile-all",
         path: "/profiles"
       },
       {
-        title: "add new profile",
+        title: "添加资料",
         key: "profile-add",
         path: "/profile-add"
       }

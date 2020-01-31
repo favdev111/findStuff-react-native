@@ -35,34 +35,34 @@ function AddProfile(props: TagsProps) {
       {...formItemLayout}
       className="addnews"
     >
-      <Form.Item label="version">
+      <Form.Item label="版">
         {form.getFieldDecorator("version", {
           rules: [{ message: "Type version!" }]
-        })(<TextArea rows={4} placeholder="version" />)}
+        })(<TextArea rows={4} placeholder="版" />)}
       </Form.Item>
-      <Form.Item label="share">
+      <Form.Item label="分享">
         {form.getFieldDecorator("share", {
           rules: [{ message: "Type share content!" }]
-        })(<TextArea rows={4} placeholder="share" />)}
+        })(<TextArea rows={4} placeholder="分享" />)}
       </Form.Item>
-      <Form.Item label="about">
+      <Form.Item label="关于">
         {form.getFieldDecorator("about", {
           rules: [{ message: "Type about content!" }]
-        })(<TextArea rows={4} placeholder="about" />)}
+        })(<TextArea rows={4} placeholder="关于" />)}
       </Form.Item>
-      <Form.Item label="service">
+      <Form.Item label="服务">
         {form.getFieldDecorator("service", {
           rules: [{ message: "Type service content!" }]
-        })(<TextArea rows={4} placeholder="service" />)}
+        })(<TextArea rows={4} placeholder="服务" />)}
       </Form.Item>
-      <Form.Item label="phone">
+      <Form.Item label="电话">
         {form.getFieldDecorator("phone", {
           rules: [{ required: true, message: "Type admin phone number!" }]
-        })(<Input placeholder="phone number" />)}
+        })(<Input placeholder="电话" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit" className="btn">
-          add
+          添加
         </Button>
       </div>
     </Form>

@@ -105,7 +105,7 @@ const Notification = () => {
   const components = { body: { cell: EditCell } };
   return (
     <>
-      <PageLayout title="Notification table">
+      <PageLayout title="通知">
         <Table
           components={components}
           columns={tableColumns}

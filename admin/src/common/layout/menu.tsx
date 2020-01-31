@@ -33,6 +33,10 @@ export default function Munu(props: menuProps & RouteProps & RouterProps) {
       className="menu"
       inlineCollapsed={collapsed}
     >
+      <Menu.Item>
+        <Icon type={"home"} />
+        <span>管理面板</span>
+      </Menu.Item>
       {menuConfig.map((menu: menuType) => {
         if (!menu.children) {
           return (

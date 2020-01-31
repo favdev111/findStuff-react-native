@@ -24,7 +24,9 @@ export default function StuffPostDetail({navigation}) {
       <ScrollView style={{backgroundColor: '#f4f6f8'}}>
         <View>
           <View style={Styles.FindStuffHeaderContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('NewsView')}>
+            <TouchableOpacity
+              style={{flex: 1}}
+              onPress={() => navigation.navigate('NewsView')}>
               <Image
                 source={Images.whiteLeftChevron}
                 style={Styles.FindStuffHeaderImg}
@@ -33,7 +35,7 @@ export default function StuffPostDetail({navigation}) {
             <View style={{alignItems: 'center'}}>
               <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
             </View>
-            <View></View>
+            <View style={{flex: 1}}></View>
           </View>
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>

@@ -19,10 +19,7 @@ import Notification from 'src/Containers/Notification/NotificationList/Notificat
 import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
 import {store, StateProvider} from 'src/Store';
-import News from 'src/Containers/News/News';
-import NewsDetail from 'src/Containers/News/NewsDetail/NewsDetail';
 import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
-import {InAppNotificationProvider} from 'react-native-in-app-notification';
 import FlashMessage from 'react-native-flash-message';
 
 require('src/socket');
@@ -43,8 +40,6 @@ const AppNavigator = createStackNavigator(
     ChatDetail: ChatDetail,
 
     UserInfo: UserInfo,
-    News: News,
-    NewsDetail: NewsDetail,
     LocalPhone: LocalPhone,
   },
   {

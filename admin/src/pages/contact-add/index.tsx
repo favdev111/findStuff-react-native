@@ -5,7 +5,7 @@ import Tag from "./add";
 const AddTag = (props: any) => {
   return (
     <>
-      <PageLayout title="Add contacts">
+      <PageLayout title="电话号码">
         <Tag {...props} />
       </PageLayout>
     </>

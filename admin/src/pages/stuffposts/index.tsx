@@ -55,7 +55,7 @@ const Projects = (props: any) => {
   });
   const components = { body: { cell: EditCell } };
   return (
-    <PageLayout title="Posts">
+    <PageLayout title="发布">
       <Table
         components={components}
         className="stuffposts"

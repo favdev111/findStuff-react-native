@@ -5,11 +5,11 @@ export function Operate(props: any) {
   return (
     <div className="btnbox">
       <Button type="link" onClick={() => props.edit(record._id)}>
-        Edit
+        修改
       </Button>
       <Divider type="vertical" />
       <Button type="link" onClick={() => props.del(record._id)}>
-        Delete
+        删除
       </Button>
     </div>
   );

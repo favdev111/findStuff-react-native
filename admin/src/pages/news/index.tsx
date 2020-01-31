@@ -101,7 +101,7 @@ const News = () => {
   const components = { body: { cell: EditCell } };
   return (
     <>
-      <PageLayout title="News table">
+      <PageLayout title="新闻">
         <Table
           components={components}
           columns={tableColumns}

@@ -30,7 +30,7 @@ export default (io: Server, connectedUsers: any) => {
     const { user_id } = socket.handshake.query;
     connectedUsers[user_id] = socket.id;
 
-    io.emit("notify", "欢迎来到我们的服务");
+    // io.emit("notify", "Welcome to our service");
 
     socket.on("getMessages", () => {
       messages.forEach(sendMessage(socket));

@@ -7,19 +7,24 @@ export default function CustomPwdInput(props) {
 
   return (
     <View>
-      <View style={Styles.textBoxContainer}>
-        <Text>{props.CustomVerifyLabel}</Text>
+      <Text>{props.CustomVerifyLabel}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderColor: '#ddd',
+          borderBottomWidth: 1,
+        }}>
         <TextInput
           secureTextEntry={hidePassword}
-          style={Styles.textBox}
           placeholder={props.CustomPlaceholder}
           onChangeText={props.proc}
+          style={Styles.CustomTextInput}
         />
         <TouchableOpacity
           activeOpacity={0.8}
           style={Styles.touachableButton}
           onPress={() => setHidePassword(!hidePassword)}>
-          <Text style={Styles.buttonImage}>| 获取验证码</Text>
+          <Text>| 获取验证码</Text>
         </TouchableOpacity>
       </View>
     </View>

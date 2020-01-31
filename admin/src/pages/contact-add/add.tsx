@@ -33,24 +33,24 @@ function AddContact(props: TagsProps) {
       {...formItemLayout}
       className="addtag"
     >
-      <Form.Item label="city">
+      <Form.Item label="市">
         {form.getFieldDecorator("city", {
           rules: [{ required: true, message: "Type contact city!" }]
-        })(<Input placeholder="contact city" />)}
+        })(<Input placeholder="市" />)}
       </Form.Item>
-      <Form.Item label="contact district">
+      <Form.Item label="区">
         {form.getFieldDecorator("district", {
           rules: [{ required: true, message: "Type contact district!" }]
-        })(<Input placeholder="contact district" />)}
+        })(<Input placeholder="区" />)}
       </Form.Item>
-      <Form.Item label="number">
+      <Form.Item label="电话号码">
         {form.getFieldDecorator("number", {
           rules: [{ required: true, message: "Type contact number!" }]
-        })(<Input placeholder="contact number" />)}
+        })(<Input placeholder="电话号码" />)}
       </Form.Item>
       <div className="btnbox">
         <Button type="primary" htmlType="submit" className="btn">
-          add
+          添加
         </Button>
       </div>
     </Form>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, BackHandler} from 'react-native';
 import Styles from './SignInScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
@@ -10,7 +10,7 @@ import {store} from 'src/Store';
 
 import Toast from 'react-native-simple-toast';
 import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import axios from 'axios';
 
 export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
@@ -52,7 +52,7 @@ export default function SignInScreen(props) {
       .then(response => {
         if (response.data.success) {
           dispatch({
-            type: 'setState',
+            type: 'setTokenUser',
             payload: {
               auth_token: response.headers.auth_token,
               user: response.data.user,
@@ -62,7 +62,7 @@ export default function SignInScreen(props) {
           saveToken('token', response.headers.auth_token);
 
           Toast.show('成功!');
-          props.navigation.navigate('Home');
+          props.navigation.navigate('AppHome');
         } else {
           Toast.show(response.data.msg);
         }
@@ -72,7 +72,20 @@ export default function SignInScreen(props) {
       });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    props.navigation.setParams({from_screen: 'signin'});
+
+    console.log(
+      props.navigation.getParam('from_screen'),
+      'just defined the from _screen params',
+    );
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      console.log('you clicked back button. go to the app home.');
+      props.navigation.navigate('AppHome');
+      return true;
+    });
+  }, []);
 
   return (
     <View style={{flex: 1}}>

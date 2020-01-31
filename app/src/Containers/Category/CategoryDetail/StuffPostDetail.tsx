@@ -12,8 +12,8 @@ import Styles from './CategoryDetailStyle';
 import {store} from 'src/Store';
 import moment from 'moment';
 import {baseUrl} from 'src/constants';
-
-const axios = require('axios');
+import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
+import axios from 'axios';
 
 export default function StuffPostDetail({navigation}) {
   const [state, dispatch] = useContext(store);
@@ -69,6 +69,7 @@ export default function StuffPostDetail({navigation}) {
         <View>
           <View style={Styles.FindStuffHeaderContainer}>
             <TouchableOpacity
+              style={{flex: 1}}
               onPress={() => navigation.navigate('StuffPostView')}>
               <Image
                 source={Images.whiteLeftChevron}
@@ -78,63 +79,101 @@ export default function StuffPostDetail({navigation}) {
             <View style={{alignItems: 'center'}}>
               <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
             </View>
-            <View></View>
+            <View style={{flex: 1}}></View>
           </View>
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                {item.user &&
-                  item.user.photo &&
-                  item.user.photo.length === 0 && (
-                    <Image
-                      style={Styles.AvatarPhoto}
-                      source={Images.maleProfile}
-                      resizeMode="cover"
-                      borderRadius={30}
-                    />
-                  )}
-                {item.user && item.user.photo && item.user.photo.length > 0 && (
+                {(!item.user || !item.user.photo) && (
                   <Image
                     style={Styles.AvatarPhoto}
-                    source={{
-                      uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                    }}
+                    source={Images.maleProfile}
                     resizeMode="cover"
                     borderRadius={30}
                   />
                 )}
-
-                <View style={Styles.UserNameContainer}>
-                  <View style={Styles.UserNameWrap}>
-                    <View>
-                      {item.user?.name && <Text>{item.user.name}</Text>}
-                    </View>
-                  </View>
+                {item.user && item.user.photo && item.user.photo.length > 0 && (
+                  <Image
+                    style={Styles.AvatarPhoto}
+                    // source={{
+                    //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
+                    // }}
+                    source={Images.maleProfile}
+                    resizeMode="cover"
+                    borderRadius={30}
+                  />
+                )}
+                <View style={{flex: 3}}></View>
+              </View>
+              <View style={Styles.UserNameContainer}>
+                <View style={Styles.UserNameWrap}>
                   <View>
-                    <Text style={{color: Colors.grey}}>
-                      {moment(item.createAt).format('M月D日 ')}
+                    {item.user?.name && <Text>{item.user.name}</Text>}
+                  </View>
+                </View>
+                <View style={{paddingTop: 5}}>
+                  <Text style={{color: Colors.grey, fontSize: 12}}>
+                    {moment(item.createAt).format('M月D日 hh时mm分')}
+                  </Text>
+                </View>
+                {item.fee > 0 && (
+                  <View style={{paddingTop: 5}}>
+                    <Text style={{color: Colors.red, fontSize: 12}}>
+                      {'赏 ¥ '}
+                      {item.fee}
                     </Text>
                   </View>
+                )}
+                <View style={Styles.UserLocationContainer}>
+                  <Image
+                    source={Images.BlueMapIcon}
+                    style={Styles.UserLocationImg}
+                  />
+                  <Text style={{color: Colors.grey, paddingLeft: 5}}>
+                    {item.place}
+                  </Text>
                 </View>
               </View>
-              <View>
-                <View style={Styles.PickBtn}>
+              <View style={{flex: 2, flexDirection: 'column'}}>
+                <View style={{flex: 1}}></View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    justifyContent: 'space-around',
+                  }}>
+                  {item.fee > 0 && (
+                    <View style={Styles.FeeBtn}>
+                      <View style={Styles.FeeBtn2}>
+                        <View style={Styles.FeeBtn3}>
+                          <Text style={{color: '#fff'}}>赏</Text>
+                        </View>
+                      </View>
+                    </View>
+                  )}
                   {item.kind === 'found' && (
-                    <Text style={{color: '#fff'}}>拾</Text>
+                    <View style={Styles.PickBtn}>
+                      <Text style={{color: '#fff'}}>拾</Text>
+                    </View>
                   )}
                   {item.kind === 'lost' && (
-                    <Text style={{color: '#fff'}}>嘚</Text>
+                    <View style={Styles.LostBtn}>
+                      <Text style={{color: '#fff'}}>丢</Text>
+                    </View>
                   )}
                 </View>
-              </View>
-            </View>
-            <View style={Styles.UserLocationContainer}>
-              <View style={Styles.UserLocaionWrap}>
-                <Image
-                  source={Images.BlueMapIcon}
-                  style={Styles.UserLocationImg}
-                />
-                <Text style={{color: Colors.grey}}>{item.place}</Text>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <RoundBtn
+                    RoundBtnTitle={'联系TA'}
+                    RoundBtnColor={'MainYellow'}
+                  />
+                </View>
+                <View style={{flex: 1}}></View>
               </View>
             </View>
           </View>
