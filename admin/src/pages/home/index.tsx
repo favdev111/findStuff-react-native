@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
 // import { RouteComponentProps } from 'react-router'
-import PageLayout from '../../common/components/page-layout'
+import PageLayout from "../../common/components/page-layout";
 const Home = () => {
-  return <PageLayout title='首页'>
-    naice blog 后台管理系统
-  </PageLayout>
-}
+  return <PageLayout title="首页">后台管理系统</PageLayout>;
+};
 
-
-export default Home
+export default Home;
