@@ -1,12 +1,13 @@
 import React from "react";
-import { Divider, Button } from "antd";
+import { Divider, Button, Checkbox } from "antd";
 export function Operate(props: any) {
   const { record } = props;
   return (
     <div className="btnbox">
-      <Button type="link" onClick={() => props.edit(record._id)}>
-        修改
-      </Button>
+      <Checkbox onChange={e => props.ads(record._id, e.target.checked)}>
+        {"ads"}
+      </Checkbox>
+
       <Divider type="vertical" />
       <Button type="link" onClick={() => props.del(record._id)}>
         删除

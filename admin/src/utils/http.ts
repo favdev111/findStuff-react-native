@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { message, Modal } from "antd";
-import { API_ROOT, ORIGINAL_ROOT } from "./config";
+import { API_ROOT, API2_ROOT, ORIGINAL_ROOT } from "./config";
 import isLogin from "./login";
 
 const confirm = Modal.confirm;
@@ -9,6 +9,10 @@ export const http = axios.create({
 });
 
 export const http2 = axios.create({
+  baseURL: API2_ROOT
+});
+
+export const http_org = axios.create({
   baseURL: ORIGINAL_ROOT
 });
 

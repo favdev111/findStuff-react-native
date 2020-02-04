@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, message } from "antd";
 import { columns } from "./config";
 import PageLayout from "../../common/components/page-layout";
-import { fetchStuffPost, delStuffPost } from "../../utils/api";
+import { fetchStuffPost, delStuffPost, adsStuffPost } from "../../utils/api";
 import { Operate } from "./oprations";
 import "./index.scss";
 
@@ -30,6 +30,12 @@ const Projects = (props: any) => {
   function edit(id: string) {
     props.history.push(`/stuffpost-add?id=${id}`);
   }
+  async function ads(id: string, value: boolean) {
+    const { data } = await adsStuffPost(id, value);
+    setRefresh(refresh + 1);
+    setPage({ current: 1, total: 0 });
+    message.success(data.message);
+  }
   async function del(id: string) {
     const { data } = await delStuffPost(id);
     setRefresh(refresh + 1);
@@ -45,6 +51,7 @@ const Projects = (props: any) => {
           col,
           record,
           edit,
+          ads,
           del,
           rowIndex
         })

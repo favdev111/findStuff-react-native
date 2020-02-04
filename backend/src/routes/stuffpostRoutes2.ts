@@ -11,6 +11,7 @@ class StuffPostRoutes {
 
   routes() {
     this.router.post("/browse", stuffpostController2.increaseBrowseCnt);
+    this.router.post("/ads", stuffpostController2.ads);
     this.router.post("/likes", stuffpostController2.increaseLikesCnt);
   }
 }

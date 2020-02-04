@@ -1,7 +1,8 @@
-import { http, http2, getAuthorization } from "./http";
-import { API_ROOT, ORIGINAL_ROOT } from "./config";
+import { http, http2, http_org, getAuthorization } from "./http";
+import { API_ROOT, API2_ROOT, ORIGINAL_ROOT } from "./config";
 
-export const login = (params = {}) => http2.post("auth/login", { ...params });
+export const login = (params = {}) =>
+  http_org.post("auth/login", { ...params });
 
 export const getArts = (params = {}) => http.get("article/get", { params });
 export const addArticle = (params = {}) =>
@@ -72,6 +73,8 @@ export const fetchStuffPost = (params = {}) =>
 export const addStuffPost = (params = {}) =>
   http.post("stuffpost", { ...params });
 export const delStuffPost = (id: string) => http.delete(`stuffpost/${id}`);
+export const adsStuffPost = (id: string, ads: boolean) =>
+  http2.post(`stuffpost/ads`, { _id: `${id}`, ads });
 export const editStuffPost = (id: string, params = {}) =>
   http.put(`stuffpost/${id}`, { ...params });
 
