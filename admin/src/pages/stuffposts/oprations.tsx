@@ -4,7 +4,10 @@ export function Operate(props: any) {
   const { record } = props;
   return (
     <div className="btnbox">
-      <Checkbox onChange={e => props.ads(record._id, e.target.checked)}>
+      <Checkbox
+        onChange={e => props.ads(record._id, e.target.checked)}
+        checked={record.ads}
+      >
         {"ads"}
       </Checkbox>
 
