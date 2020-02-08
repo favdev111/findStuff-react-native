@@ -62,7 +62,7 @@ class MessageController {
         item: newItem
       });
 
-      req.io.emit("message", content);
+      req.io.emit("bg_message", content);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

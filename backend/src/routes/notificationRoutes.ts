@@ -15,8 +15,6 @@ class NotificationRoutes {
     this.router.post("/", notificationController.createItem);
     this.router.put("/:url", notificationController.updateItem);
     this.router.delete("/:url", notificationController.deleteItem);
-
-    this.router.post("/:url", notificationController.getLastItem);
   }
 }
 

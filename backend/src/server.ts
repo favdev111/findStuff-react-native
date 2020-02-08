@@ -6,6 +6,8 @@ import compression from "compression";
 import cors from "cors";
 
 import http from "http";
+import https from "https";
+import fs from "fs";
 
 import uploadRoutes from "./routes/uploadRoutes";
 import downloadRoutes from "./routes/downloadRoutes";
@@ -29,7 +31,14 @@ import SocketIOServer from "socket.io";
 import initializeSocketIO from "./socket";
 
 const app = express();
-const server = new http.Server(app);
+const server = new http.Server(
+  // {
+  //   key: fs.readFileSync("./key.pem"),
+  //   cert: fs.readFileSync("./cert.pem"),
+  //   passphrase: "123456"
+  // },
+  app
+);
 const io = SocketIOServer(server);
 
 app.set("port", process.env.PORT || 8000);
