@@ -10,6 +10,8 @@ const StuffPostSchema = new Schema(
     place: { type: String, required: true, text: true },
     address: { type: String, required: true, text: true },
     fee: { type: Number, required: true },
+
+    title: { type: String, required: true, text: true },
     description: { type: String, required: true, text: true },
 
     photos: [
@@ -35,6 +37,6 @@ const StuffPostSchema = new Schema(
   { autoIndex: false }
 );
 
-StuffPostSchema.index({ description: "text", place: "text", address: "text" });
+StuffPostSchema.index({ title: "text", description: "text" });
 
 export default model("StuffPost", StuffPostSchema);

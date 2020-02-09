@@ -4,6 +4,8 @@ import Otp from "../models/Otp";
 import { signupValidation, signinValidation } from "../libs/joi";
 import jwt from "jsonwebtoken";
 
+import moment from "moment";
+
 class AuthController {
   constructor() {}
 
@@ -68,6 +70,55 @@ class AuthController {
     }
   }
 
+  public async resetpwd(req: Request, res: Response) {
+    const { phone, password, otp } = req.body;
+
+    if (!otp || otp === "")
+      return res.status(200).json({ success: true, msg: "没有输入验证码" });
+
+    console.log(otp, "otp from user input");
+
+    const otpExist = await Otp.findOne({ phone, otp });
+
+    console.log(otpExist, "otpExist");
+
+    if (!otpExist)
+      return res.status(200).json({ success: false, msg: "输入验证码错误" });
+
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { phone },
+        { password },
+        {
+          new: true
+        }
+      );
+
+      const token: string = jwt.sign(
+        { _id: "" },
+        process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
+        {
+          expiresIn: 60 * 60 * 24
+        }
+      );
+
+      res
+        .status(200)
+        .header("auth_token", token)
+        .json({
+          success: true,
+          msg: "成功!",
+          user: updatedUser
+        });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "失败了"
+      });
+    }
+  }
+
   public async signin(req: Request, res: Response) {
     // body request validation
 
@@ -122,13 +173,37 @@ class AuthController {
     let iHuyi = new IHuyi(apiId, apiKey);
     let otp_code = Math.floor(1000 + Math.random() * 9000);
 
-    await Otp.findOneAndUpdate(
-      { phone },
-      { phone, otp: otp_code },
+    const today = moment().startOf("day");
+    let newOtp = await Otp.findOneAndUpdate(
       {
-        upsert: true
+        phone,
+        createAt: today.toDate()
+      },
+      { phone, otp: otp_code, $inc: { limit: -1 } },
+      {
+        new: true
       }
     );
+
+    if (newOtp === null) {
+      newOtp = new Otp({
+        phone,
+        otp: otp_code,
+        createAt: today.toDate(),
+        limit: 3
+      });
+      await newOtp.save();
+    }
+
+    console.log(newOtp.limit, "asdfa");
+
+    if (newOtp.limit < 0) {
+      res.status(200).json({
+        success: false,
+        msg: "一天可能只有3次!"
+      });
+      return;
+    }
 
     let content =
       "您的验证码是：" + otp_code + "。请不要把验证码泄露给其他人。";
@@ -140,7 +215,7 @@ class AuthController {
         console.log("err occured during otp...", err.message, err.code);
         res.status(200).json({
           success: false,
-          msg: err.message
+          msg: "正在发送验证码...." //err.message
         });
       } else {
         console.log("SMS sent, and smsId is " + smsId);

@@ -2,8 +2,13 @@ import { Request, Response } from "express";
 import StuffPost from "../models/StuffPost";
 import mongodb from "mongodb";
 
+import moment from "moment";
+import StuffPostLimit from "../models/StuffPostLimit";
+
 class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
+    console.log(req.query);
+
     const tag = req.query.tag;
     const key = req.query.key;
     const kind = req.query.kind;
@@ -15,30 +20,15 @@ class StuffPostController {
     if (tag !== undefined && tag !== "") filter = { ...filter, tag };
     if (kind !== undefined && kind !== "") filter = { ...filter, kind };
 
-    if (
-      key !== undefined &&
-      key !== "" &&
-      (region === undefined || region === "")
-    )
-      filter = { ...filter, $text: { $search: key } };
-    if (
-      region !== undefined &&
-      region !== "" &&
-      (key === undefined || key === "")
-    )
-      filter = { ...filter, $text: { $search: region } };
-    if (
-      key !== undefined &&
-      key !== "" &&
-      region !== undefined &&
-      region !== ""
-    )
+    if (key !== undefined && key !== "")
+      // filter = { ...filter, description: { $regex: key, $options: "i" } };
       filter = {
         ...filter,
-        $text: { $search: "'" + key + " " + region + "'" }
+        $text: { $search: "'" + key + "' '" + region + "'" }
       };
 
-    console.log(sort, "sort");
+    if (region !== undefined && region !== "")
+      filter = { ...filter, place: { $regex: region, $options: "i" } };
 
     if (sort !== undefined && sort !== "" && parseInt(sort) === 2) {
       filter = { ...filter, ads: true };
@@ -46,12 +36,13 @@ class StuffPostController {
 
     const sortObj = parseInt(sort) === 1 ? { browse: -1 } : { _id: -1 };
 
-    console.log(filter);
-    console.log(sortObj);
+    console.log(filter, ",,,", sortObj);
 
     await StuffPost.createIndexes();
 
-    let items = await StuffPost.find(filter)
+    let items = [];
+
+    items = await StuffPost.find(filter)
       .populate("user", ["name", "phone", "photo"])
       .sort(sortObj);
 
@@ -86,6 +77,37 @@ class StuffPostController {
   }
 
   public async createItem(req: Request, res: Response): Promise<void> {
+    ///////////////////////////////////////////////////////////////////////
+    const today = moment().startOf("day");
+    let newStuffPostLimit = await StuffPostLimit.findOneAndUpdate(
+      {
+        user: req.body.user,
+        createAt: today.toDate()
+      },
+      { $inc: { limit: -1 } },
+      {
+        new: true
+      }
+    );
+
+    if (newStuffPostLimit === null) {
+      newStuffPostLimit = new StuffPostLimit({
+        user: req.body.user,
+        createAt: today.toDate(),
+        limit: 3
+      });
+      await newStuffPostLimit.save();
+    }
+
+    if (newStuffPostLimit.limit < 0) {
+      res.status(200).json({
+        success: false,
+        msg: "一天可能只有3次!"
+      });
+      return;
+    }
+    /////////////////////////////////////////////
+
     try {
       const {
         user,
@@ -94,6 +116,7 @@ class StuffPostController {
         address,
         kind,
         fee,
+        title,
         description,
         photos
       } = req.body;
@@ -105,6 +128,7 @@ class StuffPostController {
         address,
         kind,
         fee,
+        title,
         description,
         photos,
         browse: 0,
@@ -114,14 +138,14 @@ class StuffPostController {
 
       res.status(200).json({
         success: true,
-        msg: "Item saved.",
+        msg: "成功!",
         item: newItem
       });
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
-        msg: "Item not saved"
+        msg: "失败了!"
       });
     }
   }
