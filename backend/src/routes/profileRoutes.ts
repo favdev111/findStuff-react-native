@@ -1,6 +1,6 @@
 import { Router } from "express";
 import profileController from "../controllers/profile.controller";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class ProfileRoutes {
   router: Router;
 

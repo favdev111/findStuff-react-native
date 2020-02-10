@@ -1,6 +1,6 @@
 import { Router } from "express";
 import newsController from "../controllers/news.controller";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class NewsRoutes {
   router: Router;
 

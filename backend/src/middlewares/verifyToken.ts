@@ -13,17 +13,18 @@ export const tokenValidation = (
 ) => {
   try {
     const token = req.header("auth_token");
+    if (!token)
+      return res.status(200).json({ success: false, msg: "Access Denied" });
 
-    if (!token) return res.status(401).json("Access Denied");
     const payload = jwt.verify(
       token,
       process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n"
     ) as IPayload;
+
     req.userId = payload._id;
 
     next();
   } catch (e) {
-    console.log(e);
-    res.status(400).send("Invalid Token");
+    res.status(200).send({ success: false, msg: "Invalid Token" });
   }
 };

@@ -18,17 +18,17 @@ export const http_org = axios.create({
 
 export const getAuthorization = () => {
   let str = "";
-  // if (window.localStorage.getItem("auth_token")) {
-  //   str = `Naice ${
-  //     JSON.parse(window.localStorage.getItem("auth_token") || "").token
-  //   }`;
-  // }
+
+  const auth_token = window.localStorage.getItem("auth_token");
+  if (auth_token !== "undefined" && auth_token !== null) {
+    str = JSON.parse(auth_token);
+  }
   return str;
 };
 // 拦截器
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    config.headers.Authorization = getAuthorization();
+    config.headers.auth_token = getAuthorization();
     return config;
   },
   error => {
@@ -40,10 +40,26 @@ http.interceptors.response.use(
   (
     response: AxiosResponse<any>
   ): AxiosResponse<any> | Promise<AxiosResponse<any>> => {
-    if (response.data.code === 0) {
-      message.error(response.data.message);
+    console.log(response.data);
+
+    if (response.data.success || Array.isArray(response.data)) {
+      return response;
+    } else {
+      confirm({
+        title: "提示!",
+        content: "用户信息已过期，请点击确定后重新登录。",
+        okText: "确定",
+        cancelText: "取消",
+        onOk() {
+          window.location.href = "/login";
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
     }
-    return response;
+
+    return Promise.reject();
   },
   (error: any) => {
     if (!isLogin()) {

@@ -12,6 +12,7 @@ class AuthRoutes {
   routes() {
     // for admin
     this.router.post("/register", authController.register);
+    this.router.post("/resetpass", authController.resetpass);
     this.router.post("/login", authController.login);
 
     // for app

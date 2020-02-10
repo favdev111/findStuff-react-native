@@ -4,6 +4,8 @@ import loadable from "@loadable/component";
 
 const Layout = loadable(() => import("../common/layout"));
 const Login = loadable(() => import("../pages/login"));
+const Register = loadable(() => import("../pages/register"));
+const ForgotPwd = loadable(() => import("../pages/forgotpwd"));
 const ArticleList = loadable(() => import("../pages/article-list"));
 const AddArticle = loadable(() => import("../pages/article-add"));
 const ArticleClassify = loadable(() => import("../pages/article-classify"));
@@ -42,6 +44,14 @@ export const routes = [
   {
     path: "/login",
     component: Login
+  },
+  {
+    path: "/register",
+    component: Register
+  },
+  {
+    path: "/forgotpwd",
+    component: ForgotPwd
   },
   {
     path: "/",
@@ -133,7 +143,7 @@ export const routes = [
       },
       {
         path: "/",
-        component: StuffPostList //Home
+        component: Home
       }
     ]
   }

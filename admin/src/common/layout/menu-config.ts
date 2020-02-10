@@ -109,7 +109,7 @@ export const menuConfig: menuType[] = [
     icon: "play-circle",
     children: [
       {
-        title: "清单",
+        title: "列表",
         key: "stuffpost-list",
         path: "/stuffposts"
       }
@@ -126,7 +126,7 @@ export const menuConfig: menuType[] = [
     icon: "play-circle",
     children: [
       {
-        title: "清单",
+        title: "列表",
         key: "news-all",
         path: "/news"
       },
@@ -143,7 +143,7 @@ export const menuConfig: menuType[] = [
     icon: "play-circle",
     children: [
       {
-        title: "清单",
+        title: "列表",
         key: "notifications-all",
         path: "/notifications"
       },
@@ -160,7 +160,7 @@ export const menuConfig: menuType[] = [
     icon: "play-circle",
     children: [
       {
-        title: "清单",
+        title: "列表",
         key: "contacts-all",
         path: "/contacts"
       },
@@ -172,12 +172,12 @@ export const menuConfig: menuType[] = [
     ]
   },
   {
-    title: "轮廓",
+    title: "应用信息",
     key: "profile",
     icon: "play-circle",
     children: [
       {
-        title: "清单",
+        title: "列表",
         key: "profile-all",
         path: "/profiles"
       },

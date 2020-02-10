@@ -1,6 +1,6 @@
 import { Router } from "express";
 import stuffpostController2 from "../controllers/stuffpost.controller2";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class StuffPostRoutes {
   router: Router;
 

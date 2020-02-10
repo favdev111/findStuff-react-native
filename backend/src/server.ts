@@ -30,6 +30,12 @@ import SocketIOServer from "socket.io";
 
 import initializeSocketIO from "./socket";
 
+import authNotificationRoutes from "./routes/authNotificationRoutes";
+import authNewsRoutes from "./routes/authNewsRoutes";
+import authProfileRoute from "./routes/authProfileRoutes";
+import authContactRoutes from "./routes/authContactRoutes";
+import authStuffpostRoutes from "./routes/authStuffpostRoutes";
+
 const app = express();
 const server = new http.Server(
   // {
@@ -76,7 +82,6 @@ app.use("/auth", authRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/download", downloadRoutes);
 
-app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/news", newsRoutes);
@@ -87,6 +92,15 @@ app.use("/api2/stuffpost", stuffpostRoutes2);
 app.use("/api/message", messageRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api2/user", userRoutes2);
+
+/////////////////////////----------admin----------///////////////////////////
+app.use("/auth/api/user", userRoutes);
+app.use("/auth/api/notification", authNotificationRoutes);
+app.use("/auth/api/news", authNewsRoutes);
+app.use("/auth/api/contact", authContactRoutes);
+app.use("/auth/api/stuffpost", authStuffpostRoutes);
+app.use("/auth/api/profile", authProfileRoute);
+//////////////////////////////////////////////////////////////////////////////
 
 server.listen(app.get("port"), () => {
   console.log("Server on port", app.get("port"));

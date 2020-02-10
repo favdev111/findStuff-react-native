@@ -1,8 +1,14 @@
 import { http, http2, http_org, getAuthorization } from "./http";
-import { API_ROOT, API2_ROOT, ORIGINAL_ROOT } from "./config";
+import { ORIGINAL_ROOT } from "./config";
 
 export const login = (params = {}) =>
   http_org.post("auth/login", { ...params });
+export const register = (params = {}) =>
+  http_org.post("auth/register", { ...params });
+export const resetpass = (params = {}) =>
+  http_org.post("auth/resetpass", { ...params });
+
+export const getOtp = (params = {}) => http_org.post("auth/otp", { ...params });
 
 export const getArts = (params = {}) => http.get("article/get", { params });
 export const addArticle = (params = {}) =>

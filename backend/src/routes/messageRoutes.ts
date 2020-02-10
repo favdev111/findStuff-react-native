@@ -1,6 +1,6 @@
 import { Router } from "express";
 import messageController from "../controllers/message.controller";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class MessageRoutes {
   router: Router;
 

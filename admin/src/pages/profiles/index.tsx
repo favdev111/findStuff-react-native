@@ -106,7 +106,7 @@ const Profile = () => {
   const components = { body: { cell: EditCell } };
   return (
     <>
-      <PageLayout title="轮廓">
+      <PageLayout title="应用信息">
         <Table
           components={components}
           columns={tableColumns}

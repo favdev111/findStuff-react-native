@@ -13,13 +13,13 @@ export const columns: Array<ColumnPropsEditable<any>> = [
     render: (text, record, dataIndex) => <span>{dataIndex + 1}</span>
   },
   {
-    title: "运作",
+    title: "编辑",
     key: "content",
     dataIndex: "content",
     editable: true
   },
   {
-    title: "运作",
+    title: "编辑",
     dataIndex: "operation",
     width: 150
   }

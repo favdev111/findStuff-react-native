@@ -24,7 +24,19 @@ export const columns: ColumnProps<any>[] = [
     title: "标签",
     key: "tag",
     width: 100,
-    dataIndex: "tag"
+    dataIndex: "tag",
+    render: tag => {
+      let ret = "其他";
+      if (tag === "CatWallet") ret = "钱包";
+      else if (tag === "CatKey") ret = "钥匙";
+      else if (tag === "CatDigital") ret = "数码";
+      else if (tag === "CatOffice") ret = "办公";
+      else if (tag === "CatMan") ret = "寻人";
+      else if (tag === "CatPet") ret = "宠物";
+      else if (tag === "CatBag") ret = "背包";
+
+      return ret;
+    }
   },
   {
     title: "地点",
@@ -71,7 +83,7 @@ export const columns: ColumnProps<any>[] = [
       ))
   },
   {
-    title: "运作",
+    title: "编辑",
     key: "operation",
     width: 150,
     dataIndex: "operation"

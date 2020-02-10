@@ -11,10 +11,10 @@ class StuffPostRoutes {
   }
 
   routes() {
-    this.router.get("/", stuffpostController.getItems);
-    this.router.get("/:url", stuffpostController.getItem);
-    this.router.post("/", stuffpostController.createItem);
-    this.router.put("/:url", stuffpostController.updateItem);
+    this.router.get("/", tokenValidation, stuffpostController.getItems);
+    this.router.get("/:url", tokenValidation, stuffpostController.getItem);
+    this.router.post("/", tokenValidation, stuffpostController.createItem);
+    this.router.put("/:url", tokenValidation, stuffpostController.updateItem);
     this.router.delete(
       "/:url",
       tokenValidation,

@@ -7,8 +7,6 @@ import StuffPostLimit from "../models/StuffPostLimit";
 
 class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    console.log(req.query);
-
     const tag = req.query.tag;
     const key = req.query.key;
     const kind = req.query.kind;
@@ -20,12 +18,15 @@ class StuffPostController {
     if (tag !== undefined && tag !== "") filter = { ...filter, tag };
     if (kind !== undefined && kind !== "") filter = { ...filter, kind };
 
-    if (key !== undefined && key !== "")
-      // filter = { ...filter, description: { $regex: key, $options: "i" } };
+    if (key !== undefined && key !== "") {
       filter = {
         ...filter,
-        $text: { $search: "'" + key + "' '" + region + "'" }
+        $or: [
+          { title: { $regex: key, $options: "i" } },
+          { description: { $regex: key, $options: "i" } }
+        ]
       };
+    }
 
     if (region !== undefined && region !== "")
       filter = { ...filter, place: { $regex: region, $options: "i" } };
@@ -35,8 +36,6 @@ class StuffPostController {
     }
 
     const sortObj = parseInt(sort) === 1 ? { browse: -1 } : { _id: -1 };
-
-    console.log(filter, ",,,", sortObj);
 
     await StuffPost.createIndexes();
 
@@ -99,7 +98,7 @@ class StuffPostController {
       await newStuffPostLimit.save();
     }
 
-    if (newStuffPostLimit.limit < 0) {
+    if (newStuffPostLimit.limit < 1) {
       res.status(200).json({
         success: false,
         msg: "一天可能只有3次!"

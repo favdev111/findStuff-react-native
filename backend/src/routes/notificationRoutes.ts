@@ -1,6 +1,6 @@
 import { Router } from "express";
 import notificationController from "../controllers/notification.controller";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class NotificationRoutes {
   router: Router;
 

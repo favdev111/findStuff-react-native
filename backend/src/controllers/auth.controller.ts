@@ -1,10 +1,16 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import Otp from "../models/Otp";
-import { signupValidation, signinValidation } from "../libs/joi";
+import {
+  signupValidation,
+  signinValidation,
+  registerValidation,
+  loginValidation
+} from "../libs/joi";
 import jwt from "jsonwebtoken";
 
 import moment from "moment";
+import Admin from "../models/Admin";
 
 class AuthController {
   constructor() {}
@@ -49,7 +55,7 @@ class AuthController {
         { _id: newUser._id },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60 * 24
+          expiresIn: 60 * 60
         }
       );
 
@@ -98,7 +104,7 @@ class AuthController {
         { _id: "" },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60 * 24
+          expiresIn: 60 * 60
         }
       );
 
@@ -141,7 +147,7 @@ class AuthController {
       { _id: user._id },
       process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
       {
-        expiresIn: 60 * 60 * 24
+        expiresIn: 60 * 60
       }
     );
 
@@ -157,6 +163,8 @@ class AuthController {
 
   public async otp(req: Request, res: Response) {
     // body request validation
+
+    console.log(req.body);
 
     const { phone } = req.body;
 
@@ -197,7 +205,7 @@ class AuthController {
 
     console.log(newOtp.limit, "asdfa");
 
-    if (newOtp.limit < 0) {
+    if (newOtp.limit < 1) {
       res.status(200).json({
         success: false,
         msg: "一天可能只有3次!"
@@ -229,29 +237,31 @@ class AuthController {
     ///////////////////////////////////////////////////
   }
 
+  //admin register
   public async register(req: Request, res: Response) {
-    // body request validation
-    const { error } = signupValidation(req.body);
-    if (error) return res.status(400).json(error.message);
+    const { error } = registerValidation(req.body);
+    if (error)
+      return res.status(200).json({ success: false, msg: error.message });
 
-    // username validation
-    const usernameExist = await User.findOne({ username: req.body.username });
+    const { phone, password } = req.body;
+
+    const usernameExist = await Admin.findOne({ phone });
     console.log(usernameExist);
+
     if (usernameExist)
-      return res.status(400).json({ msg: "Username already exist." });
+      return res
+        .status(200)
+        .json({ success: false, msg: "Phonenumber already exist." });
 
     try {
-      // const { name, email, username, password } = req.body;
-      const { phone, password } = req.body;
-
-      const newUser = new User({ phone, password });
-      await newUser.save();
+      const newAdmin = new Admin({ phone, password });
+      await newAdmin.save();
 
       const token: string = jwt.sign(
-        { _id: newUser._id },
+        { _id: newAdmin._id },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60 * 24
+          expiresIn: 60 * 60
         }
       );
 
@@ -261,54 +271,98 @@ class AuthController {
         .json({
           success: true,
           msg: "User saved.",
-          user: newUser
+          user: newAdmin
         });
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "User not saved"
       });
     }
   }
 
+  //admin login
   public async login(req: Request, res: Response) {
-    // body request validation
+    const { phone, password } = req.body;
+    const { error } = loginValidation({ phone, password });
 
-    const { email, password } = req.body;
-    const { error } = signinValidation({ email, password, phone: "123456" });
-
-    console.log(req.body);
-    console.log(error);
-
-    // if (error) return res.status(400).json(error.message);
-    // find user
-
-    const user = await User.findOne({
-      email: req.body.email,
-      password: req.body.password
+    const admin = await Admin.findOne({
+      phone,
+      password
     });
 
-    if (!user)
+    if (!admin)
       return res.status(200).json({ success: false, msg: "找不到用户." });
 
-    // create token
     const token: string = jwt.sign(
-      { _id: user._id },
+      { _id: admin._id },
       process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
       {
-        expiresIn: 60 * 60 * 24
+        expiresIn: 60 * 1
       }
     );
 
+    console.log("Token to the client...", token);
+
     res
       .status(200)
-      .header("auth_token", token)
+      // .header("auth_token", token)
       .json({
+        auth_token: token,
         success: true,
         msg: "Sign in success.",
-        user: user
+        user: admin
       });
+  }
+
+  public async resetpass(req: Request, res: Response) {
+    const { phone, password, otp } = req.body;
+
+    if (!otp || otp === "")
+      return res.status(200).json({ success: true, msg: "没有输入验证码" });
+
+    console.log(otp, "otp from user input");
+
+    const otpExist = await Otp.findOne({ phone, otp });
+
+    console.log(otpExist, "otpExist");
+
+    if (!otpExist)
+      return res.status(200).json({ success: false, msg: "输入验证码错误" });
+
+    try {
+      const updatedUser = await Admin.findOneAndUpdate(
+        { phone },
+        { password },
+        {
+          new: true
+        }
+      );
+
+      const token: string = jwt.sign(
+        { _id: "" },
+        process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
+        {
+          expiresIn: 60 * 60
+        }
+      );
+
+      res
+        .status(200)
+        .header("auth_token", token)
+        .json({
+          success: true,
+          msg: "成功!",
+          user: updatedUser
+        });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "失败了"
+      });
+    }
   }
 }
 

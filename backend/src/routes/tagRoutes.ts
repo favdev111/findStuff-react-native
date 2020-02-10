@@ -1,6 +1,6 @@
 import { Router } from "express";
 import tagController from "../controllers/tag.controller";
-
+import { tokenValidation } from "../middlewares/verifyToken";
 class TagRoutes {
   router: Router;
 

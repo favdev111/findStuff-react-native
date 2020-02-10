@@ -3,23 +3,24 @@ import { Form, Icon, Input, Button } from "antd";
 import { FormComponentProps } from "antd/lib/form/Form";
 import { RouterProps } from "react-router";
 import "./login.scss";
-import { login } from "../../utils/api";
+import { register } from "../../utils/api";
 function LoginForm(props: FormComponentProps & RouterProps) {
   const { form, history } = props;
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     form.validateFields(async (err, values) => {
       if (!err) {
-        const { phone, password } = values;
+        const { phone, password, confirm } = values;
 
-        const { data, headers } = await login({ phone, password });
+        if (password !== confirm) {
+          alert("Inut the same password!");
+          return;
+        }
+
+        const { data, headers } = await register({ phone, password });
 
         if (data.success) {
-          window.localStorage.setItem(
-            "auth_token",
-            JSON.stringify(data.auth_token)
-          );
-          history.push("/stuffposts");
+          history.push("/");
         } else {
           alert(data.msg);
         }
@@ -51,7 +52,17 @@ function LoginForm(props: FormComponentProps & RouterProps) {
             />
           )}
         </Form.Item>
-
+        <Form.Item>
+          {form.getFieldDecorator("confirm", {
+            rules: [{ required: true, message: "请大人输入密码!" }]
+          })(
+            <Input
+              prefix={<Icon type="lock" style={iconColor} />}
+              type="password"
+              placeholder="请大人输入密码!"
+            />
+          )}
+        </Form.Item>
         <Form.Item>
           <Button
             type="primary"
@@ -62,7 +73,7 @@ function LoginForm(props: FormComponentProps & RouterProps) {
           </Button>
         </Form.Item>
         <Form.Item>
-          <a href="/register">Register now!</a>
+          <a href="/">Login now!</a>
           <a className="login-form-forgot" href="/forgotpwd">
             Forgot password
           </a>

@@ -8,7 +8,7 @@ export function Operate(props: any) {
         onChange={e => props.ads(record._id, e.target.checked)}
         checked={record.ads}
       >
-        {"ads"}
+        {"精华"}
       </Checkbox>
 
       <Divider type="vertical" />

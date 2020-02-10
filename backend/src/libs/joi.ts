@@ -46,11 +46,22 @@ export const signinValidation = (data: object) => {
 };
 
 export const loginValidation = (data: object) => {
-  const userSchema = Joi.object({
-    email: Joi.string().required(),
+  const adminSchema = Joi.object({
+    phone: Joi.string().required(),
     password: Joi.string()
       .min(6)
       .required()
   });
-  return userSchema.validate(data);
+  return adminSchema.validate(data);
+};
+
+export const registerValidation = (data: object) => {
+  const adminSchema = Joi.object().keys({
+    phone: Joi.string().required(),
+    password: Joi.string()
+      .pattern(/^[a-zA-Z0-9]{3,30}$/)
+      .required()
+  });
+
+  return adminSchema.validate(data);
 };
