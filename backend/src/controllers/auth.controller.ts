@@ -12,6 +12,8 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 import Admin from "../models/Admin";
 
+const SESSION_TIME = 60 * 60 * 60;
+
 class AuthController {
   constructor() {}
 
@@ -55,7 +57,7 @@ class AuthController {
         { _id: newUser._id },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60
+          expiresIn: SESSION_TIME
         }
       );
 
@@ -104,7 +106,7 @@ class AuthController {
         { _id: "" },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60
+          expiresIn: SESSION_TIME
         }
       );
 
@@ -147,7 +149,7 @@ class AuthController {
       { _id: user._id },
       process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
       {
-        expiresIn: 60 * 60
+        expiresIn: SESSION_TIME
       }
     );
 
@@ -261,7 +263,7 @@ class AuthController {
         { _id: newAdmin._id },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60
+          expiresIn: SESSION_TIME
         }
       );
 
@@ -299,7 +301,7 @@ class AuthController {
       { _id: admin._id },
       process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
       {
-        expiresIn: 60 * 1
+        expiresIn: SESSION_TIME
       }
     );
 
@@ -344,7 +346,7 @@ class AuthController {
         { _id: "" },
         process.env["TOKEN_SECRET"] || "MyS3cr3tT0k3n",
         {
-          expiresIn: 60 * 60
+          expiresIn: SESSION_TIME
         }
       );
 

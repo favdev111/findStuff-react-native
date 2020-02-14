@@ -115,6 +115,7 @@ class StuffPostController {
         address,
         kind,
         fee,
+        phone,
         title,
         description,
         photos
@@ -127,6 +128,7 @@ class StuffPostController {
         address,
         kind,
         fee,
+        phone,
         title,
         description,
         photos,

@@ -5,9 +5,9 @@ import mongodb from "mongodb";
 class UserController2 {
   public async updateUser(req: Request, res: Response): Promise<any> {
     try {
-      const _id = req.userId;
+      const _id = req.params.id;
 
-      console.log("params", req.params);
+      console.log("params", req.params.id);
       console.log("request body", _id, req.body);
 
       const updatedUser = await User.findOneAndUpdate(

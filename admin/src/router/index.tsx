@@ -25,6 +25,9 @@ const News = loadable(() => import("../pages/news"));
 const ProfileAdd = loadable(() => import("../pages/profile-add"));
 const Profiles = loadable(() => import("../pages/profiles"));
 
+const UserAdd = loadable(() => import("../pages/user-add"));
+const Users = loadable(() => import("../pages/users"));
+
 const ContactAdd = loadable(() => import("../pages/contact-add"));
 const Contacts = loadable(() => import("../pages/contacts"));
 
@@ -124,6 +127,14 @@ export const routes = [
       {
         path: "/profiles",
         component: Profiles
+      },
+      {
+        path: "/user-add",
+        component: UserAdd
+      },
+      {
+        path: "/users",
+        component: Users
       },
       {
         path: "/contact-add",

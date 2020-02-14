@@ -23,8 +23,11 @@ export const tokenValidation = (
 
     req.userId = payload._id;
 
+    console.log(token, "qqqqqqqqq");
+
     next();
   } catch (e) {
+    console.log(e, "invalid token....");
     res.status(200).send({ success: false, msg: "Invalid Token" });
   }
 };

@@ -59,6 +59,12 @@ export const delProfile = (id: string) => http.delete(`profile/${id}`);
 export const editProfile = (id: string, params = {}) =>
   http.put(`profile/${id}`, { ...params });
 
+export const fetchUsers = (params = {}) => http.get("user", { params });
+export const addUser = (params = {}) => http.post("user", { ...params });
+export const delUser = (id: string) => http.delete(`user/${id}`);
+export const editUser = (id: string, params = {}) =>
+  http.put(`user/${id}`, { ...params });
+
 export const fetchContacts = (params = {}) => http.get("contact", { params });
 export const addContact = (params = {}) => http.post("contact", { ...params });
 export const delContact = (id: string) => http.delete(`contact/${id}`);

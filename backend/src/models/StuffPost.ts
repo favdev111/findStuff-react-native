@@ -9,6 +9,9 @@ const StuffPostSchema = new Schema(
     tag: { type: String, required: true, text: true },
     place: { type: String, required: true, text: true },
     address: { type: String, required: true, text: true },
+
+    phone: { type: String, required: true, text: true },
+
     fee: { type: Number, required: true },
 
     title: { type: String, required: true, text: true },

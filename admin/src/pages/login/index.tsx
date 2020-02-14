@@ -62,10 +62,14 @@ function LoginForm(props: FormComponentProps & RouterProps) {
           </Button>
         </Form.Item>
         <Form.Item>
-          <a href="/register">Register now!</a>
-          <a className="login-form-forgot" href="/forgotpwd">
-            Forgot password
-          </a>
+          {false && (
+            <>
+              <a href="/register">Register now!</a>
+              <a className="login-form-forgot" href="/forgotpwd">
+                Forgot password
+              </a>
+            </>
+          )}
         </Form.Item>
       </Form>
       <div className="loginMask"></div>

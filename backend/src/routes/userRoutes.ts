@@ -12,14 +12,10 @@ class UserRoutes {
 
   routes() {
     this.router.get("/", tokenValidation, userController.getUsers);
-    this.router.get("/:username", tokenValidation, userController.getUser);
+    this.router.get("/:id", tokenValidation, userController.getUser);
     this.router.post("/", tokenValidation, userController.createUser);
-    this.router.put("/:username", tokenValidation, userController.updateUser);
-    this.router.delete(
-      "/:username",
-      tokenValidation,
-      userController.deleteUser
-    );
+    this.router.put("/:id", tokenValidation, userController.updateUser);
+    this.router.delete("/:id", tokenValidation, userController.deleteUser);
   }
 }
 

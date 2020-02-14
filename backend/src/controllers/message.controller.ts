@@ -13,7 +13,7 @@ class MessageController {
 
     await Message.createIndexes();
 
-    let items = await Message.find(filter);
+    let items = await Message.find(filter).sort({ _id: -1 });
 
     res.json(items);
   }

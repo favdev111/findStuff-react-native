@@ -10,8 +10,8 @@ class UserController {
 
   public async getUser(req: Request, res: Response) {
     try {
-      const username = req.params.username;
-      const user = await User.findOne({ username });
+      const _id = req.params.id;
+      const user = await User.findOne({ _id });
 
       if (!user)
         return res.status(400).json({
@@ -70,8 +70,8 @@ class UserController {
   public async updateUser(req: Request, res: Response): Promise<any> {
     try {
       console.log("bbbbbbbb");
-      const username = req.params.username;
-      const updatedUser = await User.findOneAndUpdate({ username }, req.body, {
+      const _id = req.params.id;
+      const updatedUser = await User.findOneAndUpdate({ _id }, req.body, {
         new: true
       });
 
@@ -97,8 +97,8 @@ class UserController {
 
   public async deleteUser(req: Request, res: Response): Promise<any> {
     try {
-      const username = req.params.username;
-      const deletedUser = await User.findOneAndDelete({ username }, req.body);
+      const _id = req.params.id;
+      const deletedUser = await User.findOneAndDelete({ _id }, req.body);
 
       if (!deletedUser)
         return res.status(400).json({

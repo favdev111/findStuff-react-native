@@ -11,7 +11,7 @@ class UserRoutes {
   }
 
   routes() {
-    this.router.put("/:username", tokenValidation, userController2.updateUser);
+    this.router.put("/:id", userController2.updateUser);
   }
 }
 

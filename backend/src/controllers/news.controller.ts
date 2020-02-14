@@ -4,7 +4,7 @@ import mongodb from "mongodb";
 
 class NewsController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await News.find();
+    const items = await News.find().sort({ _id: -1 });
     res.json(items);
   }
 

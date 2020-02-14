@@ -187,5 +187,22 @@ export const menuConfig: menuType[] = [
         path: "/profile-add"
       }
     ]
+  },
+  {
+    title: "使用者",
+    key: "user",
+    icon: "play-circle",
+    children: [
+      {
+        title: "列表",
+        key: "user-all",
+        path: "/users"
+      }
+      // {
+      //   title: "添加资料",
+      //   key: "user-add",
+      //   path: "/user-add"
+      // }
+    ]
   }
 ];
