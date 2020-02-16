@@ -64,11 +64,11 @@ function LoginForm(props: FormComponentProps & RouterProps) {
           <Row gutter={8}>
             <Col span={17}>
               {form.getFieldDecorator("phone", {
-                rules: [{ required: true, message: "请大人输入账号!" }]
+                rules: [{ required: true, message: "请输入账号!" }]
               })(
                 <Input
                   prefix={<Icon type="phone" style={iconColor} />}
-                  placeholder="请大人输入账号!"
+                  placeholder="请输入账号!"
                 />
               )}
             </Col>
@@ -81,7 +81,7 @@ function LoginForm(props: FormComponentProps & RouterProps) {
         </Form.Item>
         <Form.Item>
           {form.getFieldDecorator("otp", {
-            rules: [{ required: true, message: "请大人输入账号!" }]
+            rules: [{ required: true, message: "请输入账号!" }]
           })(
             <Input
               prefix={<Icon type="phone" style={iconColor} />}
@@ -91,23 +91,23 @@ function LoginForm(props: FormComponentProps & RouterProps) {
         </Form.Item>
         <Form.Item>
           {form.getFieldDecorator("password", {
-            rules: [{ required: true, message: "请大人输入密码!" }]
+            rules: [{ required: true, message: "请输入密码!" }]
           })(
             <Input
               prefix={<Icon type="lock" style={iconColor} />}
               type="password"
-              placeholder="请大人输入密码!"
+              placeholder="请输入密码!"
             />
           )}
         </Form.Item>
         <Form.Item>
           {form.getFieldDecorator("confirm", {
-            rules: [{ required: true, message: "请大人输入密码!" }]
+            rules: [{ required: true, message: "请输入密码!" }]
           })(
             <Input
               prefix={<Icon type="lock" style={iconColor} />}
               type="password"
-              placeholder="请大人输入密码!"
+              placeholder="请输入密码!"
             />
           )}
         </Form.Item>
