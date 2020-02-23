@@ -47,6 +47,8 @@ class ProfileController {
         msg: "Item saved.",
         item: newItem
       });
+
+      req.io.emit("data_profile", newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({
@@ -81,6 +83,8 @@ class ProfileController {
         msg: "Item updated.",
         item: updatedItem
       });
+
+      req.io.emit("data_profile", updatedItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

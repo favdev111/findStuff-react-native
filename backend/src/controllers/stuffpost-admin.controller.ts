@@ -7,43 +7,69 @@ import StuffPostLimit from "../models/StuffPostLimit";
 
 class StuffPostController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const tag = req.query.tag;
-    const key = req.query.key;
-    const kind = req.query.kind;
-    const region = req.query.region;
-    const sort = req.query.sort;
+    // const { page } = req.query;
 
-    let filter = {};
+    console.log(req.query);
 
-    if (tag !== undefined && tag !== "") filter = { ...filter, tag };
-    if (kind !== undefined && kind !== "") filter = { ...filter, kind };
+    const { current = 1, pageSize = 10, report = false } = req.query;
 
-    if (key !== undefined && key !== "") {
-      filter = {
-        ...filter,
-        $or: [
-          { title: { $regex: key, $options: "i" } },
-          { description: { $regex: key, $options: "i" } }
-        ]
+    console.log("req.query......", req.query);
+    console.log("page, size,,,,", current, pageSize, report);
+
+    // let items = await StuffPost.paginate().populate("user", [
+    //   "name",
+    //   "phone",
+    //   "photo"
+    // ]);
+
+    const options = {
+      // select: "_id, user, place",
+      sort: { createAt: -1 },
+      page: Number(current),
+      limit: Number(pageSize),
+      populate: "user" //not sure how to set child field
+    };
+
+    let querys = {};
+    // if (report) querys = { reports: { $gt: { $size: 0 } } };
+    if (report) querys = { "reports.0": { $exists: true } };
+    console.log("query...", querys);
+    const result = await StuffPost.paginate(querys, options);
+
+    console.log(result, "----");
+
+    /**
+    {
+      docs:[],
+      totalDocs: 11,
+      limit: 5,
+      totalPages: 3,
+      page: 2,
+      pagingCounter: 6,
+      hasPrevPage: true,
+      hasNextPage: true,
+      prevPage: 1,
+      nextPage: 3
+    } 
+     */
+
+    console.log(result.page);
+
+    let items = {};
+    if (result) {
+      items = {
+        pagination: {
+          total: result.totalDocs,
+          current: result.page,
+          total_page: result.totalPages,
+          pageSize: result.limit
+        },
+        list: result.docs,
+        success: true
       };
+    } else {
+      items = { success: false };
     }
-
-    if (region !== undefined && region !== "")
-      filter = { ...filter, place: { $regex: region, $options: "i" } };
-
-    if (sort !== undefined && sort !== "" && parseInt(sort) === 0) {
-      filter = { ...filter, ads: true };
-    }
-
-    const sortObj = parseInt(sort) === 1 ? { browse: -1 } : { _id: -1 };
-
-    await StuffPost.createIndexes();
-
-    let items = [];
-
-    items = await StuffPost.find(filter)
-      .populate("user", ["name", "phone", "photo"])
-      .sort(sortObj);
 
     res.json(items);
   }
@@ -183,6 +209,8 @@ class StuffPostController {
   }
 
   public async deleteItem(req: Request, res: Response): Promise<any> {
+    console.log("111111111111111111111", req.params);
+
     try {
       const url = req.params.url;
       const deletedItem = await StuffPost.findOneAndDelete(

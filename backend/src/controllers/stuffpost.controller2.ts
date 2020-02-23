@@ -92,6 +92,38 @@ class StuffPostController2 {
       });
     }
   }
+
+  public async report(req: Request, res: Response): Promise<any> {
+    try {
+      const { post_id, user_id, report } = req.body;
+
+      console.log("received from the client.......", post_id, user_id, report);
+
+      const updatedItem = await StuffPost.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(post_id) },
+        { $addToSet: { reports: { user: user_id, report } } },
+        { new: true }
+      ).populate("user", ["name", "phone", "photo"]);
+
+      if (!updatedItem)
+        return res.status(200).json({
+          success: false,
+          msg: "Item not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "Item updated.",
+        item: updatedItem
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(200).json({
+        success: false,
+        msg: "Item not updated with error"
+      });
+    }
+  }
 }
 
 export default new StuffPostController2();

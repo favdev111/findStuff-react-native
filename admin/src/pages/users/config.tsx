@@ -16,7 +16,7 @@ export const columns: Array<ColumnPropsEditable<any>> = [
     render: (text, record, dataIndex) => <span>{dataIndex + 1}</span>
   },
   {
-    title: "照片",
+    title: "头像",
     key: "photo",
     dataIndex: "photo",
     editable: false,

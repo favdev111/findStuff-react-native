@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const StuffPostSchema = new Schema(
   {
@@ -34,6 +35,13 @@ const StuffPostSchema = new Schema(
       }
     ],
 
+    reports: [
+      {
+        user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        report: { type: String, required: true, text: true }
+      }
+    ],
+
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now }
   },
@@ -41,5 +49,11 @@ const StuffPostSchema = new Schema(
 );
 
 StuffPostSchema.index({ title: "text", description: "text" });
+StuffPostSchema.plugin(mongoosePaginate);
+
+StuffPostSchema.pre("findOneAndUpdate", function(next) {
+  this.findOneAndUpdate({}, { updateAt: Date.now() });
+  next();
+});
 
 export default model("StuffPost", StuffPostSchema);

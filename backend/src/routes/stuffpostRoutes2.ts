@@ -13,6 +13,7 @@ class StuffPostRoutes {
     this.router.post("/browse", stuffpostController2.increaseBrowseCnt);
     this.router.post("/ads", stuffpostController2.ads);
     this.router.post("/likes", stuffpostController2.increaseLikesCnt);
+    this.router.post("/report", stuffpostController2.report);
   }
 }
 

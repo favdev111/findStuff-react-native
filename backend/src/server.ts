@@ -22,6 +22,7 @@ import contactRoutes from "./routes/contactRoutes";
 import tagRoutes from "./routes/tagRoutes";
 import stuffpostRoutes from "./routes/stuffpostRoutes";
 import stuffpostRoutes2 from "./routes/stuffpostRoutes2";
+import stuffpostAdminRoutes from "./routes/stuffpostAdminRoutes";
 
 import messageRoute from "./routes/messageRoutes";
 import userRoutes2 from "./routes/userRoutes2";
@@ -87,10 +88,14 @@ app.use("/api/notification", notificationRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/tag", tagRoutes);
 app.use("/api/contact", contactRoutes);
+
 app.use("/api/stuffpost", stuffpostRoutes);
+app.use("/admin_api/stuffpost", stuffpostAdminRoutes);
 app.use("/api2/stuffpost", stuffpostRoutes2);
+
 app.use("/api/message", messageRoute);
 app.use("/api/profile", profileRoute);
+
 app.use("/api2/user", userRoutes2);
 
 /////////////////////////----------admin----------///////////////////////////

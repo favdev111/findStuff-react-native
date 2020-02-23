@@ -1,60 +1,111 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
+import React, { useState, useEffect } from "react";
 import { FormComponentProps } from "antd/es/form";
+import { useForm } from "react-hook-form";
 import "./index.scss";
 import { addContact } from "../../utils/api";
+
+import { Select, Row, Col } from "antd";
+
+import { provinceData, cityData } from "./regionJson";
+
+const { Option } = Select;
 
 interface TagsProps<T = any> extends FormComponentProps<T> {
   history?: any;
 }
 
 function AddContact(props: TagsProps) {
-  const form = props.form;
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    form.validateFields(async (err, values) => {
-      if (!err) {
-        const res = await addContact(values);
+  const { register, handleSubmit, errors } = useForm(); // initialise the hook
+  const onSubmit = async data => {
+    console.log(data);
 
-        if (res.data.success) {
-          props.history.push("/contacts");
-        }
-      }
-    });
-  }
-  const formItemLayout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 20 }
+    const res = await addContact(data);
+
+    if (res.data.success) {
+      props.history.push("/contacts");
+    }
   };
+
+  const [city, setCity] = useState("");
+  const [firstAddr, setFirstAddr] = useState("");
+  const [cities, setCities] = useState(cityData[provinceData[0]]);
+  const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
+
+  const handleProvinceChange = value => {
+    setCities(cityData[value]);
+    setSecondCity(cityData[value][0]);
+    setFirstAddr(value);
+  };
+
+  useEffect(() => {
+    setCity(firstAddr + " " + secondCity);
+  }, [secondCity, firstAddr]);
+
   return (
-    <Form
-      onSubmit={handleSubmit}
-      layout="horizontal"
-      {...formItemLayout}
-      className="addtag"
-    >
-      <Form.Item label="市">
-        {form.getFieldDecorator("city", {
-          rules: [{ required: true, message: "Type contact city!" }]
-        })(<Input placeholder="市" />)}
-      </Form.Item>
-      <Form.Item label="区">
-        {form.getFieldDecorator("district", {
-          rules: [{ required: true, message: "Type contact district!" }]
-        })(<Input placeholder="区" />)}
-      </Form.Item>
-      <Form.Item label="电话号码">
-        {form.getFieldDecorator("number", {
-          rules: [{ required: true, message: "Type contact number!" }]
-        })(<Input placeholder="电话号码" />)}
-      </Form.Item>
-      <div className="btnbox">
-        <Button type="primary" htmlType="submit" className="btn">
-          添加
-        </Button>
-      </div>
-    </Form>
+    <Row>
+      <Col span={6}></Col>
+      <Col span={12}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ borderRadius: 5, margin: 5, width: "50%" }}
+        >
+          <input
+            name="city"
+            type="hidden"
+            placeholder="城市"
+            ref={register}
+            value={city}
+          />
+          {/* register an input */}
+          <div style={{ margin: 5 }}>
+            <Select
+              defaultValue={provinceData[0]}
+              style={{ width: 120 }}
+              onChange={handleProvinceChange}
+            >
+              {provinceData.map(province => (
+                <Option key={province}>{province}</Option>
+              ))}
+            </Select>
+            <Select
+              style={{ width: 120 }}
+              value={secondCity}
+              onChange={value => {
+                setSecondCity(value);
+              }}
+            >
+              {cities.map(city => (
+                <Option key={city}>{city}</Option>
+              ))}
+            </Select>
+          </div>
+          <br />
+          <input
+            name="district"
+            placeholder="小区名"
+            ref={register({ required: true })}
+            style={{ borderRadius: 5, margin: 10, width: "100%" }}
+          />
+          {errors.district && "District is required."}
+          <br />
+          <input
+            name="number"
+            placeholder="电话号"
+            ref={register({ required: true, pattern: /\d+/ })}
+            style={{ borderRadius: 5, margin: 10, width: "100%" }}
+          />
+          {errors.number && "Please enter valid phone number."}
+          <br />
+          <input
+            type="submit"
+            value="添加"
+            style={{ borderRadius: 5, margin: 10, width: "100%" }}
+          />
+        </form>
+      </Col>
+      <Col span={6}></Col>
+    </Row>
   );
 }
 
-export default Form.create({ name: "addtag" })(AddContact);
+export default AddContact;

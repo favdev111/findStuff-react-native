@@ -17,6 +17,8 @@ const MessageSchema = new Schema(
 
     content: { type: String, required: true, text: true },
 
+    checked: { type: Number, required: true },
+
     createAt: { type: Date, default: Date.now },
     updateAt: { type: Date, default: Date.now }
   },

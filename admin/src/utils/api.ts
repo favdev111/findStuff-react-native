@@ -1,4 +1,4 @@
-import { http, http2, http_org, getAuthorization } from "./http";
+import { http, http2, http_org, http_admin, getAuthorization } from "./http";
 import { ORIGINAL_ROOT } from "./config";
 
 export const login = (params = {}) =>
@@ -81,14 +81,16 @@ export const editNotification = (id: string, params = {}) =>
   http.put(`notification/${id}`, { ...params });
 
 export const fetchStuffPost = (params = {}) =>
-  http.get("stuffpost", { params });
+  http_admin.get("stuffpost", { params });
+
 export const addStuffPost = (params = {}) =>
-  http.post("stuffpost", { ...params });
-export const delStuffPost = (id: string) => http.delete(`stuffpost/${id}`);
+  http_admin.post("stuffpost", { ...params });
+export const delStuffPost = (id: string) =>
+  http_admin.delete(`stuffpost/${id}`);
 export const adsStuffPost = (id: string, ads: boolean) =>
   http2.post(`stuffpost/ads`, { _id: `${id}`, ads });
 export const editStuffPost = (id: string, params = {}) =>
-  http.put(`stuffpost/${id}`, { ...params });
+  http_admin.put(`stuffpost/${id}`, { ...params });
 
 export const uploadConfig = () => ({
   action: `${ORIGINAL_ROOT}upload/photo`,

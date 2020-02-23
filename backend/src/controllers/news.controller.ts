@@ -48,7 +48,7 @@ class NewsController {
         item: newItem
       });
 
-      req.io.emit("bg_news", content);
+      req.io.emit("data_news", newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

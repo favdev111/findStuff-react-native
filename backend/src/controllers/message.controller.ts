@@ -1,40 +1,75 @@
 import { Request, Response } from "express";
-import Message from "../models/Message";
 import mongodb from "mongodb";
+
+import Message from "../models/Message";
+import User from "../models/User";
 
 class MessageController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const key = req.query.key;
+    const user_id = req.query.user_id;
+    console.log("message list of ", user_id);
+    if (!user_id) {
+      res.json([]);
+      return;
+    }
+    let filter = {
+      $or: [
+        // { sender: new mongodb.ObjectID(user_id) },
+        { receiver: new mongodb.ObjectID(user_id) }
+      ],
+      checked: 0
+    };
 
-    let filter = {};
+    let items = await Message.aggregate([
+      {
+        $match: filter
+      },
+      {
+        $group: {
+          _id: "$sender",
+          total: { $sum: 1 },
+          createAt: { $last: "$createAt" },
+          content: { $last: "$content" }
+        }
+      }
+    ]);
 
-    if (key !== undefined && key !== "")
-      filter = { ...filter, $text: { $search: key } };
+    let res_items = await User.populate(items, { path: "_id" });
 
-    await Message.createIndexes();
-
-    let items = await Message.find(filter).sort({ _id: -1 });
-
-    res.json(items);
+    res.json(res_items);
   }
 
   public async getItem(req: Request, res: Response) {
     try {
       const url = req.params.url;
-      const item = await Message.findOne({
-        _id: new mongodb.ObjectID(url)
-      }).populate("user");
+      const user_id = req.query.user_id;
 
-      if (!item)
+      const filter = {
+        sender: new mongodb.ObjectID(url),
+        receiver: new mongodb.ObjectID(user_id),
+        checked: 0
+      };
+
+      console.log("get details filter... ... ...", filter);
+
+      const items = await Message.find(filter);
+
+      console.log("get message details.....", items);
+
+      if (!items)
         return res.status(400).json({
           success: false,
           msg: "Item not found"
         });
 
+      await Message.updateMany(filter, {
+        $set: { checked: 1 }
+      });
+
       res.status(200).json({
         success: true,
         msg: "Item found",
-        item: item
+        items
       });
     } catch (err) {
       console.log("error => ", err);
@@ -52,7 +87,8 @@ class MessageController {
       const newItem = new Message({
         sender: new mongodb.ObjectID(sender),
         receiver: new mongodb.ObjectID(receiver),
-        content
+        content,
+        checked: 0
       });
       await newItem.save();
 
@@ -62,7 +98,7 @@ class MessageController {
         item: newItem
       });
 
-      req.io.emit("bg_message", content);
+      req.io.emit(receiver, newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

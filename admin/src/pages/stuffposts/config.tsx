@@ -34,7 +34,6 @@ export const columns: ColumnProps<any>[] = [
       else if (tag === "CatMan") ret = "寻人";
       else if (tag === "CatPet") ret = "宠物";
       else if (tag === "CatBag") ret = "背包";
-
       return ret;
     }
   },
@@ -75,10 +74,12 @@ export const columns: ColumnProps<any>[] = [
           target="_brank"
           style={{ padding: "10px" }}
         >
-          <img
-            width="100"
-            src={ORIGINAL_ROOT + "download/photo?path=" + photo.path}
-          />
+          {
+            <img
+              width="100"
+              src={ORIGINAL_ROOT + "download/photo?path=" + photo.path}
+            />
+          }
         </a>
       ))
   },

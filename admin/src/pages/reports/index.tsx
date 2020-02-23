@@ -3,7 +3,7 @@ import { Table, message } from "antd";
 import { PaginationConfig } from "antd/es/pagination";
 import { columns } from "./config";
 import PageLayout from "../../common/components/page-layout";
-import { fetchStuffPost, delStuffPost, adsStuffPost } from "../../utils/api";
+import { fetchStuffPost, delStuffPost } from "../../utils/api";
 import { Operate } from "./oprations";
 import "./index.scss";
 
@@ -26,7 +26,8 @@ const Projects = (props: any) => {
   async function getList() {
     const { data } = await fetchStuffPost({
       current: page.current,
-      pageSize: page.pageSize
+      pageSize: page.pageSize,
+      report: true
     });
     setTableData(data.list || []);
 
@@ -52,14 +53,6 @@ const Projects = (props: any) => {
     setLoad(load + 1);
   }
 
-  function edit(id: string) {
-    props.history.push(`/stuffpost-add?id=${id}`);
-  }
-  async function ads(id: string, value: boolean) {
-    const { data } = await adsStuffPost(id, value);
-    setLoad(load + 1);
-    message.success(data.msg);
-  }
   async function del(id: string) {
     const { data } = await delStuffPost(id);
     setLoad(load + 1);
@@ -73,8 +66,6 @@ const Projects = (props: any) => {
         onCell: (record: any, rowIndex: number) => ({
           col,
           record,
-          edit,
-          ads,
           del,
           rowIndex
         })

@@ -23,7 +23,7 @@ export const tokenValidation = (
 
     req.userId = payload._id;
 
-    console.log(token, "qqqqqqqqq");
+    console.log("token is valid..........");
 
     next();
   } catch (e) {

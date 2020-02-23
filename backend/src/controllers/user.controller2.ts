@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import StuffPost from "../models/StuffPost";
 import { signupValidation } from "../libs/joi";
 import mongodb from "mongodb";
 class UserController2 {
@@ -27,6 +28,19 @@ class UserController2 {
         msg: "User updated.",
         user: updatedUser
       });
+
+      //////////////////////update post title////////////////////
+      await StuffPost.update(
+        { user: new mongodb.ObjectID(updatedUser._id) },
+        { $set: { title: updatedUser.name } },
+        { multi: true }
+      );
+
+      const tttt = await StuffPost.count({
+        user: new mongodb.ObjectID(updatedUser._id)
+      });
+      console.log(tttt, updatedUser.name, "ttttttttttttttttttttttttttt");
+      ////////////////////////////////////////////////////////
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

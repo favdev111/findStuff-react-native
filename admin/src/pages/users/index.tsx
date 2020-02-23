@@ -102,7 +102,7 @@ const User = () => {
   const components = { body: { cell: EditCell } };
   return (
     <div style={{ flex: 1 }}>
-      <PageLayout title="使用者">
+      <PageLayout title="用户">
         <Table
           components={components}
           columns={tableColumns}

@@ -37,6 +37,8 @@ const Notifications = loadable(() => import("../pages/notifications"));
 const StuffPostAdd = loadable(() => import("../pages/stuffpost-add"));
 const StuffPostList = loadable(() => import("../pages/stuffposts"));
 
+const ReportList = loadable(() => import("../pages/reports"));
+
 const Home = loadable(() => import("../pages/home"));
 export interface routeType {
   path: string;
@@ -105,7 +107,7 @@ export const routes = [
         component: Tags
       },
       {
-        path: "/notification-add",
+        path: "/notifications-add",
         component: NotificationAdd
       },
       {
@@ -121,7 +123,7 @@ export const routes = [
         component: News
       },
       {
-        path: "/profile-add",
+        path: "/profiles-add",
         component: ProfileAdd
       },
       {
@@ -137,20 +139,24 @@ export const routes = [
         component: Users
       },
       {
-        path: "/contact-add",
+        path: "/contacts-add",
         component: ContactAdd
       },
       {
         path: "/contacts",
         component: Contacts
       },
-      {
-        path: "/stuffpost-add",
-        component: StuffPostAdd
-      },
+      // {
+      //   path: "/stuffposts-add",
+      //   component: StuffPostAdd
+      // },
       {
         path: "/stuffposts",
         component: StuffPostList
+      },
+      {
+        path: "/stuffposts-add",
+        component: ReportList
       },
       {
         path: "/",
