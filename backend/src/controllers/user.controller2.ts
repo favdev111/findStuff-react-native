@@ -49,6 +49,39 @@ class UserController2 {
       });
     }
   }
+
+  public async updateLocation(req: Request, res: Response): Promise<any> {
+    try {
+      console.log("params", req.params.id);
+      console.log("request body", req.body);
+
+      const { user_id, location } = req.body;
+
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: new mongodb.ObjectID(user_id) },
+        { $set: { location } },
+        { new: true }
+      );
+
+      if (!updatedUser)
+        return res.status(200).json({
+          success: false,
+          msg: "User not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "User updated.",
+        user: updatedUser
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(500).json({
+        success: false,
+        msg: "User not updated"
+      });
+    }
+  }
 }
 
 export default new UserController2();
