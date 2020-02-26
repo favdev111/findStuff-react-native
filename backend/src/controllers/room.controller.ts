@@ -1,41 +1,60 @@
 import { Request, Response } from "express";
 import mongodb from "mongodb";
 
-import Message from "../models/Message";
-import User from "../models/User";
 import Room from "../models/Room";
+import User from "../models/User";
+import Message from "../models/Message";
 
-class MessageController {
+class RoomController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const { room_id, user_id } = req.query;
-    console.log("message list of ", room_id);
-    if (!room_id) {
+    const user_id = req.query.user_id;
+    console.log("room list of ", user_id);
+    if (!user_id) {
       res.json({
-        success: true,
-        msg: "Item found",
+        success: false,
+        msg: "Item not found",
         items: []
       });
       return;
     }
-    let filter = {
-      room: new mongodb.ObjectID(room_id)
-    };
-
-    let items = await Message.find(filter);
-
-    let checkFilter = {
-      room: new mongodb.ObjectID(room_id),
-      user: { $ne: new mongodb.ObjectID(user_id) }
-    };
-
-    await Message.updateMany(checkFilter, {
-      $set: { checked: 1 }
+    let rooms = await Room.find({
+      users: { $in: [new mongodb.ObjectID(user_id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}
     });
+
+    const promises = await rooms.map(async (r, i) => {
+      let m = await Message.aggregate([
+        {
+          $match: {
+            room: { $eq: new mongodb.ObjectID(r._id) },
+            user: { $ne: new mongodb.ObjectID(user_id) },
+            checked: 0
+          }
+        },
+        {
+          $group: {
+            _id: "$room",
+            missed: { $sum: 1 }
+          }
+        }
+      ]);
+
+      console.log(m[0], "_____________________________________");
+
+      console.log(r, "+******************************");
+
+      return Object.assign({}, r._doc, {
+        missed: m[0].missed
+      });
+    });
+
+    rooms = await Promise.all(promises);
+
+    console.log(rooms, "`````````````````````");
 
     res.json({
       success: true,
       msg: "Item found",
-      items
+      items: rooms
     });
   }
 
@@ -43,26 +62,13 @@ class MessageController {
     try {
       const url = req.params.url;
 
-      const filter = {
-        room_id: new mongodb.ObjectID(url)
-        // checked: 0
-      };
-
-      console.log("get details filter... ... ...", filter);
-
-      const items = await Message.find(filter);
-
-      console.log("get message details.....", items);
+      const items = await Room.find({ _id: url });
 
       if (!items)
         return res.status(400).json({
           success: false,
           msg: "Item not found"
         });
-
-      await Message.updateMany(filter, {
-        $set: { checked: 1 }
-      });
 
       res.status(200).json({
         success: true,
@@ -80,15 +86,40 @@ class MessageController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { user, room, content, receiver } = req.body;
+      const { uid1, uid2 } = req.body;
 
-      console.log(req.body, "received from ...");
+      console.log("uid1, uid2, ", uid1, uid2);
 
-      const newItem = new Message({
-        user: new mongodb.ObjectID(user),
-        room: new mongodb.ObjectID(room),
-        content,
-        checked: 0
+      if (!uid1 || !uid2) {
+        res.status(200).json({
+          success: false,
+          msg: "Item not saved"
+        });
+        return;
+      }
+
+      const filter = {
+        $and: [
+          { users: new mongodb.ObjectID(uid1) },
+          { users: new mongodb.ObjectID(uid2) }
+        ]
+      };
+
+      const rooms = await Room.find(filter);
+      const currentItem = rooms[0];
+
+      if (currentItem) {
+        res.status(200).json({
+          success: true,
+          msg: "Item retrieved.",
+          item: currentItem
+        });
+        return;
+      }
+
+      const newItem = new Room({
+        users: [new mongodb.ObjectID(uid1), new mongodb.ObjectID(uid2)],
+        label: ""
       });
       await newItem.save();
 
@@ -98,21 +129,11 @@ class MessageController {
         item: newItem
       });
 
-      req.io.emit(receiver, newItem);
-      req.msg(receiver, newItem);
-
-      await Room.findOneAndUpdate(
-        { _id: new mongodb.ObjectID(room) },
-        {
-          label: content
-        },
-        {
-          new: true
-        }
-      );
+      req.io.emit(uid1, newItem);
+      req.io.emit(uid2, newItem);
     } catch (err) {
-      console.log("save error => ", err);
-      res.status(500).json({
+      console.log("error => ", err);
+      res.status(200).json({
         success: false,
         msg: "Item not saved"
       });
@@ -122,7 +143,7 @@ class MessageController {
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const updatedItem = await Message.findOneAndUpdate(
+      const updatedItem = await Room.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
         req.body,
         {
@@ -153,7 +174,7 @@ class MessageController {
   public async deleteItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
-      const deletedItem = await Message.findOneAndDelete(
+      const deletedItem = await Room.findOneAndDelete(
         { _id: new mongodb.ObjectID(url) },
         req.body
       );
@@ -179,4 +200,4 @@ class MessageController {
   }
 }
 
-export default new MessageController();
+export default new RoomController();

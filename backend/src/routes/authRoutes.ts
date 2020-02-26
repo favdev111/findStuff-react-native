@@ -21,6 +21,7 @@ class AuthRoutes {
     this.router.post("/signin", authController.signin);
 
     this.router.post("/otp", authController.otp);
+    this.router.post("/device", authController.device);
   }
 }
 

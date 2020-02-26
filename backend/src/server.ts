@@ -25,11 +25,13 @@ import stuffpostRoutes2 from "./routes/stuffpostRoutes2";
 import stuffpostAdminRoutes from "./routes/stuffpostAdminRoutes";
 
 import messageRoute from "./routes/messageRoutes";
+import roomRoute from "./routes/roomRoutes";
 import userRoutes2 from "./routes/userRoutes2";
 
 import SocketIOServer from "socket.io";
 
 import initializeSocketIO from "./socket";
+import { notify, msg } from "./push";
 
 import authNotificationRoutes from "./routes/authNotificationRoutes";
 import authNewsRoutes from "./routes/authNewsRoutes";
@@ -67,7 +69,8 @@ mongoose
 app.use((req, res, next) => {
   req.io = io;
   req.connectedUsers = connectedUsers;
-
+  req.notify = notify;
+  req.msg = msg;
   return next();
 });
 ////////////////////////////////////////
@@ -94,6 +97,7 @@ app.use("/admin_api/stuffpost", stuffpostAdminRoutes);
 app.use("/api2/stuffpost", stuffpostRoutes2);
 
 app.use("/api/message", messageRoute);
+app.use("/api/room", roomRoute);
 app.use("/api/profile", profileRoute);
 
 app.use("/api2/user", userRoutes2);

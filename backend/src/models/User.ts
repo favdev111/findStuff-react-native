@@ -13,6 +13,8 @@ const UserSchema = new Schema({
 
   otp: { type: String },
 
+  device: { type: String },
+
   createAt: { type: Date, default: Date.now },
   updateAt: { type: Date, default: Date.now }
 });

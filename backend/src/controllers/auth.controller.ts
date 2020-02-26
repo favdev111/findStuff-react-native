@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import mongodb from "mongodb";
 import User from "../models/User";
+import Room from "../models/Room";
 import Otp from "../models/Otp";
 import {
   signupValidation,
@@ -144,6 +146,10 @@ class AuthController {
     if (!user)
       return res.status(200).json({ success: false, msg: "找不到用户." });
 
+    const rooms = await Room.find({
+      users: { $in: [new mongodb.ObjectID(user._id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}
+    });
+
     // create token
     const token: string = jwt.sign(
       { _id: user._id },
@@ -159,7 +165,8 @@ class AuthController {
       .json({
         success: true,
         msg: "Sign in success.",
-        user: user
+        user,
+        rooms
       });
   }
 
@@ -237,6 +244,38 @@ class AuthController {
     });
 
     ///////////////////////////////////////////////////
+  }
+
+  public async device(req: Request, res: Response) {
+    try {
+      console.log("device token request from the cient...", req.body);
+      const { user_id, device } = req.body;
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: user_id },
+        { device },
+        {
+          new: true
+        }
+      );
+
+      if (!updatedUser)
+        return res.status(200).json({
+          success: false,
+          msg: "User not updated"
+        });
+
+      res.status(200).json({
+        success: true,
+        msg: "User updated.",
+        user: updatedUser
+      });
+    } catch (err) {
+      console.log("error => ", err);
+      res.status(200).json({
+        success: false,
+        msg: "User not updated"
+      });
+    }
   }
 
   //admin register

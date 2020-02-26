@@ -9344,13 +9344,6 @@ rc-util@^4.0.4, rc-util@^4.1.1, rc-util@^4.13.0, rc-util@^4.15.3, rc-util@^4.15.
     react-lifecycles-compat "^3.0.4"
     shallowequal "^1.1.0"
 
-react-address-picker-cc@^1.1.0-beta.4:
-  version "1.1.0-beta.4"
-  resolved "https://registry.npm.taobao.org/react-address-picker-cc/download/react-address-picker-cc-1.1.0-beta.4.tgz#da86915c4d70a9a727104a829dc9f530f5143444"
-  integrity sha1-2oaRXE1wqacnEEqCncn1MPUUNEQ=
-  dependencies:
-    classnames "^2.2.6"
-
 react-app-polyfill@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/react-app-polyfill/download/react-app-polyfill-1.0.5.tgz#59c7377a0b9ed25692eeaca7ad9b12ef2d064709"
