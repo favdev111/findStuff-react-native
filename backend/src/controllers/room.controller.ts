@@ -38,12 +38,8 @@ class RoomController {
         }
       ]);
 
-      console.log(m[0], "_____________________________________");
-
-      console.log(r, "+******************************");
-
       return Object.assign({}, r._doc, {
-        missed: m[0].missed
+        missed: m[0] ? m[0].missed : 0
       });
     });
 

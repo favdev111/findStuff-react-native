@@ -1,6 +1,7 @@
 import React from "react";
 import { ColumnProps } from "antd/es/table";
 import { ORIGINAL_ROOT } from "../../utils/config";
+import { Avatar } from "antd";
 
 export const columns: ColumnProps<any>[] = [
   {
@@ -16,6 +17,10 @@ export const columns: ColumnProps<any>[] = [
     key: "user._id",
     render: (text, record, dataIndex) => (
       <a href={record.url} target="_blank">
+        <Avatar
+          size="large"
+          src={ORIGINAL_ROOT + "download/photo?path=" + record.user.photo}
+        />
         {text}
       </a>
     )

@@ -119,12 +119,13 @@ class MessageController {
     }
   }
 
+  //set checked=1 when receiver was in the chat-room screen.
   public async updateItem(req: Request, res: Response): Promise<any> {
     try {
       const url = req.params.url;
       const updatedItem = await Message.findOneAndUpdate(
         { _id: new mongodb.ObjectID(url) },
-        req.body,
+        { checked: 1 },
         {
           new: true
         }

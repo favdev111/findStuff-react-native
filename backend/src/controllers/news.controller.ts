@@ -48,7 +48,7 @@ class NewsController {
         item: newItem
       });
 
-      // req.io.emit("data_news", newItem);
+      req.io.emit("data_news", newItem);
       req.notify("data_news", newItem);
     } catch (err) {
       console.log("error => ", err);

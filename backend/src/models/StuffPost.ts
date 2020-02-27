@@ -3,7 +3,12 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const StuffPostSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      autopopulate: { select: "name phone photo" }
+    },
 
     kind: { type: String, required: true }, //lost, found
 
@@ -37,7 +42,12 @@ const StuffPostSchema = new Schema(
 
     reports: [
       {
-        user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+          autopopulate: { select: "name phone photo" }
+        },
         report: { type: String, required: true, text: true }
       }
     ],
@@ -49,6 +59,7 @@ const StuffPostSchema = new Schema(
 );
 
 StuffPostSchema.index({ title: "text", description: "text" });
+StuffPostSchema.plugin(require("mongoose-autopopulate"));
 StuffPostSchema.plugin(mongoosePaginate);
 
 StuffPostSchema.pre("findOneAndUpdate", function(next) {

@@ -2,6 +2,11 @@ import React from "react";
 import { ColumnProps } from "antd/es/table";
 import { ORIGINAL_ROOT } from "../../utils/config";
 
+import { Avatar, Row, Col } from "antd";
+import { Typography } from "antd";
+
+const { Text } = Typography;
+
 export const columns: ColumnProps<any>[] = [
   {
     title: "#",
@@ -16,6 +21,10 @@ export const columns: ColumnProps<any>[] = [
     key: "user._id",
     render: (text, record, dataIndex) => (
       <a href={record.url} target="_blank">
+        <Avatar
+          size="large"
+          src={ORIGINAL_ROOT + "download/photo?path=" + record.user.photo}
+        />
         {text}
       </a>
     )
@@ -31,11 +40,16 @@ export const columns: ColumnProps<any>[] = [
     dataIndex: "reports",
     render: reports =>
       reports.map((report: any, i: number) => (
-        <div>
-          {i + 1}
-          {". "}
-          {report.report}
-        </div>
+        <Row gutter={[16, 16]}>
+          <Col>
+            <Text style={{ marginRight: 10 }}>{report.report}</Text>
+            <Avatar
+              size="small"
+              src={ORIGINAL_ROOT + "download/photo?path=" + report.user.photo}
+            />
+            {report.user.name}
+          </Col>
+        </Row>
       ))
   },
   {

@@ -29,6 +29,9 @@ const Projects = (props: any) => {
       pageSize: page.pageSize,
       report: true
     });
+
+    console.log(data);
+
     setTableData(data.list || []);
 
     if (data.success) {
