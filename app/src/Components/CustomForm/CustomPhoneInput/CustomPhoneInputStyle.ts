@@ -1,15 +1,23 @@
 import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   CustomTextInput: {
-    // backgroundColor: 'blue',
     flex: 7,
-    alignSelf: 'stretch',
     justifyContent: 'center',
   },
   touachableButton: {
-    // backgroundColor: 'red',
+    backgroundColor: '#0084da',
     flex: 3,
-    alignSelf: 'stretch',
     justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    marginRight: 0,
+  },
+  timer: {
+    backgroundColor: '#bbb',
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    marginRight: 0,
   },
 });

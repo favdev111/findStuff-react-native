@@ -1,8 +1,6 @@
 import { Server, Socket } from "socket.io";
 import uuid from "uuid/v4";
 
-import { getLastNote } from "./routes/socketRoutes";
-
 const messageExpirationTimeMS = 10 * 1000;
 
 export interface User {
@@ -38,11 +36,6 @@ export default (io: Server, connectedUsers: any) => {
 
     socket.on("getMessages", () => {
       messages.forEach(sendMessage(socket));
-    });
-
-    socket.on("getLastNote", async () => {
-      const lastNote = await getLastNote();
-      socket.emit("data_note", lastNote);
     });
 
     socket.on("message", (value: string) => {

@@ -4,8 +4,32 @@ import mongodb from "mongodb";
 
 class NotificationController {
   public async getItems(req: Request, res: Response): Promise<void> {
-    const items = await Notification.find().sort({ _id: -1 });
-    res.json(items);
+    const region = req.query.region;
+    const limit = req.query.limit;
+    let filter = {};
+    if (region)
+      filter = { ...filter, city: { $regex: region, $options: "i" } };
+    const items = await Notification.find(filter).sort({ _id: -1 });
+
+    if (parseInt(limit) === 1){
+      if (items[0])
+        res.json(items[0]);
+      else 
+        res.json(0);
+    }      
+    else 
+      res.json(items);
+
+    //////////////----------------add read user--------------------/////////////
+    const user_id = req.query.user_id;
+    if (!user_id)
+      return;
+    
+    await Notification.updateMany(
+        {  },
+        { $addToSet: { users: user_id } },
+        { new: true }
+      );
   }
 
   public async getItem(req: Request, res: Response) {
@@ -37,9 +61,9 @@ class NotificationController {
 
   public async createItem(req: Request, res: Response): Promise<void> {
     try {
-      const { content } = req.body;
+      const { city, content } = req.body;
 
-      const newItem = new Notification({ content });
+      const newItem = new Notification({ city, content });
       await newItem.save();
 
       res.status(200).json({
@@ -48,8 +72,8 @@ class NotificationController {
         item: newItem
       });
 
-      req.io.emit("data_note", newItem);
-      req.notify("data_note", newItem);
+      req.io.emit(city, newItem);
+      //req.notify("data_note", newItem);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({
@@ -109,9 +133,16 @@ class NotificationController {
         msg: "Item deleted.",
         item: deletedItem
       });
+
+      /*const prevItem = await Notification.find().sort({_id:-1}).limit(1);
+      console.log(prevItem, 'prevNotification');
+      if (prevItem[0])
+        req.io.emit("data_note", prevItem[0]);      
+      else 
+        req.io.emit("data_note", 0);*/
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "Item not deleted"
       });

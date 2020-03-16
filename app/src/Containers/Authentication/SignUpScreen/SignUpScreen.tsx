@@ -1,32 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Styles from './SignUpScreenStyle';
 import CustomTextInput from 'src/Components/CustomForm/CustomTextInput/CustomTextInput';
 import CustomPwdInput from 'src/Components/CustomForm/CustomPwdInput/CustomPwdInput';
 import CustomPhoneInput from 'src/Components/CustomForm/CustomPhoneInput/CustomPhoneInput';
 import FormCommonBtn from 'src/Components/Buttons/FormCommonBtn/FormCommonBtn';
-import CustomVerifyInput from 'src/Components/CustomForm/CustomVerifyInput/CustomVerifyInput';
+
 import {Images} from 'src/Theme';
 
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 const axios = require('axios');
 
 export default function SignUpScreen(props) {
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
+  const [init, setInit] = useState(0);
   const [sentOtp, setSentOtp] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const sendOTP = async () => {
-    console.log('gggggggggggggggg', phone);
-
-    if (phone === '') {
-      Toast.show('正确输入值！');
-      return;
-    }
-
     await axios
       .post(baseUrl + 'auth/otp', {
         phone,
@@ -38,6 +33,7 @@ export default function SignUpScreen(props) {
           console.log('success', response.data.msg);
         } else {
           Toast.show(response.data.msg);
+          setInit(init + 1);
           console.log('failed', response.data.msg);
         }
       })
@@ -81,7 +77,7 @@ export default function SignUpScreen(props) {
       })
       .catch(function(error) {
         console.log(error);
-        // Toast.show(error);
+        // Toast.show('错误');
       });
   }
 
@@ -92,9 +88,9 @@ export default function SignUpScreen(props) {
       <View style={{flex: 1}}>
         <View style={Styles.SignUpHeader}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Signin')}
-            style={{flex: 1}}>
-            <Image
+            style={{flex: 1}}
+            onPress={() => props.navigation.navigate('Signin')}>
+            <FastImage
               source={Images.whiteLeftChevron}
               style={Styles.SignUpHeaderImg}
             />
@@ -111,6 +107,7 @@ export default function SignUpScreen(props) {
               proc2={() => {
                 sendOTP();
               }}
+              init={init}
             />
           </View>
           <View style={Styles.FormInput}>
@@ -132,9 +129,9 @@ export default function SignUpScreen(props) {
             />
           </View>
           <View style={Styles.FormInput}>
-            <CustomVerifyInput
-              CustomVerifyLabel={'验证码'}
-              CustomPlaceholder={'请输入验证码'}
+            <CustomTextInput
+              CustomLabel={'验证码'}
+              CustomPlaceholder={'验证码'}
               proc={value => {
                 setOtp(value);
               }}

@@ -39,7 +39,7 @@ export const signinValidation = (data: object) => {
     // email: Joi.string().required(),
     phone: Joi.string().required(),
     password: Joi.string()
-      .min(6)
+      .min(3)
       .required()
   });
   return userSchema.validate(data);

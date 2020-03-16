@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Input } from "antd";
 import { columns } from "./config";
 import PageLayout from "../../common/components/page-layout";
-import { fetchUsers, editUser, delUser } from "../../utils/api";
+import { fetchUsers, editUser, delUser, blockUser } from "../../utils/api";
 import { Operate } from "./oprations";
 import "./index.scss";
 
@@ -60,6 +60,10 @@ const User = () => {
   function cancel() {
     setEditingKey("");
   }
+  async function block(id: string, value: boolean) {
+    const { data } = await blockUser(id, value);
+    setRefresh(refresh + 1);    
+  }
   async function del(record: any) {
     if (editPrams.index === null) return;
     await delUser(record._id);
@@ -91,6 +95,7 @@ const User = () => {
           edit,
           cancel,
           del,
+          block,
           rowIndex,
           editing: isEditing(rowIndex)
         })

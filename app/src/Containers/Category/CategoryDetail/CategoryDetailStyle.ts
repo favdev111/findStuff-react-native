@@ -1,21 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {Colors, Images} from 'src/Theme';
+import {Colors} from 'src/Theme';
 export default StyleSheet.create({
-  FindStuffHeaderContainer: {
-    width: Dimensions.get('window').width,
-    height: 50,
-    backgroundColor: '#0084da',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  FindStuffHeaderImg: {
-    height: 40,
-    width: 40,
-    transform: [{rotate: '90deg'}],
-  },
   UserInfoContainer: {
     padding: 10,
     marginBottom: 10,
@@ -26,6 +11,7 @@ export default StyleSheet.create({
   AvatarPhoto: {
     width: 35,
     height: 35,
+    borderRadius: 50,
   },
   AvatarContainer: {
     flexDirection: 'row',

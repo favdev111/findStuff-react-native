@@ -20,5 +20,13 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>The app needs to access to your location for ...</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>The app needs to access to your location for ...</string>
+	<key>NSLocationUsageDescription</key>
+	<string>The app needs to access to your location for ...</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>The app needs to access to your location for ...</string>
 </dict>
 </plist>

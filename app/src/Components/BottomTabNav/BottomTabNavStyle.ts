@@ -7,9 +7,10 @@ export default StyleSheet.create({
   AddInfoContainer: {
     position: 'absolute',
     top: -20,
-    padding: 10,
     backgroundColor: 'white',
     borderRadius: 50,
+    borderWidth:1,
+    borderColor:'#eee',
     padding: 20,
     shadowRadius: 2,
     shadowOffset: {

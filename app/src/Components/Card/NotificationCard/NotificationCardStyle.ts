@@ -33,7 +33,6 @@ export default StyleSheet.create({
   CardDescription: {
     flex: 1,
     marginTop: 8,
-    alignItems: 'center',
   },
   CardImageSection: {
     marginTop: 10,

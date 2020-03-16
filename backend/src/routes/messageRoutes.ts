@@ -11,7 +11,7 @@ class MessageRoutes {
 
   routes() {
     this.router.get("/", messageController.getItems);
-    // this.router.get("/:url", messageController.getItem);///not used
+    this.router.get("/:url", messageController.getItem);
     this.router.post("/", messageController.createItem);
     this.router.put("/:url", messageController.updateItem);
     this.router.delete("/:url", messageController.deleteItem);

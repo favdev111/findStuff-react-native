@@ -124,9 +124,7 @@ class RoomController {
         msg: "Item saved.",
         item: newItem
       });
-
-      req.io.emit(uid1, newItem);
-      req.io.emit(uid2, newItem);
+      
     } catch (err) {
       console.log("error => ", err);
       res.status(200).json({

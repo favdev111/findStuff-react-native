@@ -13,6 +13,7 @@ class UserRoutes {
   routes() {
     this.router.put("/:id", userController2.updateUser);
     this.router.post("/location", userController2.updateLocation);
+    this.router.post("/block", userController2.block);
   }
 }
 

@@ -1,23 +1,23 @@
 import React from 'react';
-import {Image, View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
 import Style from './NotificationCardStyle';
 
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
 
 export default function Card({item, proc}) {
   return (
     <TouchableOpacity style={Style.CardWrap} onPress={proc}>
       <View style={{flex: 1}}>
-        <Image style={Style.AvatarStyle} source={Images.maleProfile} />
+        <FastImage style={Style.AvatarStyle} source={Images.maleProfile} />
       </View>
       <View
         style={{
           flex: 10,
           paddingLeft: 30,
         }}>
-        <Text>Administrator</Text>
+        <Text>管理员</Text>
 
         <View style={Style.CardDescription}>
           <Text numberOfLines={2} style={Style.CardDescriptionText}>

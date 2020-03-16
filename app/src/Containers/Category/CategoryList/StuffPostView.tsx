@@ -1,24 +1,24 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  Image,
-  TextInput,
-  Alert,
-} from 'react-native';
-import {Images, Colors} from 'src/Theme';
+import React, {useState, useEffect, useRef, useContext} from 'react';
+import {View, Text, TouchableOpacity, FlatList, ScrollView} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Images} from 'src/Theme';
 import CatListBtn from 'src/Components/Buttons/CatListBtn/CatListBtn';
 import Styles from './CategoryListStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import StuffCard from 'src/Components/Card/StuffCard';
-import {tagJson} from 'src/constants';
+import {tagJson} from 'src/config';
 import {NavigationEvents} from 'react-navigation';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
+import {store} from 'src/Store';
+
+import SearchBox from './SearchBox';
+
 const axios = require('axios');
 
 export default function CategoryList(props) {
+  const [state, dispatch] = useContext(store);
+
   const [list, setList] = useState([]);
   const [tag, setTag] = useState('');
 
@@ -32,7 +32,6 @@ export default function CategoryList(props) {
 
   const getList = () => {
     setKind(props.navigation.getParam('kind'));
-    console.log('ccccccccccccccccccccc', kind);
 
     axios
       .get(baseUrl + 'api/stuffpost', {
@@ -40,12 +39,10 @@ export default function CategoryList(props) {
           kind: props.navigation.getParam('kind'),
           tag,
           key,
+          region: state.region,
         },
       })
       .then(function(response) {
-        console.log(response.data);
-        console.log(response.data.length, '=======================');
-
         setList(response.data);
       })
       .catch(function(error) {
@@ -64,43 +61,17 @@ export default function CategoryList(props) {
     <ScrollView style={{backgroundColor: '#f4f6f8'}}>
       <NavigationEvents
         onDidFocus={() => {
-          console.log('wweweweewe', props.navigation.getParam('kind'));
           getList();
+          dispatch({type: 'setCurrentScreen', payload: 'post-list'});
         }}
       />
       <View style={Styles.CategoryListContainer}>
-        <View style={Styles.FindStuffHeaderContainer}>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => props.navigation.navigate('HomeView')}>
-            <Image
-              source={Images.whiteLeftChevron}
-              style={Styles.FindStuffHeaderImg}
-            />
-          </TouchableOpacity>
-          <View style={{alignItems: 'center'}}>
-            <Text style={{fontSize: 20, color: '#fff'}}>
-              {kind === 'lost' ? '寻物启事' : '失物招领'}
-            </Text>
-          </View>
-          <View style={{flex: 1}}></View>
-        </View>
-        <View style={Styles.HomeSearchContainer}>
-          <View style={Styles.HomeSearchArea}>
-            <TouchableOpacity onPress={handleSearch}>
-              <Image source={Images.Search} style={Styles.HomeSearchImg} />
-            </TouchableOpacity>
-            <View style={Styles.HomeSearchInputContainer}>
-              <TextInput
-                placeholder={'请输入关键词进行搜索'}
-                style={Styles.HomeSearchInput}
-                onChangeText={value => {
-                  setTmp(value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
+        <Header
+          back={() => props.navigation.goBack()}
+          label={kind === 'lost' ? '寻物启事' : '失物招领'}
+        />
+
+        <SearchBox inputProc={setTmp} handleSearch={handleSearch} />
         <View style={Styles.CategoryListWrap}>
           <FlatList
             horizontal={false}
@@ -123,17 +94,12 @@ export default function CategoryList(props) {
           />
         </View>
       </View>
-      <View style={Styles.CardsContainer}>
+      <View>
         {list.map((item, i) => (
           <StuffCard
             key={i}
             navigation={props.navigation}
-            item={item}
-            proc={() => {
-              {
-                props.navigation.navigate('StuffPostDetail', {item});
-              }
-            }}></StuffCard>
+            item={item}></StuffCard>
         ))}
       </View>
     </ScrollView>

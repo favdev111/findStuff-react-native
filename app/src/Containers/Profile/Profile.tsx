@@ -1,15 +1,15 @@
-import React, {useEffect, useState, useContext, useRef} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
   ImageBackground,
-  Image,
   ScrollView,
   TextInput,
   Button,
-  Dimensions,
-  // TouchableOpacity,
+  Image,
+  Platform,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Images} from 'src/Theme';
 import Style from './ProfileStyle';
@@ -18,50 +18,75 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
-
+import ImageResizer from 'react-native-image-resizer';
 import QRCode from 'react-native-qrcode-svg';
-
-import {baseUrl, appVersion} from 'src/constants';
 import axios from 'axios';
-
 import {NavigationEvents} from 'react-navigation';
-
 import Modal from 'react-native-modal';
+import {baseUrl, appVersion, avatarSize} from 'src/config';
+import {RESULTS} from 'react-native-permissions';
+
+import {checkCamLibPermission} from 'src/Permissions';
 
 const Profile = props => {
   const [state, dispatch] = useContext(store);
 
-  const [photo, setPhoto] = useState({name: '', source: '', data: ''});
-  const [name, setName] = useState(state.user.name ? state.user.name : '');
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [photo, setPhoto] = useState({uri: ''});
+  const [name, setName] = useState(state.user.name ? state.user.name : '');
   const [service, setService] = useState('aaaaaaaa');
   const [current, setCurrent] = useState('');
 
-  const [profile, setProfile] = useState({
-    version: appVersion,
-    service: 'OurCompany....',
-    share: 'https:///',
-    about: 'We are the whole...',
-    phone: '11111',
-  });
   const handleModal = idx => {
     setCurrent(idx);
-    if (idx === 'service') setService(profile.service);
-    else if (idx === 'about') setService(profile.about);
-    else if (idx === 'share') setService(profile.share);
-    else if (idx === 'upgrade') setService(profile.version);
-    else if (idx === 'phone') setService(profile.phone);
+    updateProfile(idx);
     setIsModalVisible(!isModalVisible);
+  };
+
+  const updateProfile = idx => {
+    if (idx === 'service') setService(state.profile.service);
+    else if (idx === 'about') setService(state.profile.about);
+    else if (idx === 'share') setService(state.profile.share);
+    else if (idx === 'phone') setService(state.profile.phone);
+    else if (idx === 'upgrade') {
+      let versionDescription = '';
+      if (appVersion === state.profile.version) {
+        versionDescription =
+          '您的应用是最新版本(' + state.profile.version + ').';
+      } else {
+        versionDescription =
+          '您的应用是旧版本(' +
+          appVersion +
+          ').' +
+          (state.profile.version
+            ? '最新版本是' + state.profile.version + '.'
+            : '');
+      }
+      setService(versionDescription);
+    }
   };
 
   const [isEdit, setIsEdit] = useState(false);
   const handleSignout = async () => {
-    dispatch({type: 'setTokenUser', payload: {user: {}, token: ''}});
-    AsyncStorage.clear();
+    // state.socket.disconnect({user_id: state.user._id});
+    // state.socket.on('disconnect', reason => {
     props.navigation.navigate('AppHome');
+    dispatch({
+      type: 'setTokenUser',
+      payload: {user: {}, token: '', socket: null},
+    });
+    AsyncStorage.clear();
+    // });
   };
 
-  const handlePhoto = () => {
+  const handlePhoto = async () => {
+    if (Platform.OS === 'android') {
+      const ret = await checkCamLibPermission();
+      console.log('111111111111111', ret);
+      if (!ret) return;
+    }
+
     ImagePicker.showImagePicker(
       {
         title: '选择一张照片',
@@ -71,98 +96,96 @@ const Profile = props => {
       },
       response => {
         if (response.didCancel) {
-          console.log('User cancelled image picker');
         } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
         } else {
-          const name = response.uri;
-          const source = {uri: response.uri};
-          const data = 'data:image/jpeg;base64,' + response.data;
+          ImageResizer.createResizedImage(
+            response.uri,
+            avatarSize,
+            avatarSize,
+            'JPEG',
+            100,
+            0,
+          )
+            .then(({uri, path, name, size}) => {
+              console.log('uri', uri, 'path', path, 'name', name, 'size', size);
 
-          setPhoto({source, data, name});
+              setPhoto({uri});
+              let formData = new FormData();
+              const file = {
+                uri,
+                name,
+                type: 'image/jpeg',
+              };
+              formData.append('file', file);
+
+              changePhoto(formData);
+            })
+            .catch(err => {
+              console.log('resize error... ... ...', err);
+            });
         }
       },
     );
   };
+
+  async function changePhoto(formData) {
+    await axios
+      .post(baseUrl + 'upload/file', formData)
+      .then(response => {
+        axios
+          .put(
+            baseUrl + 'api2/user/' + state.user._id,
+            {
+              photo: response.data.file.path,
+            },
+            {
+              headers: {auth_token: state.auth_token},
+            },
+          )
+          .then(function(response) {
+            Toast.show('成功!');
+          })
+          .catch(function(error) {
+            console.log('eeeeeerrrrrrrrr', error);
+            // Toast.show('错误');
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        Toast.show('失败了!');
+      });
+  }
+
   async function handleSubmit() {
     if (name === '') {
       Toast.show('正确输入值!');
       return;
     }
-    if (photo && photo.uri) {
-      let formData = new FormData();
 
-      const file = {
-        uri: photo.name,
-        name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-        type: photo.mime || 'image/jpeg',
-      };
-      formData.append('file', file);
-
-      console.log('selected file...', file);
-      console.log('selected photo...', photo);
-
-      await axios
-        .post(baseUrl + 'upload/file', formData)
-        .then(response => {
-          axios
-            .put(
-              baseUrl + 'api2/user/' + state.user._id,
-              {
-                photo: response.data.file.path,
-                name,
-              },
-              {
-                headers: {auth_token: state.auth_token},
-              },
-            )
-            .then(function(response2) {
-              console.log('response2', response2.data);
-              if (response2.data.success) {
-                dispatch({type: 'setUser', payload: response2.data.user});
-                Toast.show('成功!');
-                setIsEdit(false);
-              } else {
-                Toast.show('失败了!');
-              }
-            })
-            .catch(function(error) {
-              console.log('eeeeeerrrrrrrrr', error);
-              // Toast.show(error);
-            });
-        })
-        .catch(error => {
-          console.log(error);
+    axios
+      .put(
+        baseUrl + 'api2/user/' + state.user._id,
+        {
+          name,
+        },
+        {
+          headers: {auth_token: state.auth_token},
+        },
+      )
+      .then(function(response) {
+        if (response.data.success) {
+          dispatch({type: 'setUser', payload: response.data.user});
+          Toast.show('成功!');
+          setIsEdit(false);
+        } else {
           Toast.show('失败了!');
-        });
-    } else {
-      axios
-        .put(
-          baseUrl + 'api2/user/' + state.user._id,
-          {
-            name,
-          },
-          {
-            headers: {auth_token: state.auth_token},
-          },
-        )
-        .then(function(response2) {
-          console.log('response2', response2.data);
-          if (response2.data.success) {
-            dispatch({type: 'setUser', payload: response2.data.user});
-            Toast.show('成功!');
-            setIsEdit(false);
-          } else {
-            Toast.show('失败了!');
-          }
-        })
-        .catch(function(error) {
-          console.log('eeeeeerrrrrrrrr', error);
-          // Toast.show(error);
-        });
-    }
+        }
+      })
+      .catch(function(error) {
+        console.log('eeeeeerrrrrrrrr', error);
+        // Toast.show('错误');
+      });
   }
   useEffect(() => {
     (async () => {
@@ -170,29 +193,7 @@ const Profile = props => {
         .post(baseUrl + 'api/profile/last')
         .then(function(response) {
           if (response.data.item) {
-            console.log(response.data);
-
-            let {version, share, about, service, phone} = response.data.item;
-
-            let versionDescription = '';
-            if (appVersion === version) {
-              versionDescription = '您的应用是最新版本(' + version + ').';
-            } else {
-              versionDescription =
-                '您的应用是旧版本(' +
-                appVersion +
-                ').最新版本是' +
-                version +
-                '.';
-            }
-
-            setProfile({
-              version: versionDescription,
-              share,
-              about,
-              service,
-              phone,
-            });
+            dispatch({type: 'setProfile', payload: response.data.item});
           }
         })
         .catch(function(error) {
@@ -204,12 +205,18 @@ const Profile = props => {
 
       console.log('refreshing...........................');
     })();
-  }, [isModalVisible, photo]);
+  }, []);
+  useEffect(() => {
+    console.log('refreshing...');
+    updateProfile(current);
+  }, [photo, state.profile]);
   return (
     <ScrollView style={Style.ProfileContainer}>
       <NavigationEvents
         onDidFocus={() => {
+          console.log('profile user,,,,', state.user);
           if (!state.user._id) props.navigation.navigate('Signin');
+          else dispatch({type: 'setCurrentScreen', payload: 'profile'});
         }}
       />
       <ImageBackground
@@ -221,47 +228,36 @@ const Profile = props => {
         <View style={Style.ProfileHeaderAvatarContainer}>
           <TouchableOpacity
             onPress={handlePhoto}
-            style={{marginRight: 15, resizeMode: 'cover', borderRadius: 30}}>
-            {state.user.photo !== undefined &&
-              state.user.photo !== '' &&
-              photo.source === '' && (
-                <Image
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + state.user.photo,
-                  }}
-                  style={Style.ProfileHeaderAvatarImg}
-                  resizeMode="cover"
-                  borderRadius={30}
-                />
-              )}
-            {state.user.photo !== undefined &&
-              state.user.photo !== '' &&
-              photo.source !== '' && (
-                <Image
-                  source={photo.source}
-                  style={Style.ProfileHeaderAvatarImg}
-                  resizeMode="cover"
-                  borderRadius={30}
-                />
-              )}
-            {(state.user.photo === '' || state.user.photo === undefined) && (
-              <Image
-                source={photo.source ? photo.source : Images.femaleProfile}
-                style={Style.ProfileHeaderAvatarImg}
-                resizeMode="cover"
-                borderRadius={30}
-              />
-            )}
-            <Image source={Images.Camera} style={Style.HeaderImgBadge} />
+            style={{
+              marginRight: 15,
+              // resizeMode: 'cover',
+              borderRadius: 30,
+            }}>
+            <Image
+              source={
+                photo.uri
+                  ? photo
+                  : state.user.photo
+                  ? {
+                      uri: baseUrl + 'download/photo?path=' + state.user.photo,
+                    }
+                  : Images.maleProfile
+              }
+              style={Style.ProfileHeaderAvatarImg}
+              // resizeMode="cover"
+            />
+            <FastImage source={Images.Camera} style={Style.HeaderImgBadge} />
           </TouchableOpacity>
           <View>
             <View style={{flexDirection: 'row'}}>
-              <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
               <TouchableOpacity
                 onPress={() => {
                   setIsEdit(!isEdit);
                 }}>
-                <Image source={Images.TextEdit} style={Style.HeaderTextBadge} />
+                <FastImage
+                  source={Images.TextEdit}
+                  style={Style.HeaderTextBadge}
+                />
               </TouchableOpacity>
             </View>
             <Text style={{color: Colors.white, fontSize: 12}}>
@@ -302,7 +298,7 @@ const Profile = props => {
             onPress={() => {
               handleModal('service');
             }}>
-            <Image
+            <FastImage
               source={Images.ProfileBtnPublished}
               style={Style.ProfileBtnPublishedImg}
             />
@@ -313,7 +309,7 @@ const Profile = props => {
             onPress={() => {
               handleModal('phone');
             }}>
-            <Image
+            <FastImage
               source={Images.ProfileBtnLike}
               style={Style.ProfileBtnLikeImg}
             />
@@ -329,14 +325,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileUpdateWrap}>
             <View style={Style.ProfileUpdateLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileUpdate}
                 style={Style.ProfileUpdateImg}
               />
               <Text>检查更新</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />
@@ -350,14 +346,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileContactus}
                 style={Style.ProfileContactImg}
               />
               <Text>关于寻N</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />
@@ -371,14 +367,14 @@ const Profile = props => {
           }}>
           <View style={Style.ProfileContactUsWrap}>
             <View style={Style.ProfileContactUsLeft}>
-              <Image
+              <FastImage
                 source={Images.ProfileWithFriend}
                 style={Style.ProfileShareImg}
               />
               <Text>分享给朋友</Text>
             </View>
             <View>
-              <Image
+              <FastImage
                 source={Images.RightArrow}
                 style={Style.ProfileRightArrow}
               />
@@ -423,7 +419,7 @@ const Profile = props => {
                   alignItems: 'center',
                   marginTop: 30,
                 }}>
-                <QRCode value={profile.share} size={200} />
+                <QRCode value={state.profile.share} size={200} />
               </View>
             )}
             <View

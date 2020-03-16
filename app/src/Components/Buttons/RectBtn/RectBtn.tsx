@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import Style from './RectBtnStyle';
 import {Colors} from 'src/Theme';
 

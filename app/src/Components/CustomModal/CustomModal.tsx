@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
+import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal';
 import {Images} from 'src/Theme';
 import Styles from './CustomModalStyle';

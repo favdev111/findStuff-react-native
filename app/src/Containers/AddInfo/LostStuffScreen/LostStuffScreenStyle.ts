@@ -5,18 +5,6 @@ export default StyleSheet.create({
   FindStuffScreenContainer: {
     backgroundColor: '#f4f6f8',
   },
-  FindStuffHeaderContainer: {
-    width: Dimensions.get('window').width,
-    height: 50,
-    backgroundColor: '#0084da',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  FindStuffHeaderImg: {
-    height: 35,
-    width: 35,
-    transform: [{rotate: '90deg'}],
-  },
   StuffInfoContainer: {
     backgroundColor: '#fff',
     marginTop: 10,
@@ -31,6 +19,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 0.3,
     borderBottomColor: Colors.grey,
+    marginRight: 10,
   },
   FindStuffAreaTextWrap: {
     flexDirection: 'row',
@@ -46,12 +35,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 5,
+    borderBottomWidth: 0.3,
+    borderBottomColor: Colors.grey,
+    marginRight: 10,
   },
   FindStuffDetailAreaInput: {
     height: 40,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.paleGrey3,
   },
   FindStuffDetailAreaBtn: {
     color: '#0084da',
@@ -71,10 +61,10 @@ export default StyleSheet.create({
     height: 40,
     flex: 1,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.paleGrey3,
-    marginRight: 12,
+    borderBottomWidth: 0.3,
+    borderBottomColor: Colors.grey,
     marginLeft: 5,
+    marginRight: 10,
   },
   FindStuffFooter: {
     padding: 5,
@@ -89,6 +79,7 @@ export default StyleSheet.create({
     marginTop: 5,
     borderWidth: 0.3,
     textAlignVertical: 'top',
+    height: 100,
   },
   FindStuffImgUploadContainer: {
     marginTop: 10,

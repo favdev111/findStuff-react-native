@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   ScrollView,
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
+  Platform,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import FastImage from 'react-native-fast-image';
 import Styles from './FoundStuffScreenStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import CustomFormSelect from 'src/Components/CustomForm/CustomFormSelect/CustomFormSelect';
 import {Images, Colors} from 'src/Theme';
 import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
@@ -16,18 +18,37 @@ import ChinaRegionWheelPicker from 'src/Lib/rn-wheel-picker-china-region';
 import {store} from 'src/Store';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-picker';
-import {baseUrl} from 'src/constants';
+import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import {NavigationEvents} from 'react-navigation';
+import {baseUrl, photoSize} from 'src/config';
+
+import {RESULTS} from 'react-native-permissions';
+import {checkCamLibPermission} from 'src/Permissions';
+
 const FoundStuffScreen = props => {
   const [state, dispatch] = useContext(store);
   const [tag, setTag] = useState('');
   const [place, setPlace] = useState('');
   const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState([]);
 
-  const handlePhoto = () => {
+  const handlePhoto = async () => {
+    console.log(photo.length, '***********************');
+
+    if (photo.length > 5) {
+      Toast.show('您选择的图像不能超过6张。');
+      return;
+    }
+
+    if (Platform.OS === 'android') {
+      const ret = await checkCamLibPermission();
+      console.log('111111111111111', ret);
+      if (!ret) return;
+    }
+
     ImagePicker.showImagePicker(
       {
         title: '选择一张照片',
@@ -36,8 +57,6 @@ const FoundStuffScreen = props => {
         chooseFromLibraryButtonTitle: '从照片中选择',
       },
       response => {
-        console.log('Response = ', response);
-
         if (response.didCancel) {
           console.log('User cancelled image picker');
         } else if (response.error) {
@@ -45,11 +64,22 @@ const FoundStuffScreen = props => {
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
         } else {
-          const name = response.uri;
-          const source = {uri: response.uri};
-          const data = 'data:image/jpeg;base64,' + response.data;
-
-          setPhoto([...photo, {source, data, name}]);
+          ImageResizer.createResizedImage(
+            response.uri,
+            photoSize,
+            photoSize,
+            'JPEG',
+            100,
+            0,
+          )
+            .then(({uri, path, name, size}) => {
+              console.log('uri', uri, 'path', path, 'name', name, 'size', size);
+              setPhoto([...photo, {uri, name, type: 'image/jpeg'}]);
+              if (photo.length > 4) Toast.show('您选择所有最多6张图像');
+            })
+            .catch(err => {
+              console.log('resize error... ... ...', err);
+            });
         }
       },
     );
@@ -57,20 +87,17 @@ const FoundStuffScreen = props => {
 
   async function handleSubmit() {
     if (tag === '' || place === '' || address === '' || description === '') {
-      Toast.show('Input values correctly!');
+      Toast.show('正确输入值!');
       return;
     }
 
     if (photo && photo.length > 0) {
       let formData = new FormData();
       photo.forEach(ph => {
-        const file = {
-          uri: ph.name,
-          name: Math.floor(Math.random() * Math.floor(999999999)) + '.jpg',
-          type: ph.mime || 'image/jpeg',
-        };
-        formData.append('photo', file);
+        formData.append('photo', ph);
       });
+
+      console.log('name or phone', state.user.name || state.user.phone);
 
       await axios
         .post(baseUrl + 'upload/photo', formData)
@@ -85,55 +112,63 @@ const FoundStuffScreen = props => {
               description,
               photos,
               fee: 0,
+              phone,
               user: state.user._id,
+              title: state.user.name || state.user.phone,
             })
             .then(function(response2) {
-              if (response2.data) {
-                Toast.show('成功!');
+              Toast.show(response2.data.msg);
+              if (response2.data.success) {
                 props.navigation.navigate('AppHome');
-              } else {
-                Toast.show('失败了!');
               }
             })
             .catch(function(error) {
-              Toast.show(error);
+              Toast.show('错误');
             });
         })
         .catch(error => {
           console.log(JSON.stringify(error));
         });
     } else {
-      Toast.show('未选择照片!');
+      axios
+        .post(baseUrl + 'api/stuffpost', {
+          kind: 'found',
+          tag,
+          place,
+          address,
+          description,
+          photos: [],
+          fee: 0,
+          phone,
+          user: state.user._id,
+          title: state.user.name,
+        })
+        .then(function(response2) {
+          Toast.show(response2.data.msg);
+          if (response2.data.success) {
+            props.navigation.navigate('AppHome');
+          }
+        })
+        .catch(function(error) {
+          Toast.show('错误');
+        });
     }
   }
-
-  useEffect(() => {}, []);
 
   return (
     <ScrollView style={Styles.GetStuffScreenContainer}>
       <NavigationEvents
         onDidFocus={() => {
           if (!state.user._id) props.navigation.navigate('Signin');
+          dispatch({type: 'setCurrentScreen', payload: 'found-screen'});
         }}
       />
-      <View style={Styles.FindStuffHeaderContainer}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('AppHome')}
-          style={{flex: 1}}>
-          <Image
-            source={Images.whiteLeftChevron}
-            style={Styles.FindStuffHeaderImg}
-          />
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 20,
-            color: '#fff',
-          }}>
-          详细情况
-        </Text>
-        <Text style={{flex: 1}} />
-      </View>
+
+      <Header
+        back={() => props.navigation.navigate('AppHome')}
+        label={'详细情况'}
+      />
+
       <View style={Styles.StuffInfoContainer}>
         <CustomFormSelect
           CustomFormSelectLabel={'物品类型'}
@@ -172,9 +207,18 @@ const FoundStuffScreen = props => {
               onChangeText={value => setAddress(value)}
             />
           </View>
-          <TouchableOpacity>
-            <Text style={Styles.FindStuffDetailAreaBtn}>定位</Text>
-          </TouchableOpacity>
+        </View>
+        <View style={Styles.FindStuffDetailAreaContainer}>
+          <View>
+            <Text>联系电话</Text>
+          </View>
+          <View style={{flex: 1}}>
+            <TextInput
+              style={Styles.FindStuffDetailAreaInput}
+              onChangeText={value => setPhone(value)}
+              keyboardType={'numeric'}
+            />
+          </View>
         </View>
       </View>
 
@@ -192,18 +236,41 @@ const FoundStuffScreen = props => {
           <TouchableOpacity
             style={Styles.FindStuffImgUploadWrap}
             onPress={handlePhoto}>
-            <Image source={Images.Camera} style={Styles.FindStuffImgUpload} />
+            <FastImage
+              source={Images.Camera}
+              style={Styles.FindStuffImgUpload}
+            />
             <Text style={{color: Colors.grey}}>添加图片</Text>
           </TouchableOpacity>
         </View>
         <View style={Styles.FindStuffImgGroupContainer}>
           {photo &&
             photo.map((ph, i) => (
-              <Image
-                key={i}
-                source={ph.source}
-                style={{width: 70, height: 70}}
-              />
+              <View style={{}}>
+                <FastImage
+                  key={i}
+                  source={ph}
+                  style={{
+                    width: 70,
+                    height: 70,
+                    marginBottom: -15,
+                    marginTop: 5,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setPhoto(photo.filter(p => p.uri != ph.uri));
+                  }}
+                  style={{
+                    width: 15,
+                    height: 15,
+                    backgroundColor: Colors.warmBlue,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={{color: '#fff'}}>{'×'}</Text>
+                </TouchableOpacity>
+              </View>
             ))}
         </View>
       </View>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import {Images} from 'src/Theme';
 import Styles from './CustomModalStyle';

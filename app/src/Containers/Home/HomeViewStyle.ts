@@ -25,27 +25,43 @@ export default StyleSheet.create({
   HomeSearchArea: {
     position: 'absolute',
     backgroundColor: '#fff',
-    top: -15,
+    top: -20,
     flexDirection: 'row',
     width: '85%',
     height: 45,
     borderRadius: 4,
-    padding: 10,
   },
   HomeSearchImg: {
-    width: 26,
-    height: 26,
+    width: 20,
+    height: 20,
   },
   HomeSearchContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   HomeSearchInputContainer: {
+    flex: 5,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
   },
   HomeSearchInput: {
     height: 40,
+  },
+
+  HomeSearchBtn: {
+    flex: 1,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    padding: 10,
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
+    alignItems: 'center',
+    backgroundColor: '#eee',
+    height: 45,
   },
   HomeMainBtnGroup: {
     alignItems: 'center',
@@ -74,6 +90,8 @@ export default StyleSheet.create({
   HomeNotificationText: {
     flex: 1,
     color: Colors.grey,
+    marginLeft: 5,
+    padding: 5,
   },
   container: {
     flex: 1,

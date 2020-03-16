@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactElement,
-  FC,
-  useContext,
-  useReducer,
-} from 'react';
+import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav';
@@ -13,16 +7,9 @@ import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScree
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen';
 import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScreen';
 import FoundStuffScreen from 'src/Containers/AddInfo/FoundStuffScreen/FoundStuffScreen';
-import Published from 'src/Containers/Profile/Published/Published';
-import Attention from 'src/Containers/Profile/Attention/Attention';
-import Notification from 'src/Containers/Notification/NotificationList/NotificationList';
-import ChatDetail from 'src/Containers/Chat/ChatDetail/ChatDetail';
+import ChatRoom from 'src/Containers/Chat/Chat/ChatRoom';
 import UserInfo from 'src/Containers/Category/UserInfo/UserInfo';
-import {store, StateProvider} from 'src/Store';
-import LocalPhone from 'src/Containers/LocalPhone/LocalPhone';
-import FlashMessage from 'react-native-flash-message';
-
-require('src/socket');
+import {StateProvider} from 'src/Store';
 
 const AppNavigator = createStackNavigator(
   {
@@ -34,13 +21,8 @@ const AppNavigator = createStackNavigator(
     LostStuffScreen: LostStuffScreen,
     FoundStuffScreen: FoundStuffScreen,
 
-    Published: Published,
-    Attention: Attention,
-    Notification: Notification,
-    ChatDetail: ChatDetail,
-
+    ChatRoom: ChatRoom,
     UserInfo: UserInfo,
-    LocalPhone: LocalPhone,
   },
   {
     initialRouteName: 'MainScreenWithBottomNav',
@@ -50,13 +32,10 @@ const AppNavigator = createStackNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-const App: FC = (): ReactElement => {
+export default function App() {
   return (
     <StateProvider>
       <AppContainer />
-      <FlashMessage position="top" animated={true} />
     </StateProvider>
   );
-};
-
-export default App;
+}

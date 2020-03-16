@@ -65,7 +65,7 @@ class StuffPostController2 {
     try {
       const { post_id, user_id } = req.body;
 
-      console.log(post_id, user_id);
+      console.log('like operation post_id, user_id, ', post_id, user_id);
 
       const updatedItem = await StuffPost.findOneAndUpdate(
         { _id: new mongodb.ObjectID(post_id) },

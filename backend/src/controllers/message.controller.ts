@@ -39,41 +39,37 @@ class MessageController {
     });
   }
 
+  //update the checked state
   public async getItem(req: Request, res: Response) {
     try {
-      const url = req.params.url;
+      const room_id = req.params.url;
+      const user_id = req.query.user_id;
 
-      const filter = {
-        room_id: new mongodb.ObjectID(url)
-        // checked: 0
-      };
+      const updatedItem = await Message.updateMany(
+        { room: new mongodb.ObjectID(room_id), user: new mongodb.ObjectID(user_id) },
+        { $set: { checked: 1 } },
+        { multi: true }
+      );
 
-      console.log("get details filter... ... ...", filter);
-
-      const items = await Message.find(filter);
-
-      console.log("get message details.....", items);
-
-      if (!items)
-        return res.status(400).json({
+      if (!updatedItem)
+      console.log('checked update failed...', room_id, user_id);
+        return res.status(200).json({
           success: false,
-          msg: "Item not found"
+          msg: "Item not updated"
         });
 
-      await Message.updateMany(filter, {
-        $set: { checked: 1 }
-      });
+        console.log('checked update success...', room_id, user_id);
 
       res.status(200).json({
         success: true,
-        msg: "Item found",
-        items
+        msg: "Item updated.",
+        item: updatedItem
       });
     } catch (err) {
       console.log("error => ", err);
-      res.status(404).json({
+      res.status(500).json({
         success: false,
-        msg: "Item not found."
+        msg: "Item not updated"
       });
     }
   }

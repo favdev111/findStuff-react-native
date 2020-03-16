@@ -1,7 +1,8 @@
 import React from 'react';
-import {Image, View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import Style from './RoundBtnStyle';
 import {Colors} from 'src/Theme';
+import {dotedBadge} from 'src/utils';
 
 export default function RoundBtn(props) {
   return (
@@ -10,7 +11,11 @@ export default function RoundBtn(props) {
         Style.RoundBtnWrap,
         {backgroundColor: Colors[props.RoundBtnColor]},
       ]}>
-      <Text style={Style.RoundBtnText}>{props.RoundBtnTitle}</Text>
+      <TouchableOpacity onPress={props.proc}>
+        <Text style={Style.RoundBtnText}>
+          {dotedBadge(props.RoundBtnTitle)}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }

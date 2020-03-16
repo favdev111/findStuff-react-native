@@ -6,7 +6,7 @@ import { addContact } from "../../utils/api";
 
 import { Select, Row, Col } from "antd";
 
-import { provinceData, cityData } from "./regionJson";
+import { provinceData, cityData } from "../../utils/regionJson";
 
 const { Option } = Select;
 
@@ -26,8 +26,8 @@ function AddContact(props: TagsProps) {
     }
   };
 
-  const [city, setCity] = useState("");
-  const [firstAddr, setFirstAddr] = useState("");
+  const [city, setCity] = useState("天山区");
+  const [firstAddr, setFirstAddr] = useState("乌鲁木齐");
   const [cities, setCities] = useState(cityData[provinceData[0]]);
   const [secondCity, setSecondCity] = useState(cityData[provinceData[0]][0]);
 

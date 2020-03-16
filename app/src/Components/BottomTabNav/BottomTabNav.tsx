@@ -1,13 +1,12 @@
-import React, {createRef, ReactElement, useContext} from 'react';
-import {Image, Linking, Text, View} from 'react-native';
+import React, {ReactElement, useContext} from 'react';
+import {View, Image} from 'react-native';
 import {BottomTabBar, createBottomTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import AddInfoView from 'src/Containers/AddInfo/AddInfo';
 import ProfileView from 'src/Containers/Profile/Profile';
 import HomeView from 'src/Containers/Home';
 import Style from './BottomTabNavStyle';
-import ChatView from 'src/Containers/Chat/Chat';
-import {store} from 'src/Store';
+import RoomList from 'src/Containers/Chat/RoomList';
 import {Colors, Images} from 'src/Theme';
 
 import StuffPostView from 'src/Containers/Category/CategoryList/StuffPostView';
@@ -21,6 +20,39 @@ import NewsDetail from 'src/Containers/Category/CategoryDetail/NewsDetail';
 
 import ContactView from 'src/Containers/Category/CategoryList/ContactView';
 
+import {store} from 'src/Store';
+
+const NoteIcon = props => {
+  const [state, dispatch] = useContext(store);
+
+  const {focused} = props;
+  return (
+    <>
+      {state.user._id &&
+      state.last_note.users &&
+      state.last_note.users.indexOf(state.user._id) === -1 ? (
+        <View
+          style={{
+            width: 8,
+            height: 8,
+            backgroundColor: 'red',
+            borderRadius: 5,
+            marginLeft: 15,
+            marginBottom: -10,
+            zIndex: 10,
+          }}></View>
+      ) : (
+        <></>
+      )}
+      <Image
+        source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
+        style={[Style.tabBarIcon]}
+        resizeMode="contain"
+      />
+    </>
+  );
+};
+
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
 const NotificationStackNavigator = createStackNavigator(
@@ -30,19 +62,6 @@ const NotificationStackNavigator = createStackNavigator(
     },
     NotificationDetail: {
       screen: NotificationDetail,
-    },
-  },
-  {
-    defaultNavigationOptions: {
-      headerShown: false,
-    },
-  },
-);
-
-const AddInfoStackNavigator = createStackNavigator(
-  {
-    AddInfoView: {
-      screen: AddInfoView,
     },
   },
   {
@@ -80,29 +99,16 @@ const HomeStackNavigator = createStackNavigator(
   },
 );
 
-const ChatStackNavigator = createStackNavigator(
-  {
-    ChatView: {
-      screen: ChatView,
-    },
-  },
-  {
-    defaultNavigationOptions: {
-      headerShown: false,
-    },
-  },
-);
-
 const BottomTabNavigator = createBottomTabNavigator(
   {
     AppHome: {
       screen: HomeStackNavigator,
     },
     Chat: {
-      screen: ChatStackNavigator,
+      screen: RoomList,
     },
     AddInfo: {
-      screen: AddInfoStackNavigator,
+      screen: AddInfoView,
     },
     Notification: {
       screen: NotificationStackNavigator,
@@ -112,15 +118,14 @@ const BottomTabNavigator = createBottomTabNavigator(
     },
   },
   {
-    tabBarComponent: (props: any): ReactElement => (
-      <TabBarComponent {...props} style={Style.BottomNavTabContainer} />
-    ),
+    tabBarComponent: (props: any): ReactElement => {
+      return <TabBarComponent {...props} style={Style.BottomNavTabContainer} />;
+    },
     initialRouteName: 'AppHome',
     backBehavior: null,
-    defaultNavigationOptions: ({navigation}: any): ReactElement => ({
+    defaultNavigationOptions: ({navigation, test}: any): ReactElement => ({
       tabBarIcon: ({focused}) => {
         const {routeName} = navigation.state;
-
         if (routeName === 'AppHome') {
           return (
             <>
@@ -131,13 +136,11 @@ const BottomTabNavigator = createBottomTabNavigator(
               />
             </>
           );
-        } else if (routeName === 'Profile') {
+        } else if (routeName === 'Chat') {
           return (
             <>
               <Image
-                source={
-                  focused ? Images.BottomNavProfile2 : Images.BottomNavProfile
-                }
+                source={focused ? Images.BottomNavChat2 : Images.BottomNavChat}
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
@@ -153,21 +156,15 @@ const BottomTabNavigator = createBottomTabNavigator(
               />
             </View>
           );
-        } else if (routeName === 'Chat') {
-          return (
-            <>
-              <Image
-                source={focused ? Images.BottomNavChat2 : Images.BottomNavChat}
-                style={Style.tabBarIcon}
-                resizeMode="contain"
-              />
-            </>
-          );
         } else if (routeName === 'Notification') {
+          return <NoteIcon focused={focused} />;
+        } else if (routeName === 'Profile') {
           return (
             <>
               <Image
-                source={focused ? Images.BottomNavNews2 : Images.BottomNavNews}
+                source={
+                  focused ? Images.BottomNavProfile2 : Images.BottomNavProfile
+                }
                 style={Style.tabBarIcon}
                 resizeMode="contain"
               />
@@ -197,8 +194,6 @@ const BottomTabNavigator = createBottomTabNavigator(
 );
 
 const MainScreenWithBottomNav = props => {
-  // const [state, dispatch] = useContext(store);
-
   return <BottomTabNavigator navigation={props.navigation} />;
 };
 MainScreenWithBottomNav.router = BottomTabNavigator.router;

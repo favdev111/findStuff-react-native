@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
-import {Text, View, Image} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Swiper from 'react-native-swiper';
 import {Images} from 'src/Theme';
 import styles from './HomeCarouselStyle';
@@ -20,28 +21,28 @@ export default function HomeCarousel() {
         loop
         autoplay>
         <View style={styles.slide}>
-          <Image
+          <FastImage
             resizeMode="stretch"
             style={styles.image}
             source={Images.HomeBannerImg}
           />
         </View>
         <View style={styles.slide}>
-          <Image
+          <FastImage
             resizeMode="stretch"
             style={styles.image}
             source={Images.HomeCarousel1}
           />
         </View>
         <View style={styles.slide}>
-          <Image
+          <FastImage
             resizeMode="stretch"
             style={styles.image}
             source={Images.HomeCarousel2}
           />
         </View>
         <View style={styles.slide}>
-          <Image
+          <FastImage
             resizeMode="stretch"
             style={styles.image}
             source={Images.HomeCarousel3}

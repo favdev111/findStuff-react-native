@@ -73,20 +73,12 @@ export default class ChinaRegionWheelPicker extends BaseComponent {
     // webRegionAPI().then(area => {
 
     this._regionAllData = regionJson;
-
-    console.log('area', this._regionAllData);
-
     const provinces = this._filterAllProvinces();
-    console.log('provinces', provinces);
-
     const citys = this._filterCitys(this.state.selectedProvince);
-    console.log('citys', citys);
-
     const areas = this._filterAreas(
       this.state.selectedProvince,
       this.state.selectedCity,
     );
-    console.log('provinces', areas);
 
     this.setState({
       provinces,
@@ -109,7 +101,6 @@ export default class ChinaRegionWheelPicker extends BaseComponent {
     this.setState({isVisible: false});
   }
   open() {
-    console.log('openopen');
     this.setState({isVisible: true});
   }
 

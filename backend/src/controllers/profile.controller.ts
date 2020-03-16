@@ -113,6 +113,12 @@ class ProfileController {
         msg: "Item deleted.",
         item: deletedItem
       });
+
+      const prevItem = await Profile.find({}).sort({createAt:-1}).limit(1);
+      if (prevItem[0])
+        req.io.emit("data_profile", prevItem[0]);
+      else 
+        req.io.emit("data_profile", 0);
     } catch (err) {
       console.log("error => ", err);
       res.status(500).json({

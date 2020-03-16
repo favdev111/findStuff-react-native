@@ -81,6 +81,8 @@ project.ext.react = [
 
     // bundleInDebug: true,    
     // devDisabledInDebug: true
+
+    // bundleInRelease: true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -136,6 +138,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -168,10 +171,9 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"            
         }
     }
     // applicationVariants are e.g. debug, release
@@ -200,9 +202,11 @@ android {
 }
 
 dependencies {
-	implementation project(':react-native-background-job')
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+	implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation 'me.pushy:sdk:1.0.54'
+    implementation 'me.pushy:sdk-react-native:1.0.13'
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";

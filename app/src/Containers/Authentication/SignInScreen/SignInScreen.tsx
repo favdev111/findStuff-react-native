@@ -9,8 +9,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {store} from 'src/Store';
 
 import Toast from 'react-native-simple-toast';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import axios from 'axios';
+import io from 'socket.io-client';
+
+// import Pushy from 'pushy-react-native';
 
 export default function SignInScreen(props) {
   const [phone, setPhone] = useState('');
@@ -22,20 +25,8 @@ export default function SignInScreen(props) {
     try {
       await AsyncStorage.setItem(key, value);
     } catch (e) {
-      console.log(e);
+      console.log('saveToken Exception... ... ...', e);
     }
-  };
-
-  const getAllData = () => {
-    AsyncStorage.getAllKeys().then(keys => {
-      return AsyncStorage.multiGet(keys)
-        .then(result => {
-          console.log(result);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    });
   };
 
   const handleSubmit = async () => {
@@ -49,17 +40,54 @@ export default function SignInScreen(props) {
         phone,
         password,
       })
-      .then(response => {
+      .then(async response => {
         if (response.data.success) {
+          console.log('user info...', response.data.user);
+
+          // Register the device for push notifications
+          /*
+          Pushy.register()
+            .then(async deviceToken => {
+              axios
+                .post(baseUrl + 'auth/device', {
+                  user_id: response.data.user._id,
+                  device: deviceToken,
+                })
+                .then(response => {
+                  console.log(response.data.user, 'user with device token');
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+
+              await fetch(baseUrl + 'api/auth/device?token=' + deviceToken);
+            })
+            .catch(err => {
+              // Handle registration errors
+              console.log('Device registration exception.......', err);
+            });
+          */
+          const signInfo = {
+            auth_token: response.headers.auth_token,
+            user: response.data.user,
+            rooms: response.data.rooms,
+          };
+
           dispatch({
             type: 'setTokenUser',
-            payload: {
-              auth_token: response.headers.auth_token,
-              user: response.data.user,
-            },
+            payload: signInfo,
           });
 
-          saveToken('token', response.headers.auth_token);
+          dispatch({
+            type: 'setSocket',
+            payload: io(baseUrl, {
+              query: {user_id: response.data.user._id},
+              ransports: ['websocket'],
+              jsonp: false,
+            }),
+          });
+
+          await saveToken('signInfo', JSON.stringify(signInfo));
 
           Toast.show('成功!');
           props.navigation.navigate('AppHome');

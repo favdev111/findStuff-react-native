@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from 'src/Theme';
 
 export default StyleSheet.create({
   RectBtnWrap: {
@@ -7,7 +6,6 @@ export default StyleSheet.create({
     backgroundColor: '#fd6559',
     paddingLeft: 5,
     paddingRight: 5,
-    marginBottom: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },

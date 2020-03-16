@@ -1,23 +1,35 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images, Colors} from 'src/Theme';
 import Styles from './CategoryDetailStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
 import {store} from 'src/Store';
 import moment from 'moment';
-import {baseUrl} from 'src/constants';
+import {baseUrl} from 'src/config';
 import RoundBtn from 'src/Components/Buttons/RoundBtn/RoundBtn';
+import {NavigationEvents} from 'react-navigation';
 import axios from 'axios';
+import Toast from 'react-native-simple-toast';
+import DialogInput from 'react-native-dialog-input';
 
 export default function StuffPostDetail({navigation}) {
   const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(navigation.getParam('item'));
+  const [dlgVisible, setDlgVisible] = useState(false);
+
+  const sendMsg = item => {
+    if (!state.user._id) {
+      Toast.show('请登录！');
+      return;
+    }
+    if (item.user._id === state.user._id) {
+      Toast.show('这是你的帖子');
+      return;
+    }
+    navigation.navigate('ChatRoom', {guest: item.user});
+  };
 
   const increaseBrowseCnt = () => {
     axios
@@ -41,6 +53,11 @@ export default function StuffPostDetail({navigation}) {
       return;
     }
 
+    if (item.user._id === state.user._id) {
+      Toast.show('错误');
+      return;
+    }
+
     axios
       .post(baseUrl + 'api2/stuffpost/likes', {
         post_id: item._id,
@@ -59,57 +76,104 @@ export default function StuffPostDetail({navigation}) {
       });
   };
 
-  useEffect(() => {
-    increaseBrowseCnt();
-  }, []);
+  const canReport = () => {
+    if (state.user._id === undefined) {
+      navigation.navigate('Signin');
+      return false;
+    }
+    if (!item.user || item.user._id === state.user._id) {
+      Toast.show('错误');
+      return false;
+    }
+
+    let ret = true;
+
+    item.reports.map(report => {
+      if (report.user === state.user._id) {
+        ret = false;
+      }
+    });
+
+    if (!ret) Toast.show('您已经举报了。');
+    return ret;
+  };
+
+  const checkReport = () => {
+    const couldI = canReport();
+    if (couldI) setDlgVisible(true);
+  };
+
+  const reportPost = report => {
+    if (state.user._id === undefined) {
+      navigation.navigate('Signin');
+      return;
+    }
+
+    axios
+      .post(baseUrl + 'api2/stuffpost/report', {
+        post_id: item._id,
+        user_id: state.user._id,
+        report,
+      })
+      .then(function(response) {
+        if (response.data.item) {
+          setItem(response.data.item);
+        }
+        Toast.show('成功');
+      })
+      .catch(function(error) {
+        console.log(error, 'fromthe report fasdf');
+        console.log(error);
+        Toast.show('错误');
+      })
+      .finally(function() {
+        // always executed
+      });
+  };
 
   return (
     <>
+      <NavigationEvents
+        onDidFocus={() => {
+          increaseBrowseCnt();
+          dispatch({type: 'setCurrentScreen', payload: 'post-detail'});
+        }}
+      />
       <ScrollView style={{backgroundColor: '#f4f6f8'}}>
         <View>
-          <View style={Styles.FindStuffHeaderContainer}>
-            <TouchableOpacity
-              style={{flex: 1}}
-              onPress={() => navigation.navigate('StuffPostView')}>
-              <Image
-                source={Images.whiteLeftChevron}
-                style={Styles.FindStuffHeaderImg}
-              />
-            </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
-              <Text style={{fontSize: 20, color: '#fff'}}>详情</Text>
-            </View>
-            <View style={{flex: 1}}></View>
-          </View>
+          <Header back={() => navigation.goBack()} label={'详情'} />
+
           <View style={Styles.UserInfoContainer}>
             <View style={Styles.AvatarContainer}>
               <View style={Styles.AvatarPhotoContainer}>
-                {(!item.user || !item.user.photo) && (
-                  <Image
-                    style={Styles.AvatarPhoto}
-                    source={Images.maleProfile}
-                    resizeMode="cover"
-                    borderRadius={30}
-                  />
-                )}
-                {item.user && item.user.photo && item.user.photo.length > 0 && (
-                  <Image
-                    style={Styles.AvatarPhoto}
-                    // source={{
-                    //   uri: baseUrl + 'download/photo?path=' + item.user.photo,
-                    // }}
-                    source={Images.maleProfile}
-                    resizeMode="cover"
-                    borderRadius={30}
-                  />
-                )}
+                <FastImage
+                  style={Styles.AvatarPhoto}
+                  source={
+                    item.user
+                      ? item.user.photo
+                        ? {
+                            uri:
+                              baseUrl +
+                              'download/photo?path=' +
+                              item.user.photo,
+                          }
+                        : Images.maleProfile
+                      : Images.maleProfile
+                  }
+                  resizeMode="cover"
+                />
                 <View style={{flex: 3}}></View>
               </View>
               <View style={Styles.UserNameContainer}>
                 <View style={Styles.UserNameWrap}>
                   <View>
-                    {item.user?.name && <Text>{item.user.name}</Text>}
+                    <Text>{item.title}</Text>
                   </View>
+                </View>
+                <View style={{paddingTop: 5}}>
+                  <Text style={{color: Colors.grey, fontSize: 12}}>
+                    {item.phone}
+                  </Text>
                 </View>
                 <View style={{paddingTop: 5}}>
                   <Text style={{color: Colors.grey, fontSize: 12}}>
@@ -125,7 +189,7 @@ export default function StuffPostDetail({navigation}) {
                   </View>
                 )}
                 <View style={Styles.UserLocationContainer}>
-                  <Image
+                  <FastImage
                     source={Images.BlueMapIcon}
                     style={Styles.UserLocationImg}
                   />
@@ -135,7 +199,6 @@ export default function StuffPostDetail({navigation}) {
                 </View>
               </View>
               <View style={{flex: 2, flexDirection: 'column'}}>
-                <View style={{flex: 1}}></View>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -168,10 +231,13 @@ export default function StuffPostDetail({navigation}) {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <RoundBtn
-                    RoundBtnTitle={'联系TA'}
-                    RoundBtnColor={'MainYellow'}
-                  />
+                  {item.user._id !== state.user._id && (
+                    <RoundBtn
+                      RoundBtnTitle={'联系TA'}
+                      RoundBtnColor={'MainYellow'}
+                      proc={() => sendMsg(item)}
+                    />
+                  )}
                 </View>
                 <View style={{flex: 1}}></View>
               </View>
@@ -182,20 +248,27 @@ export default function StuffPostDetail({navigation}) {
               <Text style={{color: Colors.grey}}>{item.description}</Text>
             </View>
             <View style={Styles.StuffImgContainer}>
-              {item.photos.map((photo, i) => (
-                <Image
-                  key={i}
-                  source={{
-                    uri: baseUrl + 'download/photo?path=' + photo.path,
-                  }}
-                  style={Styles.StuffImg}
-                />
-              ))}
+              {item.photos.length > 0 &&
+                item.photos.map((photo, i) => (
+                  <FastImage
+                    key={i}
+                    source={{
+                      uri: baseUrl + 'download/photo?path=' + photo.path,
+                    }}
+                    style={Styles.StuffImg}
+                  />
+                ))}
             </View>
             <View style={Styles.StuffReportContainer}>
-              <View>
-                <Text style={{color: Colors.grey}}>举报</Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  checkReport();
+                }}>
+                {item.user._id !== state.user._id && (
+                  <Text style={{color: Colors.grey}}>举报</Text>
+                )}
+              </TouchableOpacity>
+
               <View>
                 <Text style={{color: Colors.grey}}>浏览{item.browse}次</Text>
               </View>
@@ -203,6 +276,24 @@ export default function StuffPostDetail({navigation}) {
           </View>
         </View>
       </ScrollView>
+      <DialogInput
+        isDialogVisible={dlgVisible}
+        title={'举报'}
+        message={'我之所以举报，是因为'}
+        hintInput={''}
+        submitInput={inputText => {
+          if (inputText === '') {
+            Toast.show('请输入内容');
+            return;
+          }
+          reportPost(inputText);
+          setDlgVisible(false);
+        }}
+        closeDialog={() => {
+          setDlgVisible(false);
+        }}
+        cancelText={'取消'}
+        submitText={'确认'}></DialogInput>
       <View style={Styles.CommentInputContainer}>
         <View style={Styles.CommentInputWrap}></View>
         <TouchableOpacity

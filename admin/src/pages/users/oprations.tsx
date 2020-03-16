@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Button, Popconfirm } from "antd";
+import { Divider, Button, Popconfirm, Checkbox } from "antd";
 
 export function Operate(props: any) {
   const { editing, rowIndex, record } = props;
@@ -21,15 +21,27 @@ export function Operate(props: any) {
             修改
           </Button>
           <Divider type="vertical" />
-          <Popconfirm
-            placement="topRight"
-            title={"Are you sure?"}
-            onConfirm={() => props.del(record)}
-            okText="Yes"
-            cancelText="No"
+          <Checkbox
+            onChange={e => props.block(record._id, e.target.checked)}
+            checked={record.block}
           >
-            <Button>删除</Button>
-          </Popconfirm>
+            {"禁止"}
+          </Checkbox>
+
+          {false && (
+            <>
+              <Divider type="vertical" />
+              <Popconfirm
+                placement="topRight"
+                title={"Are you sure?"}
+                onConfirm={() => props.del(record)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button>删除</Button>
+              </Popconfirm>
+            </>
+          )}
         </>
       )}
     </div>

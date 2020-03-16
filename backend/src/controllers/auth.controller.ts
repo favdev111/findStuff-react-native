@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 import moment from "moment";
 import Admin from "../models/Admin";
 
-const SESSION_TIME = 60 * 60 * 60;
+const SESSION_TIME = 60 * 60 * 24 * 7;// week
 
 class AuthController {
   constructor() {}
@@ -45,6 +45,18 @@ class AuthController {
     if (!otpExist)
       return res.status(200).json({ success: false, msg: "输入验证码错误" });
 
+    const currentUser = await User.findOne({ phone });
+
+    console.log(currentUser, 'currentUser')
+
+    if (currentUser) {
+      res.status(200).json({
+        success: false,
+        msg: "您已经注册。"
+      });
+      return;
+    }
+
     try {
       const newUser = new User({
         email: "test@test.com",
@@ -73,7 +85,7 @@ class AuthController {
         });
     } catch (err) {
       console.log("error => ", err);
-      res.status(500).json({
+      res.status(200).json({
         success: false,
         msg: "失败了"
       });
@@ -133,7 +145,7 @@ class AuthController {
     // body request validation
 
     const { error } = signinValidation(req.body);
-    if (error) return res.status(400).json(error.message);
+    if (error) return res.status(200).json({ success: false, msg: error.message });
 
     // find user
     // const user = await User.findOne({ email: req.body.email });
@@ -144,8 +156,11 @@ class AuthController {
     });
 
     if (!user)
-      return res.status(200).json({ success: false, msg: "找不到用户." });
+      return res.status(200).json({ success: false, msg: "错误的信息。" });
 
+    if (user.block) 
+      return res.status(200).json({ success: false, msg: "您的帐户被禁止。" });    
+    
     const rooms = await Room.find({
       users: { $in: [new mongodb.ObjectID(user._id)] } //$elemMatch:{$eq:ObjectId("5e2916615f55cc6e3cb9838b")}
     });
@@ -175,9 +190,30 @@ class AuthController {
 
     console.log(req.body);
 
-    const { phone } = req.body;
+    const { phone, kind } = req.body;
 
-    if (!phone) return res.status(200).json({ success: false, msg: "错号码." });
+    if (!phone) return res.status(200).json({ success: false, msg: "错号码!" });
+
+    const currentUser = await User.findOne({phone});
+    console.log(currentUser, '-----------------');
+
+    if (kind && kind === "forgot") {      
+      if (!currentUser) {
+        res.status(200).json({
+          success: false,
+          msg: "号码错了!"
+        });
+        return;
+      }      
+    } else {
+      if (currentUser) {
+        res.status(200).json({
+          success: false,
+          msg: "已经注册的用户!"
+        });
+        return;
+      }      
+    }
 
     ///////////////////////////////////////////////////
 
@@ -212,7 +248,10 @@ class AuthController {
       await newOtp.save();
     }
 
-    console.log(newOtp.limit, "asdfa");
+    console.log(
+      newOtp.limit,
+      "it's possible to send otp request 3 times a day."
+    );
 
     if (newOtp.limit < 1) {
       res.status(200).json({
@@ -232,7 +271,7 @@ class AuthController {
         console.log("err occured during otp...", err.message, err.code);
         res.status(200).json({
           success: false,
-          msg: "正在发送验证码...." //err.message
+          msg: "号码错了!"//"正在发送验证码...."//err.message
         });
       } else {
         console.log("SMS sent, and smsId is " + smsId);

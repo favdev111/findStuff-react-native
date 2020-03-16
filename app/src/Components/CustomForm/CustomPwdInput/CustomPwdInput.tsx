@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, TouchableOpacity, TextInput, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, TouchableOpacity, TextInput, Text, Image} from 'react-native';
 import Styles from './CustomPwdInputStyle';
 import {Images} from 'src/Theme';
 
@@ -25,7 +25,11 @@ export default function CustomPwdInput(props) {
           activeOpacity={0.8}
           style={Styles.touachableButton}
           onPress={() => setHidePassword(!hidePassword)}>
-          <Image source={hidePassword ? Images.HideIcon : Images.ShowIcon} />
+          <Image
+            resizeMode="contain"
+            style={{width: 25}}
+            source={hidePassword ? Images.HideIcon : Images.ShowIcon}
+          />
         </TouchableOpacity>
       </View>
     </View>

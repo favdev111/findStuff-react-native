@@ -1,92 +1,97 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
   ImageBackground,
-  Image,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Images} from 'src/Theme';
-import Style from './UserInfoStyle';
-
-import {baseUrl} from 'src/constants';
-const axios = require('axios');
+import Styles from './UserInfoStyle';
+import Style from 'src/Style';
+import Header from 'src/Components/Header/Header';
+import Toast from 'react-native-simple-toast';
+import {baseUrl} from 'src/config';
+import {store} from 'src/Store';
 
 export default function Profile(props) {
+  const [state, dispatch] = useContext(store);
   const [item, setItem] = useState(props.navigation.getParam('item'));
   return (
-    <ScrollView style={Style.ProfileContainer}>
+    <ScrollView style={Styles.ProfileContainer}>
       <ImageBackground
         source={Images.ProfileBannerImg}
-        style={Style.ProfileHeaderContainer}>
-        <View style={Style.ProfileHeaderTitleContainer}>
-          <TouchableOpacity style={Style.HeaderChevronImg}>
-            <Image
-              source={Images.whiteLeftChevron}
-              style={Style.FindStuffHeaderImg}
-            />
-          </TouchableOpacity>
-          <Text style={Style.ProfileHeaderTitleText}>个人资料</Text>
-        </View>
-        <View style={Style.ProfileHeaderAvatarContainer}>
-          <View style={Style.ProfileHeaderAvatarWrap}>
-            <Image
+        style={Styles.ProfileHeaderContainer}>
+        <Header back={props.navigation.goBack()} label={'个人资料'} />
+
+        <View style={Styles.ProfileHeaderAvatarContainer}>
+          <View style={Styles.ProfileHeaderAvatarWrap}>
+            <FastImage
               source={{
                 uri: baseUrl + 'download/photo?path=' + item.photo,
               }}
-              style={Style.ProfileHeaderAvatarImg}
+              style={Styles.ProfileHeaderAvatarImg}
               resizeMode="cover"
-              borderRadius={30}
             />
-            <Text style={Style.ProfileHeaderAvatarText}>气候品牌亮相</Text>
+            <Text style={Styles.ProfileHeaderAvatarText}>气候品牌亮相</Text>
           </View>
         </View>
       </ImageBackground>
-      <View style={Style.ProfileFunctionContainer}>
-        <TouchableOpacity style={Style.ProfileUpdateContainer}>
-          <View style={Style.ProfileUpdateWrap}>
-            <View style={Style.ProfileUpdateLeft}>
-              <Image
+      <View style={Styles.ProfileFunctionContainer}>
+        <TouchableOpacity style={Styles.ProfileUpdateContainer}>
+          <View style={Styles.ProfileUpdateWrap}>
+            <View style={Styles.ProfileUpdateLeft}>
+              <FastImage
                 source={Images.BlueMapIcon}
-                style={Style.ProfileUpdateImg}
+                style={Styles.ProfileUpdateImg}
                 resizeMode="cover"
-                borderRadius={30}
               />
-              <Text>上安医大</Text>
+              <Text>
+                {item.location && item.location.city ? item.location.city : ''}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={Style.ProfileContactUsContainer}>
-          <View style={Style.ProfileContactUsWrap}>
-            <View style={Style.ProfileContactUsLeft}>
-              <Image
+        <TouchableOpacity style={Styles.ProfileContactUsContainer}>
+          <View style={Styles.ProfileContactUsWrap}>
+            <View style={Styles.ProfileContactUsLeft}>
+              <FastImage
                 source={Images.ProfileContactus}
-                style={Style.ProfileContactUsImg}
+                style={Styles.ProfileContactUsImg}
               />
               <Text>电话: {item.phone}</Text>
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={Style.ProfileMessageContainer}
-          onPress={() => {
-            console.log(item, 'bbbbbbbbbbbbbbbbbbbb');
-            props.navigation.navigate('ChatDetail', {item, msg: {}});
-          }}>
-          <View style={Style.ProfileMessageWrap}>
-            <View style={Style.ProfileMessageLeft}>
-              <Image source={Images.Message1} style={Style.ProfileMessageImg} />
-              <Text>私信</Text>
+
+        {state.user._id && item._id !== state.user._id && (
+          <TouchableOpacity
+            style={Styles.ProfileMessageContainer}
+            onPress={() => {
+              if (item._id === state.user._id) {
+                Toast.show('错误');
+                return;
+              }
+              props.navigation.navigate('ChatRoom', {guest: item});
+            }}>
+            <View style={Styles.ProfileMessageWrap}>
+              <View style={Styles.ProfileMessageLeft}>
+                <FastImage
+                  source={Images.Message1}
+                  style={Styles.ProfileMessageImg}
+                />
+                <Text>私信</Text>
+              </View>
+              <View>
+                <FastImage
+                  source={Images.RightArrow}
+                  style={Styles.ProfileRightArrow}
+                />
+              </View>
             </View>
-            <View>
-              <Image
-                source={Images.RightArrow}
-                style={Style.ProfileRightArrow}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
