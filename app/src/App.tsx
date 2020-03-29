@@ -3,6 +3,7 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import MainScreenWithBottomNav from 'src/Components/BottomTabNav/BottomTabNav';
 import SigninScreen from 'src/Containers/Authentication/SignInScreen/SignInScreen';
+import SplashScreen from 'src/Containers/SplashScreen/SplashScreen';
 import SignUpScreen from 'src/Containers/Authentication/SignUpScreen/SignUpScreen';
 import ForgotPwdScreen from 'src/Containers/Authentication/ForgotPwdScreen/ForgotPwdScreen';
 import LostStuffScreen from 'src/Containers/AddInfo/LostStuffScreen/LostStuffScreen';
@@ -23,9 +24,11 @@ const AppNavigator = createStackNavigator(
 
     ChatRoom: ChatRoom,
     UserInfo: UserInfo,
+
+    SplashScreen: SplashScreen,
   },
   {
-    initialRouteName: 'MainScreenWithBottomNav',
+    initialRouteName: 'SplashScreen',
     headerMode: 'none',
   },
 );

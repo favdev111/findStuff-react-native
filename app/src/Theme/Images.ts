@@ -71,4 +71,5 @@ export default {
   PublishedBtn: require('src/Images/Icons/PublishedBtn.png'),
   EachAttention: require('src/Images/Icons/EachAttention.png'),
   Admin: require('src/Images/Icons/Admin.png'),
+  SplashScreen: require('src/Images/splashScreen.png'),
 };

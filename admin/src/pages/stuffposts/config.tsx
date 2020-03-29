@@ -35,7 +35,7 @@ export const columns: ColumnProps<any>[] = [
     dataIndex: "tag",
     render: tag => {
       let ret = "其他";
-      if (tag === "CatWallet") ret = "钱包";
+      if (tag === "CatWallet") ret = "证件";
       else if (tag === "CatKey") ret = "钥匙";
       else if (tag === "CatDigital") ret = "数码";
       else if (tag === "CatOffice") ret = "办公";
