@@ -6,7 +6,7 @@ export const avatarSize = 128;
 export const photoSize = 256;
 
 export const tagJson = [
-  {证件: 'CatWallet'},
+  {'卡/证': 'CatWallet'},
   {钥匙: 'CatKey'},
   {数码: 'CatDigital'},
   {办公: 'CatOffice'},
@@ -16,7 +16,7 @@ export const tagJson = [
   {其他: 'CatOther'},
 ];
 export const tagArr = [
-  {label: '证件', value: 'CatWallet'},
+  {label: '卡/证', value: 'CatWallet'},
   {label: '钥匙', value: 'CatKey'},
   {label: '数码', value: 'CatDigital'},
   {label: '办公', value: 'CatOffice'},
