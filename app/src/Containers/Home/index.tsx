@@ -251,13 +251,13 @@ function HomeView(props) {
 
   const handleBackButton = () => {               
     Alert.alert(
-        'Exit App',
-        'Exiting the application?', [{
-            text: 'Cancel',
+        '提示',
+        '是否退出寻N?', [{
+            text: '取消',
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel'
         }, {
-            text: 'OK',
+            text: '确定',
             onPress: () => BackHandler.exitApp()
         }, ], {
             cancelable: false
