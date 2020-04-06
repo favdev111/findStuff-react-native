@@ -9,6 +9,7 @@ import {store} from 'src/Store';
 import {baseUrl} from 'src/config';
 import moment from 'moment';
 import axios from 'axios';
+import { BackHandler } from 'react-native';
 
 import {NavigationEvents} from 'react-navigation';
 
@@ -33,6 +34,38 @@ const RoomList = props => {
         // always executed
       });
   };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      props.navigation.navigate('AppHome');
+      return true;
+
+    });
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willFocus', () => {
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        props.navigation.navigate('AppHome');
+        return true;
+
+      });
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willBlur', () => {
+      BackHandler.removeEventListener('hardwareBackPress', () => {
+        props.navigation.navigate('AppHome');
+        return true;
+
+      });
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
 
   return (
     <>

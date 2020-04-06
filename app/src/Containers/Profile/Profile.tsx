@@ -136,12 +136,10 @@ const Profile = props => {
       return true;
 
     });
-    console.log('component did mounted');
   }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('willFocus', () => {
-      console.log('profile-focus');
       BackHandler.addEventListener('hardwareBackPress', () => {
         props.navigation.navigate('AppHome');
         return true;
@@ -154,7 +152,6 @@ const Profile = props => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('willBlur', () => {
-      console.log('profile-blur');
       BackHandler.removeEventListener('hardwareBackPress', () => {
         props.navigation.navigate('AppHome');
         return true;
