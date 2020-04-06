@@ -108,11 +108,30 @@ export default function SignInScreen(props) {
       'just defined the from _screen params',
     );
 
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      console.log('you clicked back button. go to the app home.');
-      props.navigation.navigate('AppHome');
-      return true;
-    });
+    // BackHandler.addEventListener('hardwareBackPress', () => {
+    //   console.log('you clicked back button. go to the app home.');
+    //   props.navigation.navigate('AppHome');
+    //   return true;
+    // });
+
+    BackHandler.addEventListener('hardwareBackPress', signinHandleBackButton);
+  }, []);
+
+  const signinHandleBackButton = () => {               
+    props.navigation.navigate(
+          'AppHome',
+          {
+            onGoBack: () => console.log('Will go back from nextComponent'),
+          }
+          );
+     return true;
+   }
+
+  useEffect(() => {
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', signinHandleBackButton);
+      console.log('component will unmounted');
+    }
   }, []);
 
   return (

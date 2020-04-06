@@ -10,7 +10,9 @@ import {
   NativeModules,
   NativeEventEmitter,
   Platform,
+  Alert,
 } from 'react-native';
+import { BackHandler } from 'react-native';    // hardware backhandler
 import FastImage from 'react-native-fast-image';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import StuffCard from 'src/Components/Card/StuffCard';
@@ -204,6 +206,65 @@ function HomeView(props) {
   }, [state.region, tabState.index, key]);
 
   useEffect(() => {}, [list]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton); 
+    console.log('component did mounted');
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+      console.log('component will unmounted');
+    }
+  }, []);
+
+  // BackHandler.addEventListener('hardwareBackPress', () => {
+  //   console.log('you clicked back button. go to the app home.');
+  //   props.navigation.navigate(
+  //     'SplashScreen',
+  //     {
+  //       onGoBack: () => console.log('Will go back from nextComponent'),
+  //     }
+  //     );
+  //   return true;
+  // });
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willFocus', () => {
+      console.log('focus');
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willBlur', () => {
+      console.log('blur');
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+
+  const handleBackButton = () => {               
+    Alert.alert(
+        'Exit App',
+        'Exiting the application?', [{
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+        }, {
+            text: 'OK',
+            onPress: () => BackHandler.exitApp()
+        }, ], {
+            cancelable: false
+        }
+     )
+     return true;
+   }
 
   useEffect(() => {
     getLastNote();

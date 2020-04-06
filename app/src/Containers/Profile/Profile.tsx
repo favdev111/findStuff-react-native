@@ -25,6 +25,7 @@ import {NavigationEvents} from 'react-navigation';
 import Modal from 'react-native-modal';
 import {baseUrl, appVersion, avatarSize} from 'src/config';
 import {RESULTS} from 'react-native-permissions';
+import { BackHandler } from 'react-native';  
 
 import {checkCamLibPermission} from 'src/Permissions';
 
@@ -128,6 +129,41 @@ const Profile = props => {
       },
     );
   };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      props.navigation.navigate('AppHome');
+      return true;
+
+    });
+    console.log('component did mounted');
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willFocus', () => {
+      console.log('profile-focus');
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        props.navigation.navigate('AppHome');
+        return true;
+
+      });
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener('willBlur', () => {
+      console.log('profile-blur');
+      BackHandler.removeEventListener('hardwareBackPress', () => {
+        props.navigation.navigate('AppHome');
+        return true;
+
+      });
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
 
   async function changePhoto(formData) {
     await axios
