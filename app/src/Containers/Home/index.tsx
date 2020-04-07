@@ -209,30 +209,10 @@ function HomeView(props) {
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', handleBackButton); 
-    console.log('component did mounted');
   }, []);
-
-  useEffect(() => {
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-      console.log('component will unmounted');
-    }
-  }, []);
-
-  // BackHandler.addEventListener('hardwareBackPress', () => {
-  //   console.log('you clicked back button. go to the app home.');
-  //   props.navigation.navigate(
-  //     'SplashScreen',
-  //     {
-  //       onGoBack: () => console.log('Will go back from nextComponent'),
-  //     }
-  //     );
-  //   return true;
-  // });
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('willFocus', () => {
-      console.log('focus');
         BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     });
 
@@ -241,7 +221,6 @@ function HomeView(props) {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('willBlur', () => {
-      console.log('blur');
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     });
 
