@@ -162,7 +162,8 @@ function HomeView(props) {
     try {
       await init({
         ios: '099b23712ab62b8704c42b256553d6dd',
-        android: '7c09f30df0777beee6f441252b0fa1f2',
+        // android: '947a5d4e754678580ed3d0cdb40764d6',      //debug-key
+        android: '0db0a0a54cd10b52b586386861e6425e',         //release-key
       });
 
       if (Platform.OS === 'ios') {
