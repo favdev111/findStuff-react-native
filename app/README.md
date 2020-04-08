@@ -31,7 +31,7 @@ https://org.modao.cc/app/cbcc45733afb052cfb083f105bcce28c#screen=s59869B75281555
 # ssl setting guide
 
 1. yarn add react-native-ssl-pinning@latest
-2. openssl s_client -showcerts -connect 106.53.75.202:8000
+2. openssl s_client -showcerts -connect 211.149.180.81:8000
 3. Copy the certificate (Usally the first one in the chain), and paste it using nano or other editor like so , nano mycert.pem
 4. convert it to .cer with this command openssl x509 -in mycert.pem -outform der -out mycert.cer
 5. iOS > drag mycert.cer to Xcode project, mark your target and 'Copy items if needed'

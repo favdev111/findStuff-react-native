@@ -452,17 +452,17 @@ const Profile = props => {
                   alignItems: 'center',
                   marginTop: 30,
                 }}>
-                <QRCode value={state.profile.share} size={200} />
+                <QRCode value="http://xjbiye.com/index.html" size={200} />
               </View>
             )}
-            <View
+            {/* <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: 25,
               }}>
               <Text>{service}</Text>
-            </View>
+            </View> */}
           </View>
           <View
             style={{
