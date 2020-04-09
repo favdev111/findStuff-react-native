@@ -455,14 +455,14 @@ const Profile = props => {
                 <QRCode value="http://xjbiye.com/index.html" size={200} />
               </View>
             )}
-            {/* <View
+            <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: 25,
               }}>
               <Text>{service}</Text>
-            </View> */}
+            </View>
           </View>
           <View
             style={{
